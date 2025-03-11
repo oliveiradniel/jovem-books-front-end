@@ -1,15 +1,15 @@
-import logo from '/logo-home.svg';
+import Logo from '../assets/icons/logo-home.svg?react';
 
 export default function Home() {
   return (
     <div className="bg-linear-to-r from-black to-royal-blue w-screen h-screen">
       <div className=" p-12 bg-contain bg-none bg-no-repeat bg-right h-full lg:bg-[url(/wallpaper-home.svg)]">
         <div className="flex gap-4">
-          <img src={logo} alt="Logo Jovem Books" />
+          <Logo />
           <p className="text-snow-white font-quicksand">Jovem Books</p>
         </div>
 
-        <h1 className="text-snow-white font-quicksand text-6xl w-74 mt-42">
+        <h1 className="text-snow-white font-quicksand text-6xl w-72 mt-42">
           Controle seu progresso
         </h1>
 
