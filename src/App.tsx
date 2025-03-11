@@ -1,7 +1,9 @@
+import Home from './pages/Home';
+
 function App() {
   return (
     <>
-      <h1>jovem books</h1>
+      <Home />
     </>
   );
 }
