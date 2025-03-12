@@ -28,12 +28,12 @@ export default function Input({
   console.log(typeField);
   return (
     <div
-      className={`flex gap-3 items-center bg-midnight-blue-op-40 py-2 px-4 rounded-lg border border-midnight-blue-op-40 transition duration-300 ease-in-out ${
+      className={`bg-midnight-blue-op-40 border-midnight-blue-op-40 flex items-center gap-3 rounded-lg border px-4 py-2 transition duration-300 ease-in-out ${
         isTheFieldFocused && 'border-royal-purple'
       }`}
     >
       <Icon
-        className={`text-light-gray-op-40 transition duration-300 ease-in-out w-5 h-5 ${
+        className={`text-light-gray-op-40 h-5 w-5 transition duration-300 ease-in-out ${
           (isTheFieldFocused || theFieldIsEmpty) && 'text-royal-purple'
         }`}
       />
@@ -43,7 +43,7 @@ export default function Input({
         onFocus={() => setIsTheFieldFocused(true)}
         onBlur={() => setIsTheFieldFocused(false)}
         {...props}
-        className="focus:outline-none placeholder:text-light-gray-op-70 text-snow-white w-full"
+        className="placeholder:text-light-gray-op-70 text-snow-white w-full focus:outline-none"
       />
 
       {isAPasswordInput && (
