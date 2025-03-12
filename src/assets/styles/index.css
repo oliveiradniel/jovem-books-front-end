@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -8,16 +8,23 @@
   --color-royal-purple: #4c44ce;
   --color-royal-blue: #332da9;
   --color-midnight-blue: #23205d;
+  --color-midnight-blue-op-40: #23205d40;
   --color-dark-violet: #1e1a67;
+  --color-dark-violet-op-60: #1e1a6760;
   --color-navy-blue: #19243a;
+  --color-navy-blue-op-40: #19243a40;
   --color-dark-burgundy: #100e35;
+  --color-dark-burgundy-op-80: #100e3580;
   --color-blue-black: #0a1123;
 
   --color-snow-white: #ffffff;
   --color-ivory-white: #fffff0;
   --color-light-gray: #adadad;
+  --color-light-gray-op-40: #adadad40;
+  --color-light-gray-op-70: #adadad40;
   --color-mate-gray: #c9c9c9;
 
   --font-quicksand: 'Quicksand', sans-serif;
   --font-roboto: 'Roboto', sans-serif;
+  --font-bebas-neue: 'Bebas Neue', sans-serif;
 }
