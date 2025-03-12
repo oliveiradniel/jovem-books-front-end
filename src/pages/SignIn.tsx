@@ -3,8 +3,8 @@ import { ChangeEvent, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
-import InputPage from './components/InputPage';
-import ButtonPage from './components/ButtonPage';
+import Input from './components/Input';
+import Button from './components/Button';
 import Navigation from './components/Navigation';
 
 export default function SignIn() {
@@ -22,7 +22,7 @@ export default function SignIn() {
           </h1>
 
           <form className="flex flex-col gap-4">
-            <InputPage
+            <Input
               theFieldIsEmpty={username.length > 0}
               Icon={FaUser}
               type="text"
@@ -33,7 +33,7 @@ export default function SignIn() {
               }
             />
 
-            <InputPage
+            <Input
               theFieldIsEmpty={password.length > 0}
               isAPasswordInput
               Icon={RiLockPasswordFill}
@@ -44,7 +44,7 @@ export default function SignIn() {
               }
             />
 
-            <ButtonPage label="Entrar" />
+            <Button label="Entrar" />
           </form>
         </div>
         <div className="bg-dark-burgundy-op-80 hidden max-w-md flex-1 items-center justify-center rounded-lg p-6 sm:flex">
