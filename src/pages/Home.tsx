@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/logo-home.svg?react';
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <div className="to-royal-blue h-screen w-screen bg-linear-to-r from-black">
       <div className="h-full bg-none bg-contain bg-right bg-no-repeat p-12 lg:bg-[url(/wallpaper-home.svg)]">
@@ -20,6 +23,7 @@ export default function Home() {
 
           <button
             type="button"
+            onClick={() => navigate('/sign-up')}
             className="bg-dark-burgundy text-light-gray font-quicksand h-full w-60 rounded-3xl py-2 font-bold transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-75 active:opacity-100"
           >
             Iniciar

@@ -25,7 +25,7 @@ export default function Input({
 
   const typeField =
     isAPasswordInput && isThePasswordVisible ? 'text' : 'password';
-  console.log(typeField);
+
   return (
     <div
       className={`bg-midnight-blue-op-40 border-midnight-blue-op-40 flex items-center gap-3 rounded-lg border px-4 py-2 transition duration-300 ease-in-out ${
