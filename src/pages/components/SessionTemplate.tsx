@@ -6,6 +6,7 @@ interface SessionTemplate {
   children: React.ReactNode;
   buttonLabel: string;
   highlightText: string;
+  isFormValid: boolean;
   onSubmit: () => void;
 }
 
@@ -14,6 +15,7 @@ export default function SessionTemplate({
   children,
   buttonLabel,
   highlightText,
+  isFormValid,
   onSubmit,
 }: SessionTemplate) {
   function handleSubmit(
@@ -37,7 +39,11 @@ export default function SessionTemplate({
           <form className="animate-fade-in flex flex-col gap-4">
             {children}
 
-            <Button label={buttonLabel} onClick={handleSubmit} />
+            <Button
+              label={buttonLabel}
+              onClick={handleSubmit}
+              disabled={!isFormValid}
+            />
           </form>
         </div>
         <div className="bg-dark-burgundy-op-80 hidden max-w-md flex-1 items-center justify-center rounded-lg p-6 sm:flex">

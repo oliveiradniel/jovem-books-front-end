@@ -15,6 +15,8 @@ export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const isFormValid = username.length > 0 && password.length > 0;
+
   function handleSubmit() {
     try {
       const credentials = SignInSchema.parse({ username, password });
@@ -33,6 +35,7 @@ export default function SignIn() {
       buttonLabel="Entrar"
       highlightText="Está pronto para terminar um livro hoje e iniciar outro? Entre já e
             atualize os dados sobre seus livros."
+      isFormValid={isFormValid}
       onSubmit={handleSubmit}
     >
       <Input

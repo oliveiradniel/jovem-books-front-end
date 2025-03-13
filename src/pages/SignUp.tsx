@@ -21,6 +21,13 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const isFormValid =
+    username.length > 0 &&
+    firstName.length > 0 &&
+    lastName.length > 0 &&
+    email.length > 0 &&
+    password.length > 0;
+
   function handleSubmit() {
     try {
       const data = SignUpSchema.parse({
@@ -45,6 +52,7 @@ export default function SignUp() {
       buttonLabel="Criar"
       highlightText="Com uma lista completa de livros da Google BOOKS, você pode criar
             sua própria lista de livros e controlar seu progresso de leitura."
+      isFormValid={isFormValid}
       onSubmit={handleSubmit}
     >
       <Input
