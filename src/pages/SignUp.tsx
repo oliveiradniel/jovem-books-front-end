@@ -60,6 +60,7 @@ export default function SignUp() {
       <Input
         theFieldIsEmpty={email.length > 0}
         Icon={MdEmail}
+        type="text"
         placeholder="E-mail"
         value={email}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
