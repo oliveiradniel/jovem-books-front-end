@@ -9,6 +9,8 @@ import SessionTemplate from './components/SessionTemplate';
 import Input from './components/Input';
 import { ZodError } from 'zod';
 
+import { handleSignInErrors } from './errors/handleSignInErrors';
+
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,17 +22,7 @@ export default function SignIn() {
       console.log(credentials);
     } catch (error) {
       if (error instanceof ZodError) {
-        if (
-          error.message.includes('The username must be at least 5 characters')
-        ) {
-          console.log('O nome de usuário precisa ter no mínimo 5 caracteres');
-        }
-
-        if (
-          error.message.includes('The password must be at least 8 characters')
-        ) {
-          console.log('A senha precisa ter no mínimo 8 caracteres');
-        }
+        handleSignInErrors(error);
       }
     }
   }
