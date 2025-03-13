@@ -24,7 +24,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => navigate('/sign-up')}
-            className="bg-dark-burgundy text-light-gray font-quicksand h-full w-60 rounded-3xl py-2 font-bold transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-75 active:opacity-100"
+            className="bg-dark-burgundy text-light-gray font-quicksand hover:bg-dark-burgundy-op-60 active:bg-dark-burgundy h-full w-60 rounded-3xl py-2 font-bold transition-colors duration-300 ease-in-out hover:cursor-pointer"
           >
             Iniciar
           </button>

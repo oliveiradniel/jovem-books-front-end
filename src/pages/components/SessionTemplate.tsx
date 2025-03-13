@@ -24,14 +24,14 @@ export default function SessionTemplate({
             {title}
           </h1>
 
-          <form className="flex flex-col gap-4">
+          <form className="animate-fade-in flex flex-col gap-4">
             {children}
 
             <Button label={buttonLabel} />
           </form>
         </div>
         <div className="bg-dark-burgundy-op-80 hidden max-w-md flex-1 items-center justify-center rounded-lg p-6 sm:flex">
-          <span className="text-light-gray font-bebas-neue text-center text-4xl">
+          <span className="text-light-gray font-bebas-neue animate-move-in-right text-center text-4xl">
             {highlightText}
           </span>
         </div>
