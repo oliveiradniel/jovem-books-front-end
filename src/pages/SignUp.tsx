@@ -15,12 +15,23 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  function handleSubmit() {
+    console.log({
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+  }
+
   return (
     <SessionTemplate
       title="Criar uma nova conta"
       buttonLabel="Criar"
       highlightText="Com uma lista completa de livros da Google BOOKS, você pode criar
             sua própria lista de livros e controlar seu progresso de leitura."
+      onSubmit={handleSubmit}
     >
       <Input
         theFieldIsEmpty={username.length > 0}

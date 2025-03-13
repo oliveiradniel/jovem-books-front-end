@@ -10,12 +10,17 @@ export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  function handleSubmit() {
+    console.log({ username, password });
+  }
+
   return (
     <SessionTemplate
       title="Entrar"
       buttonLabel="Entrar"
       highlightText="Está pronto para terminar um livro hoje e iniciar outro? Entre já e
             atualize os dados sobre seus livros."
+      onSubmit={handleSubmit}
     >
       <Input
         theFieldIsEmpty={username.length > 0}

@@ -6,6 +6,7 @@ interface SessionTemplate {
   children: React.ReactNode;
   buttonLabel: string;
   highlightText: string;
+  onSubmit: () => void;
 }
 
 export default function SessionTemplate({
@@ -13,7 +14,16 @@ export default function SessionTemplate({
   children,
   buttonLabel,
   highlightText,
+  onSubmit,
 }: SessionTemplate) {
+  function handleSubmit(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    event.preventDefault();
+
+    onSubmit();
+  }
+
   return (
     <div className="to-royal-blue h-screen w-screen bg-linear-to-r from-black p-5">
       <div className="bg-navy-blue-op-40 flex h-full w-full justify-between gap-20 rounded-2xl p-5">
@@ -27,7 +37,7 @@ export default function SessionTemplate({
           <form className="animate-fade-in flex flex-col gap-4">
             {children}
 
-            <Button label={buttonLabel} />
+            <Button label={buttonLabel} onClick={handleSubmit} />
           </form>
         </div>
         <div className="bg-dark-burgundy-op-80 hidden max-w-md flex-1 items-center justify-center rounded-lg p-6 sm:flex">
