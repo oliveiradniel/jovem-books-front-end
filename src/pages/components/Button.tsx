@@ -1,16 +1,24 @@
+import { ClipLoader } from 'react-spinners';
+
 interface ButtonPageProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
+  isSubmitting: boolean;
 }
 
-export default function ButtonPage({ label, ...props }: ButtonPageProps) {
+export default function ButtonPage({
+  label,
+  isSubmitting,
+  ...props
+}: ButtonPageProps) {
   return (
     <button
       type="submit"
-      className="bg-dark-violet text-snow-white font-roboto hover:bg-dark-violet-op-60 focus:bg-dark-violet disabled:bg-snow-white-op-70 absolute bottom-0 mt-40 h-13 w-full rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
+      className={`bg-dark-violet text-snow-white font-roboto focus:bg-dark-violet disabled:bg-snow-white-op-70 absolute bottom-0 mt-40 flex h-13 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet hover:cursor-default' : 'hover:bg-dark-violet-op-60 hover:cursor-pointer'}`}
       {...props}
     >
-      {label}
+      {!isSubmitting && label}
+      <ClipLoader color="#ffffff" size={20} loading={isSubmitting} />
     </button>
   );
 }

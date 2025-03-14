@@ -21,6 +21,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isFormValid =
     username.length > 0 &&
     firstName.length > 0 &&
@@ -28,7 +30,7 @@ export default function SignUp() {
     email.length > 0 &&
     password.length > 0;
 
-  function handleSubmit() {
+  async function handleSubmit() {
     try {
       const data = SignUpSchema.parse({
         username,
@@ -37,6 +39,12 @@ export default function SignUp() {
         email,
         password,
       });
+
+      setIsSubmitting(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+
+      setIsSubmitting(false);
 
       console.log(data);
     } catch (error) {
@@ -53,11 +61,14 @@ export default function SignUp() {
       highlightText="Com uma lista completa de livros da Google BOOKS, você pode criar
             sua própria lista de livros e controlar seu progresso de leitura."
       isFormValid={isFormValid}
+      isSubmitting={isSubmitting}
       onSubmit={handleSubmit}
     >
       <Input
         theFieldIsEmpty={username.length > 0}
         Icon={FaUserSecret}
+        isDisabled={isSubmitting}
+        disabled={isSubmitting}
         type="text"
         placeholder="Nome de usuário"
         value={username}
@@ -70,6 +81,8 @@ export default function SignUp() {
         <Input
           theFieldIsEmpty={firstName.length > 0}
           Icon={FaUser}
+          isDisabled={isSubmitting}
+          disabled={isSubmitting}
           type="text"
           placeholder="Primeiro nome"
           value={firstName}
@@ -81,6 +94,8 @@ export default function SignUp() {
         <Input
           theFieldIsEmpty={lastName.length > 0}
           Icon={FaUser}
+          isDisabled={isSubmitting}
+          disabled={isSubmitting}
           type="text"
           placeholder="Sobrenome"
           value={lastName}
@@ -93,6 +108,8 @@ export default function SignUp() {
       <Input
         theFieldIsEmpty={email.length > 0}
         Icon={MdEmail}
+        isDisabled={isSubmitting}
+        disabled={isSubmitting}
         type="text"
         placeholder="E-mail"
         value={email}
@@ -105,6 +122,8 @@ export default function SignUp() {
         theFieldIsEmpty={password.length > 0}
         isAPasswordInput
         Icon={RiLockPasswordFill}
+        isDisabled={isSubmitting}
+        disabled={isSubmitting}
         placeholder="Senha"
         value={password}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>

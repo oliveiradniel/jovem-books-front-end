@@ -7,6 +7,7 @@ interface SessionTemplate {
   buttonLabel: string;
   highlightText: string;
   isFormValid: boolean;
+  isSubmitting: boolean;
   onSubmit: () => void;
 }
 
@@ -16,12 +17,15 @@ export default function SessionTemplate({
   buttonLabel,
   highlightText,
   isFormValid,
+  isSubmitting,
   onSubmit,
 }: SessionTemplate) {
   function handleSubmit(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
     event.preventDefault();
+
+    if (isSubmitting) return;
 
     onSubmit();
   }
@@ -30,7 +34,7 @@ export default function SessionTemplate({
     <div className="to-royal-blue h-screen w-screen bg-linear-to-r from-black p-5">
       <div className="bg-navy-blue-op-40 flex h-full w-full justify-between gap-20 rounded-2xl p-5">
         <div className="relative max-w-md flex-1">
-          <Navigation />
+          <Navigation isDisabled={isSubmitting} />
 
           <h1 className="text-snow-white font-quicksand mt-20 mb-8 text-4xl">
             {title}
@@ -41,6 +45,7 @@ export default function SessionTemplate({
 
             <Button
               label={buttonLabel}
+              isSubmitting={isSubmitting}
               onClick={handleSubmit}
               disabled={!isFormValid}
             />
