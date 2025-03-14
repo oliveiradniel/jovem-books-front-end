@@ -13,6 +13,7 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 
 import Input from './components/Input';
 import SessionTemplate from './components/SessionTemplate';
+import { sanitizeAndCapitalize } from '../utils/sanitizeAndCapitalize';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -29,6 +30,18 @@ export default function SignUp() {
     lastName.length > 0 &&
     email.length > 0 &&
     password.length > 0;
+
+  function handleFirstNameChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setFirstName(sanitizeAndCapitalize(value));
+  }
+
+  function handleLastNameChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setLastName(sanitizeAndCapitalize(value));
+  }
 
   async function handleSubmit() {
     try {
@@ -86,9 +99,7 @@ export default function SignUp() {
           type="text"
           placeholder="Primeiro nome"
           value={firstName}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setFirstName(event.target.value)
-          }
+          onChange={handleFirstNameChange}
         />
 
         <Input
@@ -99,9 +110,8 @@ export default function SignUp() {
           type="text"
           placeholder="Sobrenome"
           value={lastName}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setLastName(event.target.value)
-          }
+          autoCapitalize="on"
+          onChange={handleLastNameChange}
         />
       </div>
 
@@ -110,7 +120,7 @@ export default function SignUp() {
         Icon={MdEmail}
         isDisabled={isSubmitting}
         disabled={isSubmitting}
-        type="text"
+        type="email"
         placeholder="E-mail"
         value={email}
         onChange={(event: ChangeEvent<HTMLInputElement>) =>
