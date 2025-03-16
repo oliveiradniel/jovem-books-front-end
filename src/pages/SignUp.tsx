@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
-import { ZodError } from 'zod';
+import { authService } from '../app/services/authService';
+
 import { SignUpSchema } from './schemas/SignUpSchema';
 
 import { handleSignUpErrors } from './errors/handleSignUpErrors';
@@ -153,12 +154,9 @@ export default function SignUp() {
 
       setIsSubmitting(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await authService.signUp({ ...data });
 
       setFullName(`${firstName} ${lastName}`);
-      setIsTheRegistrationComplete(true);
-
-      console.log(data);
 
       setUsername('');
       setFirstName('');
@@ -166,13 +164,13 @@ export default function SignUp() {
       setEmail('');
       setPassword('');
 
+      setIsTheRegistrationComplete(true);
+
       setErrorsData([]);
     } catch (error) {
-      if (error instanceof ZodError) {
-        const result = handleSignUpErrors(error);
-        if (result) {
-          setErrorsData((prevState) => [...prevState, result]);
-        }
+      const result = handleSignUpErrors(error);
+      if (result) {
+        setErrorsData((prevState) => [...prevState, result]);
       }
     } finally {
       setIsSubmitting(false);

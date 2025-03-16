@@ -1,42 +1,78 @@
 import { ZodError } from 'zod';
 
+import { AxiosError, AxiosResponse } from 'axios';
+
+type Errors = ZodError | AxiosError | unknown;
+
+interface APIError extends AxiosError {
+  response: AxiosResponse<{ message: string }>;
+}
+
 interface HandleSignUpErrorsResponse {
   fieldName: 'username' | 'firstName' | 'lastName' | 'email' | 'password';
   message: string;
 }
 
 export function handleSignUpErrors(
-  error: ZodError
+  error: Errors
 ): HandleSignUpErrorsResponse | null {
-  if (error.message.includes('The username must be at least 5 characters')) {
-    const message = 'O nome de usuário deve ter no mínimo 5 caracteres';
+  if (error instanceof ZodError) {
+    if (error.message.includes('The username must be at least 5 characters')) {
+      const message = 'O nome de usuário deve ter no mínimo 5 caracteres';
 
-    return { fieldName: 'username', message };
+      return { fieldName: 'username', message };
+    }
+
+    if (
+      error.message.includes('The first name must be at least 5 characters')
+    ) {
+      const message =
+        'O primeiro nome do usuário deve ter no mínimo 5 caracteres';
+
+      return { fieldName: 'firstName', message };
+    }
+
+    if (error.message.includes('The last name must be at least 5 characters')) {
+      const message =
+        'O último nome do usuário deve ter no mínimo 5 caracteres';
+
+      return { fieldName: 'lastName', message };
+    }
+
+    if (error.message.includes('Enter a valid e-mail')) {
+      const message = 'Insira um e-mail válido';
+
+      return { fieldName: 'email', message };
+    }
+
+    if (error.message.includes('The password must be at least 8 characters')) {
+      const message = 'A senha do usuário deve ter no mínimo 8 caracteres';
+
+      return { fieldName: 'password', message };
+    }
   }
 
-  if (error.message.includes('The first name must be at least 5 characters')) {
-    const message =
-      'O primeiro nome do usuário deve ter no mínimo 5 caracteres';
+  if (error instanceof AxiosError) {
+    if (error.message === 'Network Error') {
+      console.log('Erro no servidor');
+      return null;
+    }
 
-    return { fieldName: 'firstName', message };
-  }
+    const apiError = error as APIError;
 
-  if (error.message.includes('The last name must be at least 5 characters')) {
-    const message = 'O último nome do usuário deve ter no mínimo 5 caracteres';
+    const errorMessage = apiError.response.data.message;
 
-    return { fieldName: 'lastName', message };
-  }
+    if (errorMessage === 'Username already in use') {
+      const message = 'O nome de usuário já está em uso';
 
-  if (error.message.includes('Enter a valid e-mail')) {
-    const message = 'Insira um e-mail válido';
+      return { fieldName: 'username', message };
+    }
 
-    return { fieldName: 'email', message };
-  }
+    if (errorMessage === 'Email already in use') {
+      const message = 'O e-mail já está em uso';
 
-  if (error.message.includes('The password must be at least 8 characters')) {
-    const message = 'A senha do usuário deve ter no mínimo 8 caracteres';
-
-    return { fieldName: 'password', message };
+      return { fieldName: 'email', message };
+    }
   }
 
   return null;
