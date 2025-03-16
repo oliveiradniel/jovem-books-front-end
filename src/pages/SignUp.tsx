@@ -22,6 +22,7 @@ export default function SignUp() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTheRegistrationComplete, setIsTheRegistrationComplete] =
@@ -60,14 +61,16 @@ export default function SignUp() {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      setFullName(`${firstName} ${lastName}`);
       setIsTheRegistrationComplete(true);
+
+      console.log(data);
 
       setUsername('');
       setFirstName('');
       setLastName('');
       setEmail('');
       setPassword('');
-      console.log(data);
     } catch (error) {
       if (error instanceof ZodError) {
         handleSignUpErrors(error);
@@ -89,7 +92,7 @@ export default function SignUp() {
     >
       <RegistrationCompleted
         isVisible={isTheRegistrationComplete}
-        fullName={`${firstName} ${lastName}`}
+        fullName={fullName}
         onClose={() => setIsTheRegistrationComplete(false)}
       />
 
