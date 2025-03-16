@@ -1,10 +1,11 @@
 import { ChangeEvent, useState } from 'react';
 
 import { ZodError } from 'zod';
-
 import { SignUpSchema } from './schemas/SignUpSchema';
 
 import { handleSignUpErrors } from './errors/handleSignUpErrors';
+
+import { sanitizeAndCapitalize } from '../utils/sanitizeAndCapitalize';
 
 import { FaUserSecret } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
@@ -13,7 +14,7 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 
 import Input from './components/Input';
 import SessionTemplate from './components/SessionTemplate';
-import { sanitizeAndCapitalize } from '../utils/sanitizeAndCapitalize';
+import RegistrationCompleted from './components/RegistrationCompleted';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -23,6 +24,8 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTheRegistrationComplete, setIsTheRegistrationComplete] =
+    useState(false);
 
   const isFormValid =
     username.length > 0 &&
@@ -55,10 +58,10 @@ export default function SignUp() {
 
       setIsSubmitting(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setIsSubmitting(false);
-
+      setIsTheRegistrationComplete(true);
       console.log(data);
     } catch (error) {
       if (error instanceof ZodError) {
@@ -77,6 +80,12 @@ export default function SignUp() {
       isSubmitting={isSubmitting}
       onSubmit={handleSubmit}
     >
+      <RegistrationCompleted
+        isVisible={isTheRegistrationComplete}
+        fullName={`${firstName} ${lastName}`}
+        onClose={() => setIsTheRegistrationComplete(false)}
+      />
+
       <Input
         theFieldIsEmpty={username.length > 0}
         Icon={FaUserSecret}

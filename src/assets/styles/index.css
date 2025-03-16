@@ -36,35 +36,104 @@
     0% {
       opacity: 0;
     }
-    ,
     100% {
       opacity: 1;
     }
   }
 
-  --animate-move-in-right: move-in-right 0.2s ease-in-out;
+  --animate-move-in-right: move-in-right 0.2s ease-in-out forwards;
   @keyframes move-in-right {
     0% {
       opacity: 0;
       transform: translateX(-100px);
     }
-    ,
     100% {
       opacity: 1;
       transform: translateX(0px);
     }
   }
 
-  --animate-move-in-left: move-in-left 0.2s ease-in-out;
+  --animate-move-in-left: move-in-left 1s ease-in-out forwards;
   @keyframes move-in-left {
     0% {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    100% {
       opacity: 1;
       transform: translateX(0px);
     }
-    ,
+  }
+
+  --animate-move-in-bottom-300: move-in-bottom-300 0.3s ease-in-out forwards;
+  @keyframes move-in-bottom-300 {
+    0% {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+
+  --animate-move-in-bottom-700: move-in-bottom-700 0.7s ease-in-out forwards;
+  @keyframes move-in-bottom-700 {
+    0% {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+
+  --animate-return-to-bottom-700: return-to-bottom-700 0.7s ease-in-out forwards;
+  @keyframes return-to-bottom-700 {
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
     100% {
       opacity: 0;
-      transform: translateX(100px);
+      transform: translateY(100px);
+    }
+  }
+
+  --animate-return-to-top-300: return-to-top-300 0.3s ease-in-out forwards;
+  @keyframes return-to-top-300 {
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+  }
+
+  --animate-return-to-top-700: return-to-top-700 0.7s ease-in-out forwards;
+  @keyframes return-to-top-700 {
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
+  }
+
+  --animate-move-in-top-700: move-in-top-700 0.7s ease-in-out forwards;
+  @keyframes move-in-top-700 {
+    0% {
+      opacity: 0;
+      transform: translateY(70px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
     }
   }
 }

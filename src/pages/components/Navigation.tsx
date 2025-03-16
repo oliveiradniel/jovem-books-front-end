@@ -18,16 +18,7 @@ export default function Navigation({ isDisabled }: NavigationProps) {
 
   const isSignInPage = pathname === '/sign-in';
   const isSignUpPage = pathname === '/sign-up';
-  console.log(
-    isDisabled &&
-      !isSignUpPage &&
-      'Está desabilitado e não está na página de SignUp'
-  );
-  console.log(
-    !isDisabled &&
-      isSignUpPage &&
-      'Não está desabilitado e está na página de SignIn'
-  );
+
   return (
     <nav>
       <ul className="flex gap-4">

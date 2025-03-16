@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+
 import Logo from '../assets/icons/logo-home.svg?react';
 
 export default function Home() {

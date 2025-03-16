@@ -1,16 +1,15 @@
 import { ChangeEvent, useState } from 'react';
 
 import { ZodError } from 'zod';
-
 import { SignInSchema } from './schemas/SignInSchema';
+
+import { handleSignInErrors } from './errors/handleSignInErrors';
 
 import { FaUser } from 'react-icons/fa';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
 import SessionTemplate from './components/SessionTemplate';
 import Input from './components/Input';
-
-import { handleSignInErrors } from './errors/handleSignInErrors';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');

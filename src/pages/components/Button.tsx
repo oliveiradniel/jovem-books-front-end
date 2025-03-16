@@ -3,12 +3,12 @@ import { ClipLoader } from 'react-spinners';
 interface ButtonPageProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  isSubmitting: boolean;
+  isSubmitting?: boolean;
 }
 
-export default function ButtonPage({
+export default function Button({
   label,
-  isSubmitting,
+  isSubmitting = false,
   ...props
 }: ButtonPageProps) {
   return (
