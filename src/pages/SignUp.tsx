@@ -62,6 +62,12 @@ export default function SignUp() {
 
       setIsSubmitting(false);
       setIsTheRegistrationComplete(true);
+
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
       console.log(data);
     } catch (error) {
       if (error instanceof ZodError) {
