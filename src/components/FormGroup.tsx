@@ -1,4 +1,7 @@
-import { ErrorData, FieldName } from '../pages/types/ErrorData';
+import {
+  ErrorData,
+  FieldName,
+} from '../pages/nonPrivateRoutes/types/ErrorData';
 
 interface FormGroupProps {
   children: React.ReactNode;

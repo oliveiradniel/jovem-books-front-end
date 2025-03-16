@@ -1,12 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 
-import { authService } from '../app/services/authService';
+import { authService } from '../../app/services/authService';
 
 import { SignUpSchema } from './schemas/SignUpSchema';
 
 import { handleSignUpErrors } from './errors/handleSignUpErrors';
 
-import { sanitizeAndCapitalize } from '../utils/sanitizeAndCapitalize';
+import { sanitizeAndCapitalize } from '../../utils/sanitizeAndCapitalize';
 
 import { FaUserSecret } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
@@ -16,7 +16,7 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 import Input from './components/Input';
 import SessionTemplate from './components/SessionTemplate';
 import RegistrationCompleted from './components/RegistrationCompleted';
-import FormGroup from '../components/FormGroup';
+import FormGroup from '../../components/FormGroup';
 
 import { ErrorData } from './types/ErrorData';
 

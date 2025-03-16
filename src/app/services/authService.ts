@@ -20,9 +20,11 @@ async function signUp(data: SignUpProps) {
 }
 
 async function signIn(credentials: SignInProps) {
-  await httpClient.post('sign-in', {
+  const { data } = await httpClient.post<{ accessToken: string }>('sign-in', {
     data: { ...credentials },
   });
+
+  return data;
 }
 
 export const authService = {

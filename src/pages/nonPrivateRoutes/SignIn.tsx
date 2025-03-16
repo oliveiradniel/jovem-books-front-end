@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 
-import { authService } from '../app/services/authService';
+import { authService } from '../../app/services/authService';
 
 import { SignInSchema } from './schemas/SignInSchema';
 
@@ -74,10 +74,12 @@ export default function SignIn() {
 
       setIsSubmitting(true);
 
-      await authService.signIn(credentials);
+      const { accessToken } = await authService.signIn(credentials);
 
-      // setUsername('');
-      // setPassword('');
+      console.log(accessToken);
+
+      setUsername('');
+      setPassword('');
 
       setErrorsData([]);
     } catch (error) {

@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
 
+import { authService } from '../../../app/services/authService.ts';
+
 import reactDOM from 'react-dom';
 
-import useAnimatedUnmount from '../../hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../hooks/useAnimatedUnmount.ts';
 
 import { SignInSchema } from '../schemas/SignInSchema';
 
@@ -14,7 +16,6 @@ import { ClipLoader } from 'react-spinners';
 
 import { ErrorData } from '../types/ErrorData.ts';
 import SignInFields from './SignInFields.tsx';
-import { authService } from '../../app/services/authService.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;

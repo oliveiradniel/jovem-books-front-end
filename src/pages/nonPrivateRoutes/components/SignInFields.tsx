@@ -4,7 +4,7 @@ import { FaUser } from 'react-icons/fa';
 import { RiLockPasswordFill } from 'react-icons/ri';
 
 import Input from './Input';
-import FormGroup from '../../components/FormGroup';
+import FormGroup from '../../../components/FormGroup';
 
 import { ErrorData } from '../types/ErrorData';
 
