@@ -165,6 +165,8 @@ export default function SignUp() {
       setLastName('');
       setEmail('');
       setPassword('');
+
+      setErrorsData([]);
     } catch (error) {
       if (error instanceof ZodError) {
         const result = handleSignUpErrors(error);
@@ -176,6 +178,8 @@ export default function SignUp() {
       setIsSubmitting(false);
     }
   }
+
+  console.log(errorsData);
 
   return (
     <SessionTemplate
@@ -190,11 +194,15 @@ export default function SignUp() {
       <RegistrationCompleted
         isVisible={isTheRegistrationComplete}
         fullName={fullName}
-        onClose={() => setIsTheRegistrationComplete(false)}
+        onClose={() => {
+          setIsTheRegistrationComplete(false);
+          setErrorsData([]);
+        }}
       />
 
       <FormGroup fieldName={['username']} errorsData={errorsData}>
         <Input
+          autoFocus
           theFieldIsEmpty={username.length > 0}
           Icon={FaUserSecret}
           errorsData={errorsData}

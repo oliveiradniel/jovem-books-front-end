@@ -20,9 +20,7 @@ export default function SessionTemplate({
   isSubmitting,
   onSubmit,
 }: SessionTemplate) {
-  function handleSubmit(
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (isSubmitting) return;
@@ -40,13 +38,15 @@ export default function SessionTemplate({
             {title}
           </h1>
 
-          <form className="animate-fade-in flex flex-col gap-4">
+          <form
+            onSubmit={handleSubmit}
+            className="animate-fade-in flex flex-col gap-4"
+          >
             {children}
 
             <Button
               label={buttonLabel}
               isSubmitting={isSubmitting}
-              onClick={handleSubmit}
               disabled={!isFormValid}
             />
           </form>

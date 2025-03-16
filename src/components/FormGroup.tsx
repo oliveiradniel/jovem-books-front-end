@@ -17,8 +17,6 @@ export default function FormGroup({
 
   const errorMessages = errors.map((error) => error.message);
 
-  console.log(errorMessages);
-
   return (
     <div>
       {children}

@@ -9,16 +9,12 @@ import { SignInSchema } from '../schemas/SignInSchema';
 
 import { handleSignInErrors } from '../errors/handleSignInErrors';
 
-import { FaUser } from 'react-icons/fa';
-import { RiLockPasswordFill } from 'react-icons/ri';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 
 import { ClipLoader } from 'react-spinners';
 
-import Input from './Input';
-import FormGroup from '../../components/FormGroup.tsx';
-
 import { ErrorData } from '../types/ErrorData.ts';
+import SignInFields from './SignInFields.tsx';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
@@ -47,6 +43,13 @@ export default function RegistrationCompleted({
   const container = document.getElementById('success-root')!;
 
   const isFormValid = username.length > 0 && password.length > 0;
+
+  function handleClose() {
+    setUsername('');
+    setPassword('');
+
+    onClose();
+  }
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -102,6 +105,8 @@ export default function RegistrationCompleted({
 
       setUsername('');
       setPassword('');
+
+      setErrorsData([]);
     } catch (error) {
       if (error instanceof ZodError) {
         const result = handleSignInErrors(error);
@@ -120,7 +125,7 @@ export default function RegistrationCompleted({
     >
       <button
         type="button"
-        onClick={onClose}
+        onClick={handleClose}
         className="flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
       >
         <FaArrowLeftLong className="text-snow-white" />
@@ -145,36 +150,14 @@ export default function RegistrationCompleted({
         onSubmit={handleSubmit}
         className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
       >
-        <FormGroup fieldName={['username']} errorsData={errorsData}>
-          <Input
-            theFieldIsEmpty={username.length > 0}
-            Icon={FaUser}
-            errorsData={errorsData}
-            fieldName="username"
-            isDisabled={isSubmitting}
-            disabled={isSubmitting}
-            type="text"
-            placeholder="Nome de usuário"
-            value={username}
-            autoFocus
-            onChange={handleUsernameChange}
-          />
-        </FormGroup>
-
-        <FormGroup fieldName={['password']} errorsData={errorsData}>
-          <Input
-            theFieldIsEmpty={password.length > 0}
-            isAPasswordInput
-            Icon={RiLockPasswordFill}
-            errorsData={errorsData}
-            fieldName="password"
-            isDisabled={isSubmitting}
-            disabled={isSubmitting}
-            placeholder="Senha"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </FormGroup>
+        <SignInFields
+          username={username}
+          password={password}
+          isSubmitting={isSubmitting}
+          errorsData={errorsData}
+          onUsernameChange={handleUsernameChange}
+          onPasswordChange={handlePasswordChange}
+        />
 
         <button
           type="submit"

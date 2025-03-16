@@ -5,14 +5,10 @@ import { SignInSchema } from './schemas/SignInSchema';
 
 import { handleSignInErrors } from './errors/handleSignInErrors';
 
-import { FaUser } from 'react-icons/fa';
-import { RiLockPasswordFill } from 'react-icons/ri';
-
 import SessionTemplate from './components/SessionTemplate';
-import Input from './components/Input';
-import FormGroup from '../components/FormGroup';
 
 import { ErrorData } from './types/ErrorData';
+import SignInFields from './components/SignInFields';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -77,6 +73,8 @@ export default function SignIn() {
 
       setUsername('');
       setPassword('');
+
+      setErrorsData([]);
     } catch (error) {
       if (error instanceof ZodError) {
         const result = handleSignInErrors(error);
@@ -99,35 +97,14 @@ export default function SignIn() {
       isSubmitting={isSubmitting}
       onSubmit={handleSubmit}
     >
-      <FormGroup fieldName={['username']} errorsData={errorsData}>
-        <Input
-          theFieldIsEmpty={username.length > 0}
-          Icon={FaUser}
-          errorsData={errorsData}
-          fieldName="username"
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          type="text"
-          placeholder="Nome de usuário"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-      </FormGroup>
-
-      <FormGroup fieldName={['password']} errorsData={errorsData}>
-        <Input
-          theFieldIsEmpty={password.length > 0}
-          isAPasswordInput
-          Icon={RiLockPasswordFill}
-          errorsData={errorsData}
-          fieldName="password"
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          placeholder="Senha"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </FormGroup>
+      <SignInFields
+        username={username}
+        password={password}
+        isSubmitting={isSubmitting}
+        errorsData={errorsData}
+        onUsernameChange={handleUsernameChange}
+        onPasswordChange={handlePasswordChange}
+      />
     </SessionTemplate>
   );
 }
