@@ -60,7 +60,6 @@ export default function SignUp() {
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      setIsSubmitting(false);
       setIsTheRegistrationComplete(true);
 
       setUsername('');
@@ -73,6 +72,8 @@ export default function SignUp() {
       if (error instanceof ZodError) {
         handleSignUpErrors(error);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 

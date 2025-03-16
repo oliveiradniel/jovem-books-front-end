@@ -65,14 +65,14 @@ export default function RegistrationCompleted({
 
       console.log(credentials);
 
-      setIsSubmitting(false);
-
       setUsername('');
       setPassword('');
     } catch (error) {
       if (error instanceof ZodError) {
         handleSignInErrors(error);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
