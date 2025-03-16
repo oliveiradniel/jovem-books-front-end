@@ -179,8 +179,6 @@ export default function SignUp() {
     }
   }
 
-  console.log(errorsData);
-
   return (
     <SessionTemplate
       title="Criar uma nova conta"

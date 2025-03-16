@@ -7,4 +7,8 @@ import './assets/styles/index.css';
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
-root.render(<App />);
+root.render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
