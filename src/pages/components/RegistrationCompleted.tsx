@@ -123,12 +123,12 @@ export default function RegistrationCompleted({
 
   return reactDOM.createPortal(
     <div
-      className={`animate-move-in-bottom-700 font-quicksand to-royal-blue absolute top-0 flex h-screen w-screen flex-col items-center justify-center gap-20 bg-linear-to-r from-black ${!isVisible && 'animate-return-to-top-700'}`}
+      className={`animate-move-in-bottom-700 font-quicksand to-royal-blue absolute top-0 flex h-screen w-screen flex-col items-center gap-20 bg-linear-to-r from-black ${!isVisible && 'animate-return-to-top-700'}`}
     >
       <button
         type="button"
         onClick={handleClose}
-        className="flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
+        className="mt-20 flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
       >
         <FaArrowLeftLong className="text-snow-white" />
         <p className="text-snow-white font-roboto">Voltar</p>
