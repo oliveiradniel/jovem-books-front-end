@@ -1,6 +1,8 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import reactDOM from 'react-dom';
+
+import useAnimatedUnmount from '../../hooks/useAnimatedUnmount.ts';
 
 import { ZodError } from 'zod';
 import { SignInSchema } from '../schemas/SignInSchema';
@@ -31,31 +33,7 @@ export default function RegistrationCompleted({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [shouldRender, setShouldRender] = useState(isVisible);
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (isVisible) {
-      setShouldRender(isVisible);
-    }
-
-    function handleAnimationEnd() {
-      setShouldRender(false);
-    }
-
-    const formRefElement = formRef.current;
-
-    if (!isVisible && formRefElement) {
-      formRefElement.addEventListener('animationend', handleAnimationEnd);
-    }
-
-    return () => {
-      if (formRefElement) {
-        formRefElement.removeEventListener('animationend', handleAnimationEnd);
-      }
-    };
-  }, [isVisible]);
+  const { shouldRender, animatedElementRef } = useAnimatedUnmount(isVisible);
 
   if (!shouldRender) {
     return null;
@@ -115,7 +93,7 @@ export default function RegistrationCompleted({
       </p>
 
       <form
-        ref={formRef}
+        ref={animatedElementRef}
         onSubmit={handleSubmit}
         className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
       >
