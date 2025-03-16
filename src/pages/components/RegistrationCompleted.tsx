@@ -16,6 +16,9 @@ import { FaArrowLeftLong } from 'react-icons/fa6';
 import { ClipLoader } from 'react-spinners';
 
 import Input from './Input';
+import FormGroup from '../../components/FormGroup.tsx';
+
+import { ErrorData } from '../types/ErrorData.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
@@ -31,6 +34,8 @@ export default function RegistrationCompleted({
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { shouldRender, animatedElementRef } = useAnimatedUnmount(isVisible);
@@ -42,6 +47,46 @@ export default function RegistrationCompleted({
   const container = document.getElementById('success-root')!;
 
   const isFormValid = username.length > 0 && password.length > 0;
+
+  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'username')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'username',
+          message: 'O nome de usuário é obrigatório',
+        },
+      ]);
+    }
+
+    setUsername(value);
+  }
+
+  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'password')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'password',
+          message: 'A senha é obrigatória',
+        },
+      ]);
+    }
+
+    setPassword(value);
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,7 +104,10 @@ export default function RegistrationCompleted({
       setPassword('');
     } catch (error) {
       if (error instanceof ZodError) {
-        handleSignInErrors(error);
+        const result = handleSignInErrors(error);
+        if (result) {
+          setErrorsData((prevState) => [...prevState, result]);
+        }
       }
     } finally {
       setIsSubmitting(false);
@@ -97,32 +145,36 @@ export default function RegistrationCompleted({
         onSubmit={handleSubmit}
         className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
       >
-        <Input
-          theFieldIsEmpty={username.length > 0}
-          Icon={FaUser}
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          type="text"
-          placeholder="Nome de usuário"
-          value={username}
-          autoFocus
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setUsername(event.target.value)
-          }
-        />
+        <FormGroup fieldName={['username']} errorsData={errorsData}>
+          <Input
+            theFieldIsEmpty={username.length > 0}
+            Icon={FaUser}
+            errorsData={errorsData}
+            fieldName="username"
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            type="text"
+            placeholder="Nome de usuário"
+            value={username}
+            autoFocus
+            onChange={handleUsernameChange}
+          />
+        </FormGroup>
 
-        <Input
-          theFieldIsEmpty={password.length > 0}
-          isAPasswordInput
-          Icon={RiLockPasswordFill}
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          placeholder="Senha"
-          value={password}
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setPassword(event.target.value)
-          }
-        />
+        <FormGroup fieldName={['password']} errorsData={errorsData}>
+          <Input
+            theFieldIsEmpty={password.length > 0}
+            isAPasswordInput
+            Icon={RiLockPasswordFill}
+            errorsData={errorsData}
+            fieldName="password"
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            placeholder="Senha"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+        </FormGroup>
 
         <button
           type="submit"

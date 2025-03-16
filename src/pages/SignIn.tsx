@@ -10,14 +10,60 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 
 import SessionTemplate from './components/SessionTemplate';
 import Input from './components/Input';
+import FormGroup from '../components/FormGroup';
+
+import { ErrorData } from './types/ErrorData';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isFormValid = username.length > 0 && password.length > 0;
+  const isFormValid =
+    username.length > 0 && password.length > 0 && errorsData.length === 0;
+
+  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'username')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'username',
+          message: 'O nome de usuário é obrigatório',
+        },
+      ]);
+    }
+
+    setUsername(value);
+  }
+
+  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'password')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'password',
+          message: 'A senha é obrigatória',
+        },
+      ]);
+    }
+
+    setPassword(value);
+  }
 
   async function handleSubmit() {
     try {
@@ -33,7 +79,10 @@ export default function SignIn() {
       setPassword('');
     } catch (error) {
       if (error instanceof ZodError) {
-        handleSignInErrors(error);
+        const result = handleSignInErrors(error);
+        if (result) {
+          setErrorsData((prevState) => [...prevState, result]);
+        }
       }
     } finally {
       setIsSubmitting(false);
@@ -50,31 +99,35 @@ export default function SignIn() {
       isSubmitting={isSubmitting}
       onSubmit={handleSubmit}
     >
-      <Input
-        theFieldIsEmpty={username.length > 0}
-        Icon={FaUser}
-        isDisabled={isSubmitting}
-        disabled={isSubmitting}
-        type="text"
-        placeholder="Nome de usuário"
-        value={username}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setUsername(event.target.value)
-        }
-      />
+      <FormGroup fieldName={['username']} errorsData={errorsData}>
+        <Input
+          theFieldIsEmpty={username.length > 0}
+          Icon={FaUser}
+          errorsData={errorsData}
+          fieldName="username"
+          isDisabled={isSubmitting}
+          disabled={isSubmitting}
+          type="text"
+          placeholder="Nome de usuário"
+          value={username}
+          onChange={handleUsernameChange}
+        />
+      </FormGroup>
 
-      <Input
-        theFieldIsEmpty={password.length > 0}
-        isAPasswordInput
-        Icon={RiLockPasswordFill}
-        isDisabled={isSubmitting}
-        disabled={isSubmitting}
-        placeholder="Senha"
-        value={password}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setPassword(event.target.value)
-        }
-      />
+      <FormGroup fieldName={['password']} errorsData={errorsData}>
+        <Input
+          theFieldIsEmpty={password.length > 0}
+          isAPasswordInput
+          Icon={RiLockPasswordFill}
+          errorsData={errorsData}
+          fieldName="password"
+          isDisabled={isSubmitting}
+          disabled={isSubmitting}
+          placeholder="Senha"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      </FormGroup>
     </SessionTemplate>
   );
 }

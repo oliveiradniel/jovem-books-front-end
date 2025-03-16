@@ -1,33 +1,43 @@
 import { ZodError } from 'zod';
 
-export function handleSignUpErrors(error: ZodError) {
-  if (error.message.includes('The username must be at least 5 characters')) {
-    console.log('O nome de usuário deve ter no mínimo 5 caracteres');
+interface HandleSignUpErrorsResponse {
+  fieldName: 'username' | 'firstName' | 'lastName' | 'email' | 'password';
+  message: string;
+}
 
-    return;
+export function handleSignUpErrors(
+  error: ZodError
+): HandleSignUpErrorsResponse | null {
+  if (error.message.includes('The username must be at least 5 characters')) {
+    const message = 'O nome de usuário deve ter no mínimo 5 caracteres';
+
+    return { fieldName: 'username', message };
   }
 
   if (error.message.includes('The first name must be at least 5 characters')) {
-    console.log('O primeiro nome do usuário deve ter no mínimo 5 caracteres');
+    const message =
+      'O primeiro nome do usuário deve ter no mínimo 5 caracteres';
 
-    return;
+    return { fieldName: 'firstName', message };
   }
 
   if (error.message.includes('The last name must be at least 5 characters')) {
-    console.log('O último nome do usuário deve ter no mínimo 5 caracteres');
+    const message = 'O último nome do usuário deve ter no mínimo 5 caracteres';
 
-    return;
+    return { fieldName: 'lastName', message };
   }
 
   if (error.message.includes('Enter a valid e-mail')) {
-    console.log('Insira um e-mail válido');
+    const message = 'Insira um e-mail válido';
 
-    return;
+    return { fieldName: 'email', message };
   }
 
   if (error.message.includes('The password must be at least 8 characters')) {
-    console.log('A senha do usuário deve ter no mínimo 8 caracteres');
+    const message = 'A senha do usuário deve ter no mínimo 8 caracteres';
 
-    return;
+    return { fieldName: 'password', message };
   }
+
+  return null;
 }

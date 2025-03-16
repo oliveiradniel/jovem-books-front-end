@@ -15,6 +15,9 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 import Input from './components/Input';
 import SessionTemplate from './components/SessionTemplate';
 import RegistrationCompleted from './components/RegistrationCompleted';
+import FormGroup from '../components/FormGroup';
+
+import { ErrorData } from './types/ErrorData';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -23,6 +26,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+
+  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTheRegistrationComplete, setIsTheRegistrationComplete] =
@@ -33,10 +38,45 @@ export default function SignUp() {
     firstName.length > 0 &&
     lastName.length > 0 &&
     email.length > 0 &&
-    password.length > 0;
+    password.length > 0 &&
+    errorsData.length === 0;
+
+  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'username')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'username',
+          message: 'O nome de usuário é obrigatório',
+        },
+      ]);
+    }
+
+    setUsername(value);
+  }
 
   function handleFirstNameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'firstName')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'firstName',
+          message: 'O primeiro nome do usuário é obrigatório',
+        },
+      ]);
+    }
 
     setFirstName(sanitizeAndCapitalize(value));
   }
@@ -44,7 +84,61 @@ export default function SignUp() {
   function handleLastNameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'lastName')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'lastName',
+          message: 'O sobrenome do usuário é obrigatório',
+        },
+      ]);
+    }
+
     setLastName(sanitizeAndCapitalize(value));
+  }
+
+  function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'email')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'email',
+          message: 'O e-mail é obrigatório',
+        },
+      ]);
+    }
+
+    setEmail(value);
+  }
+
+  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    setErrorsData((prevState) =>
+      prevState.filter((error) => error.fieldName !== 'password')
+    );
+
+    if (value.length === 0) {
+      setErrorsData((prevState) => [
+        ...prevState,
+        {
+          fieldName: 'password',
+          message: 'A senha é obrigatória',
+        },
+      ]);
+    }
+
+    setPassword(value);
   }
 
   async function handleSubmit() {
@@ -73,7 +167,10 @@ export default function SignUp() {
       setPassword('');
     } catch (error) {
       if (error instanceof ZodError) {
-        handleSignUpErrors(error);
+        const result = handleSignUpErrors(error);
+        if (result) {
+          setErrorsData((prevState) => [...prevState, result]);
+        }
       }
     } finally {
       setIsSubmitting(false);
@@ -96,69 +193,81 @@ export default function SignUp() {
         onClose={() => setIsTheRegistrationComplete(false)}
       />
 
-      <Input
-        theFieldIsEmpty={username.length > 0}
-        Icon={FaUserSecret}
-        isDisabled={isSubmitting}
-        disabled={isSubmitting}
-        type="text"
-        placeholder="Nome de usuário"
-        value={username}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setUsername(event.target.value)
-        }
-      />
-
-      <div className="flex gap-4">
+      <FormGroup fieldName={['username']} errorsData={errorsData}>
         <Input
-          theFieldIsEmpty={firstName.length > 0}
-          Icon={FaUser}
+          theFieldIsEmpty={username.length > 0}
+          Icon={FaUserSecret}
+          errorsData={errorsData}
+          fieldName="username"
           isDisabled={isSubmitting}
           disabled={isSubmitting}
           type="text"
-          placeholder="Primeiro nome"
-          value={firstName}
-          onChange={handleFirstNameChange}
+          placeholder="Nome de usuário"
+          value={username}
+          onChange={handleUsernameChange}
         />
+      </FormGroup>
 
+      <FormGroup fieldName={['firstName', 'lastName']} errorsData={errorsData}>
+        <div className="flex gap-4">
+          <Input
+            theFieldIsEmpty={firstName.length > 0}
+            Icon={FaUser}
+            errorsData={errorsData}
+            fieldName={'firstName'}
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            type="text"
+            placeholder="Primeiro nome"
+            value={firstName}
+            onChange={handleFirstNameChange}
+          />
+
+          <Input
+            theFieldIsEmpty={lastName.length > 0}
+            Icon={FaUser}
+            errorsData={errorsData}
+            fieldName={'lastName'}
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            type="text"
+            placeholder="Sobrenome"
+            value={lastName}
+            autoCapitalize="on"
+            onChange={handleLastNameChange}
+          />
+        </div>
+      </FormGroup>
+
+      <FormGroup fieldName={['email']} errorsData={errorsData}>
         <Input
-          theFieldIsEmpty={lastName.length > 0}
-          Icon={FaUser}
+          theFieldIsEmpty={email.length > 0}
+          Icon={MdEmail}
+          errorsData={errorsData}
+          fieldName={'email'}
           isDisabled={isSubmitting}
           disabled={isSubmitting}
-          type="text"
-          placeholder="Sobrenome"
-          value={lastName}
-          autoCapitalize="on"
-          onChange={handleLastNameChange}
+          type="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={handleEmailChange}
         />
-      </div>
+      </FormGroup>
 
-      <Input
-        theFieldIsEmpty={email.length > 0}
-        Icon={MdEmail}
-        isDisabled={isSubmitting}
-        disabled={isSubmitting}
-        type="email"
-        placeholder="E-mail"
-        value={email}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setEmail(event.target.value)
-        }
-      />
-
-      <Input
-        theFieldIsEmpty={password.length > 0}
-        isAPasswordInput
-        Icon={RiLockPasswordFill}
-        isDisabled={isSubmitting}
-        disabled={isSubmitting}
-        placeholder="Senha"
-        value={password}
-        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-          setPassword(event.target.value)
-        }
-      />
+      <FormGroup fieldName={['password']} errorsData={errorsData}>
+        <Input
+          theFieldIsEmpty={password.length > 0}
+          isAPasswordInput
+          Icon={RiLockPasswordFill}
+          errorsData={errorsData}
+          fieldName={'password'}
+          isDisabled={isSubmitting}
+          disabled={isSubmitting}
+          placeholder="Senha"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+      </FormGroup>
     </SessionTemplate>
   );
 }
