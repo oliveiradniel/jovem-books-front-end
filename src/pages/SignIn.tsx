@@ -1,14 +1,15 @@
 import { ChangeEvent, useState } from 'react';
 
-import { ZodError } from 'zod';
+import { authService } from '../app/services/authService';
+
 import { SignInSchema } from './schemas/SignInSchema';
 
 import { handleSignInErrors } from './errors/handleSignInErrors';
 
 import SessionTemplate from './components/SessionTemplate';
+import SignInFields from './components/SignInFields';
 
 import { ErrorData } from './types/ErrorData';
-import SignInFields from './components/SignInFields';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -25,7 +26,10 @@ export default function SignIn() {
     const { value } = event.target;
 
     setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'username')
+      prevState.filter(
+        (error) =>
+          error.fieldName !== 'credentials' && error.fieldName !== 'username'
+      )
     );
 
     if (value.length === 0) {
@@ -45,7 +49,10 @@ export default function SignIn() {
     const { value } = event.target;
 
     setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'password')
+      prevState.filter(
+        (error) =>
+          error.fieldName !== 'credentials' && error.fieldName !== 'password'
+      )
     );
 
     if (value.length === 0) {
@@ -67,20 +74,16 @@ export default function SignIn() {
 
       setIsSubmitting(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await authService.signIn(credentials);
 
-      console.log(credentials);
-
-      setUsername('');
-      setPassword('');
+      // setUsername('');
+      // setPassword('');
 
       setErrorsData([]);
     } catch (error) {
-      if (error instanceof ZodError) {
-        const result = handleSignInErrors(error);
-        if (result) {
-          setErrorsData((prevState) => [...prevState, result]);
-        }
+      const result = handleSignInErrors(error);
+      if (result) {
+        setErrorsData((prevState) => [...prevState, result]);
       }
     } finally {
       setIsSubmitting(false);

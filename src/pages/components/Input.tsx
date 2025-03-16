@@ -2,13 +2,13 @@ import { useState } from 'react';
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-import { ErrorData } from '../types/ErrorData';
+import { ErrorData, FieldName } from '../types/ErrorData';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   theFieldIsEmpty: boolean;
   Icon: React.ElementType;
   errorsData: ErrorData[];
-  fieldName: 'username' | 'firstName' | 'lastName' | 'email' | 'password';
+  fieldName: FieldName;
   isDisabled: boolean;
   isAPasswordInput?: boolean;
 }
@@ -28,12 +28,16 @@ export default function Input({
 
   const typeField =
     isAPasswordInput && isThePasswordVisible ? 'text' : 'password';
-
   const errors = errorsData.filter((error) => {
-    return fieldName.includes(error.fieldName);
+    return (
+      fieldName.includes(error.fieldName) || error.fieldName === 'credentials'
+    );
   });
 
-  const isError = errors.some((error) => error.fieldName === fieldName);
+  const isError = errors.some(
+    (error) =>
+      error.fieldName === fieldName || error.fieldName === 'credentials'
+  );
 
   function handlePasswordVisibility() {
     setIsThePasswordVisible((prevState) => !prevState);

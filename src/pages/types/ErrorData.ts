@@ -3,7 +3,8 @@ export type FieldName =
   | 'firstName'
   | 'lastName'
   | 'email'
-  | 'password';
+  | 'password'
+  | 'credentials';
 
 export type ErrorData = {
   fieldName: FieldName;

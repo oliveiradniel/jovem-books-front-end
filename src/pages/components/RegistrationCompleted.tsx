@@ -4,7 +4,6 @@ import reactDOM from 'react-dom';
 
 import useAnimatedUnmount from '../../hooks/useAnimatedUnmount.ts';
 
-import { ZodError } from 'zod';
 import { SignInSchema } from '../schemas/SignInSchema';
 
 import { handleSignInErrors } from '../errors/handleSignInErrors';
@@ -15,6 +14,7 @@ import { ClipLoader } from 'react-spinners';
 
 import { ErrorData } from '../types/ErrorData.ts';
 import SignInFields from './SignInFields.tsx';
+import { authService } from '../../app/services/authService.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
@@ -55,7 +55,10 @@ export default function RegistrationCompleted({
     const { value } = event.target;
 
     setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'username')
+      prevState.filter(
+        (error) =>
+          error.fieldName !== 'credentials' && error.fieldName !== 'username'
+      )
     );
 
     if (value.length === 0) {
@@ -75,7 +78,10 @@ export default function RegistrationCompleted({
     const { value } = event.target;
 
     setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'password')
+      prevState.filter(
+        (error) =>
+          error.fieldName !== 'credentials' && error.fieldName !== 'password'
+      )
     );
 
     if (value.length === 0) {
@@ -99,20 +105,16 @@ export default function RegistrationCompleted({
 
       setIsSubmitting(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await authService.signIn(credentials);
 
-      console.log(credentials);
-
-      setUsername('');
-      setPassword('');
+      // setUsername('');
+      // setPassword('');
 
       setErrorsData([]);
     } catch (error) {
-      if (error instanceof ZodError) {
-        const result = handleSignInErrors(error);
-        if (result) {
-          setErrorsData((prevState) => [...prevState, result]);
-        }
+      const result = handleSignInErrors(error);
+      if (result) {
+        setErrorsData((prevState) => [...prevState, result]);
       }
     } finally {
       setIsSubmitting(false);

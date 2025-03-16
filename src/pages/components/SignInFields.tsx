@@ -26,37 +26,39 @@ export default function SignInFields({
   onPasswordChange,
 }: SignInFieldsProps) {
   return (
-    <>
-      <FormGroup fieldName={['username']} errorsData={errorsData}>
-        <Input
-          theFieldIsEmpty={username.length > 0}
-          Icon={FaUser}
-          errorsData={errorsData}
-          fieldName="username"
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          type="text"
-          placeholder="Nome de usuário"
-          value={username}
-          autoFocus
-          onChange={onUsernameChange}
-        />
-      </FormGroup>
+    <FormGroup fieldName={['credentials']} errorsData={errorsData}>
+      <div className="flex flex-col gap-4">
+        <FormGroup fieldName={['username']} errorsData={errorsData}>
+          <Input
+            theFieldIsEmpty={username.length > 0}
+            Icon={FaUser}
+            errorsData={errorsData}
+            fieldName="username"
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            type="text"
+            placeholder="Nome de usuário"
+            value={username}
+            autoFocus
+            onChange={onUsernameChange}
+          />
+        </FormGroup>
 
-      <FormGroup fieldName={['password']} errorsData={errorsData}>
-        <Input
-          theFieldIsEmpty={password.length > 0}
-          isAPasswordInput
-          Icon={RiLockPasswordFill}
-          errorsData={errorsData}
-          fieldName="password"
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
-          placeholder="Senha"
-          value={password}
-          onChange={onPasswordChange}
-        />
-      </FormGroup>
-    </>
+        <FormGroup fieldName={['password']} errorsData={errorsData}>
+          <Input
+            theFieldIsEmpty={password.length > 0}
+            isAPasswordInput
+            Icon={RiLockPasswordFill}
+            errorsData={errorsData}
+            fieldName="password"
+            isDisabled={isSubmitting}
+            disabled={isSubmitting}
+            placeholder="Senha"
+            value={password}
+            onChange={onPasswordChange}
+          />
+        </FormGroup>
+      </div>
+    </FormGroup>
   );
 }

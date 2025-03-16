@@ -12,7 +12,7 @@ export default function FormGroup({
   errorsData,
 }: FormGroupProps) {
   const errors = errorsData.filter((error) => {
-    return fieldName.includes(error.fieldName);
+    return fieldName.includes(error.fieldName!);
   });
 
   const errorMessages = errors.map((error) => error.message);
@@ -21,7 +21,10 @@ export default function FormGroup({
     <div>
       {children}
       {errorMessages.map((error) => (
-        <small key={error} className="font-roboto text-blood-red mt-2 flex">
+        <small
+          key={Math.random()}
+          className="font-roboto text-blood-red mt-2 flex"
+        >
           {error}
         </small>
       ))}

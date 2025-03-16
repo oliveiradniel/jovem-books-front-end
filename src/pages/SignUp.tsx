@@ -154,7 +154,7 @@ export default function SignUp() {
 
       setIsSubmitting(true);
 
-      await authService.signUp({ ...data });
+      await authService.signUp(data);
 
       setFullName(`${firstName} ${lastName}`);
 
