@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import reactDOM from 'react-dom';
 
@@ -33,16 +33,28 @@ export default function RegistrationCompleted({
 
   const [shouldRender, setShouldRender] = useState(isVisible);
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   useEffect(() => {
     if (isVisible) {
       setShouldRender(isVisible);
     }
 
-    if (!isVisible) {
-      setTimeout(() => {
-        setShouldRender(false);
-      }, 300);
+    function handleAnimationEnd() {
+      setShouldRender(false);
     }
+
+    const formRefElement = formRef.current;
+
+    if (!isVisible && formRefElement) {
+      formRefElement.addEventListener('animationend', handleAnimationEnd);
+    }
+
+    return () => {
+      if (formRefElement) {
+        formRefElement.removeEventListener('animationend', handleAnimationEnd);
+      }
+    };
   }, [isVisible]);
 
   if (!shouldRender) {
@@ -103,8 +115,9 @@ export default function RegistrationCompleted({
       </p>
 
       <form
-        className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
+        ref={formRef}
         onSubmit={handleSubmit}
+        className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
       >
         <Input
           theFieldIsEmpty={username.length > 0}
