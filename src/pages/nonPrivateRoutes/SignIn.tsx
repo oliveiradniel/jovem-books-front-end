@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
+import { useAuth } from '../../app/hooks/useAuth';
+
 import { authService } from '../../app/services/authService';
 
 import { SignInSchema } from './schemas/SignInSchema';
@@ -12,6 +14,8 @@ import SignInFields from './components/SignInFields';
 import { ErrorData } from './types/ErrorData';
 
 export default function SignIn() {
+  const { signIn } = useAuth();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -76,7 +80,7 @@ export default function SignIn() {
 
       const { accessToken } = await authService.signIn(credentials);
 
-      console.log(accessToken);
+      signIn(accessToken);
 
       setUsername('');
       setPassword('');
