@@ -4,7 +4,7 @@ import { authService } from '../../../app/services/authService.ts';
 
 import reactDOM from 'react-dom';
 
-import useAnimatedUnmount from '../../../hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts.ts';
 
 import { SignInSchema } from '../schemas/SignInSchema';
 
