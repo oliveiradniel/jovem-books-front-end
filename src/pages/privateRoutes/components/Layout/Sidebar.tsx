@@ -1,33 +1,23 @@
+import { useEffect, useState } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../../../../app/hooks/useAuth';
 
-import { FaGoogle } from 'react-icons/fa';
-import { MdDashboard } from 'react-icons/md';
-import { SiBookstack } from 'react-icons/si';
-import { IoIosMenu } from 'react-icons/io';
-import { useEffect, useState } from 'react';
 import useAnimatedUnmount from '../../../../app/hooks/useAnimatedUnmount.ts';
+
+import { getMenuItems } from '../../../../assets/mocks/menuItems.tsx';
+
+import { IoIosMenu } from 'react-icons/io';
 
 export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 640 && isExpanded) {
-        setIsExpanded(false);
-      } else if (window.innerWidth > 640 && !isExpanded) {
-        setIsExpanded(true);
-      }
-    }
-    console.log('aqui');
-
-    window.addEventListener('resize', handleResize);
-  }, [isExpanded]);
-
   const { user } = useAuth();
 
   const { pathname } = useLocation();
+
+  const menuItems = getMenuItems(isExpanded);
 
   const {
     shouldRender: shouldRenderTitle,
@@ -39,33 +29,25 @@ export default function Sidebar() {
     animatedElementRef: animatedTitleRefMenuLabel,
   } = useAnimatedUnmount<HTMLDivElement>(isExpanded);
 
-  const menuItems = [
-    {
-      label: 'Dashboard',
-      url: '/dashboard',
-      icon: <MdDashboard className={`${!isExpanded && 'text-xl'}`} />,
-      id: 'dashboard',
-    },
-    {
-      label: 'Meus Livros',
-      url: '/my-books',
-      icon: <SiBookstack className={`${!isExpanded && 'text-xl'}`} />,
-      id: 'my-books',
-    },
-    {
-      label: 'Google Books',
-      url: '/google-books',
-      icon: <FaGoogle className={`${!isExpanded && 'text-xl'}`} />,
-      id: 'google-books',
-    },
-  ];
-
   function handleExpansionToggle() {
     if (window.innerWidth < 640) {
       return;
     }
+
     setIsExpanded((prevState) => !prevState);
   }
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 640 && isExpanded) {
+        setIsExpanded(false);
+      } else if (window.innerWidth > 640 && !isExpanded) {
+        setIsExpanded(true);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+  }, [isExpanded]);
 
   return (
     <div
