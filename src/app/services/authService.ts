@@ -14,15 +14,14 @@ interface SignInProps {
 }
 
 async function signUp(data: SignUpProps) {
-  await httpClient.post('sign-up', {
-    data: { ...data },
-  });
+  await httpClient.post('sign-up', data);
 }
 
 async function signIn(credentials: SignInProps) {
-  const { data } = await httpClient.post<{ accessToken: string }>('sign-in', {
-    data: { ...credentials },
-  });
+  const { data } = await httpClient.post<{ accessToken: string }>(
+    'sign-in',
+    credentials
+  );
 
   return data;
 }
