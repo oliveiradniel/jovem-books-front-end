@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-export default function useAnimatedUnmount(isVisible: boolean) {
+export default function useAnimatedUnmount<T extends HTMLElement>(
+  isVisible: boolean
+) {
   const [shouldRender, setShouldRender] = useState(isVisible);
 
-  const animatedElementRef = useRef<HTMLFormElement>(null);
+  const animatedElementRef = useRef<T>(null);
 
   useEffect(() => {
     if (isVisible) {

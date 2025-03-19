@@ -35,7 +35,8 @@ export default function RegistrationCompleted({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { shouldRender, animatedElementRef } = useAnimatedUnmount(isVisible);
+  const { shouldRender, animatedElementRef } =
+    useAnimatedUnmount<HTMLFormElement>(isVisible);
 
   if (!shouldRender) {
     return null;

@@ -47,6 +47,26 @@
     }
   }
 
+  --animate-fade-in-500: fade-in-500 0.5s ease-in-out;
+  @keyframes fade-in-500 {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  --animate-fade-out-100: fade-out-100 0.1s ease-in-out forwards;
+  @keyframes fade-out-100 {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   --animate-move-in-right: move-in-right 0.2s ease-in-out forwards;
   @keyframes move-in-right {
     0% {
