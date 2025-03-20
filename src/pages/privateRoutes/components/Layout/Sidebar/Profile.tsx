@@ -37,7 +37,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
       className={`hover:bg-navy-blue bottom-0 m-1 flex justify-between rounded-sm px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'}`}
     >
       <div className="flex items-center gap-2">
-        {user?.username ? (
+        {user?.imagePath ? (
           <img
             src={`${env.API_URL}/uploads/users/${user.imagePath}`}
             alt="Foto de Perfil"
