@@ -26,7 +26,9 @@ export default function Sidebar() {
 
     window.addEventListener('resize', handleResize);
 
-    // remover event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [isExpanded]);
 
   return (

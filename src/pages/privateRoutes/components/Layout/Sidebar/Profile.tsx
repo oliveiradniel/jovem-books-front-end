@@ -60,7 +60,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
       {shouldRenderUsername && (
         <div
-          className={`text-snow-white-op-70 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
+          className={`animate-fade-in-500 text-snow-white-op-70 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
         >
           <IoMdArrowDropup />
           <IoMdArrowDropdown />
