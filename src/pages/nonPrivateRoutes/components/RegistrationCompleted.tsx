@@ -1,39 +1,51 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import reactDOM from 'react-dom';
+
+import { useAuth } from '../../../app/hooks/useAuth.ts';
 
 import { authService } from '../../../app/services/authService.ts';
-
-import reactDOM from 'react-dom';
 
 import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts.ts';
 
 import { SignInSchema } from '../schemas/SignInSchema';
-
 import { handleSignInErrors } from '../errors/handleSignInErrors';
 
 import { FaArrowLeftLong } from 'react-icons/fa6';
-
 import { ClipLoader } from 'react-spinners';
 
-import { ErrorData } from '../types/ErrorData.ts';
 import SignInFields from './SignInFields.tsx';
+
+import { ErrorData } from '../types/ErrorData.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
   fullName: string;
+  data: {
+    username: string;
+    fullName: string;
+  };
   onClose: () => void;
 }
 
 export default function RegistrationCompleted({
   isVisible,
   fullName,
+  data,
   onClose,
 }: RegistrationCompletedProps) {
-  const [username, setUsername] = useState('');
+  const { signIn } = useAuth();
+
+  const [username, setUsername] = useState(data.username);
+  console.log(username);
   const [password, setPassword] = useState('');
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setUsername(data.username);
+  }, [data.username]);
 
   const { shouldRender, animatedElementRef } =
     useAnimatedUnmount<HTMLFormElement>(isVisible);
@@ -107,10 +119,12 @@ export default function RegistrationCompleted({
 
       setIsSubmitting(true);
 
-      await authService.signIn(credentials);
+      const { accessToken } = await authService.signIn(credentials);
 
-      // setUsername('');
-      // setPassword('');
+      signIn(accessToken);
+
+      setUsername('');
+      setPassword('');
 
       setErrorsData([]);
     } catch (error) {
@@ -157,6 +171,7 @@ export default function RegistrationCompleted({
         <SignInFields
           username={username}
           password={password}
+          focusOn="password"
           isSubmitting={isSubmitting}
           errorsData={errorsData}
           onUsernameChange={handleUsernameChange}

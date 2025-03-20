@@ -158,7 +158,6 @@ export default function SignUp() {
 
       setFullName(`${firstName} ${lastName}`);
 
-      setUsername('');
       setFirstName('');
       setLastName('');
       setEmail('');
@@ -189,8 +188,10 @@ export default function SignUp() {
     >
       <RegistrationCompleted
         isVisible={isTheRegistrationComplete}
+        data={{ fullName, username }}
         fullName={fullName}
         onClose={() => {
+          setUsername('');
           setIsTheRegistrationComplete(false);
           setErrorsData([]);
         }}

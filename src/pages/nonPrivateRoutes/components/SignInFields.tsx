@@ -11,6 +11,7 @@ import { ErrorData } from '../types/ErrorData';
 interface SignInFieldsProps {
   username: string;
   password: string;
+  focusOn?: 'password' | null;
   isSubmitting: boolean;
   errorsData: ErrorData[];
   onUsernameChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +21,7 @@ interface SignInFieldsProps {
 export default function SignInFields({
   username,
   password,
+  focusOn = null,
   isSubmitting,
   errorsData,
   onUsernameChange,
@@ -39,7 +41,7 @@ export default function SignInFields({
             type="text"
             placeholder="Nome de usuário"
             value={username}
-            autoFocus
+            autoFocus={focusOn !== 'password'}
             onChange={onUsernameChange}
           />
         </FormGroup>
@@ -56,6 +58,7 @@ export default function SignInFields({
             placeholder="Senha"
             value={password}
             onChange={onPasswordChange}
+            autoFocus={focusOn === 'password'}
           />
         </FormGroup>
       </div>
