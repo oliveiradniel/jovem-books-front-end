@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { truncateString } from '../../utils/truncateString';
+
 import { IoBookSharp } from 'react-icons/io5';
 
 export default function MyBooks() {
-  const [isTheFieldFocused, setIsTheFieldFocused] = useState(false);
-
   interface Book {
     id: number;
     title: string;
@@ -156,8 +155,10 @@ export default function MyBooks() {
               key={book.id}
               className="text-mate-gray font-roboto flex justify-around border-b p-2 text-sm last:border-0"
             >
-              <span className="w-20">{book.title}</span>
-              <span className="w-20">{book.author}</span>
+              <span className="w-20">{truncateString(book.title, 9)}</span>
+              <span className="w-20 whitespace-nowrap">
+                {truncateString(book.author, 9)}
+              </span>
               <span className="w-20">{book.type}</span>
               <span
                 className={`rounded-sm p-1 ${book.status === 'NOT_READING' && 'bg-blue-black'} ${book.status === 'READING' && 'bg-ocean-blue'} ${book.status === 'READING' && 'bg-blue-black'} ${book.status === 'FINISHED' && 'bg-sky-blue'} `}
