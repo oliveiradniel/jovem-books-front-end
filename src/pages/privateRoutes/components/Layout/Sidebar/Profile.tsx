@@ -10,6 +10,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
+import { truncateString } from '../../../../../utils/truncateString.ts';
 
 interface ProfileProps {
   isExpanded: boolean;
@@ -23,11 +24,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
   const { user, signOut } = useAuth();
 
-  const firstTenCharacters = user?.username.slice(0, 10);
-  const shortenedUsername =
-    user?.username && user.username?.length > 10
-      ? `${firstTenCharacters}...`
-      : firstTenCharacters;
+  const username = user?.username || '';
 
   const {
     shouldRender: shouldRenderUsername,
@@ -93,7 +90,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
               ref={animatedUsernameRef}
               className={`animate-fade-in-500 font-quicksand text-snow-white-op-70 whitespace-nowrap transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
             >
-              {shortenedUsername}
+              {truncateString(username, 10)}
             </h1>
           )}
         </div>
