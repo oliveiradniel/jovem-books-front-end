@@ -1,3 +1,11 @@
+export interface Book {
+  id: number;
+  title: string;
+  author: string;
+  genreLiterary: LiteraryGenre;
+  status: ReadingStatus;
+}
+
 export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';
 
 export type LiteraryGenre =
