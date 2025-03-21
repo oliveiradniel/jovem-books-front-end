@@ -1,3 +1,5 @@
+export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';
+
 export type LiteraryGenre =
   | 'ROMANCE'
   | 'SCIENCE_FICTION'

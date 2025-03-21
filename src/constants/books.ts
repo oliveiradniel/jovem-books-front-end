@@ -1,3 +1,10 @@
+export const READING_STATUS = {
+  NOT_READING: 'Não lido',
+  READING: 'Em leitura',
+  ON_HOLD: 'Pausado',
+  FINISHED: 'Concluído',
+};
+
 export const BOOK_LITERARY_GENRE = {
   ROMANCE: 'Romance',
   SCIENCE_FICTION: 'Ficção Científica',

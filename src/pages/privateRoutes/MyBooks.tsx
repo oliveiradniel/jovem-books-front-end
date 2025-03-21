@@ -1,8 +1,8 @@
 import { truncateString } from '../../utils/truncateString';
 
-import { BOOK_LITERARY_GENRE } from '../../constants/books';
+import { BOOK_LITERARY_GENRE, READING_STATUS } from '../../constants/books';
 
-import { LiteraryGenre } from '../../@types/TypeBook';
+import { LiteraryGenre, ReadingStatus } from '../../@types/TypeBook';
 
 import { IoBookSharp } from 'react-icons/io5';
 
@@ -12,7 +12,7 @@ export default function MyBooks() {
     title: string;
     author: string;
     genreLiterary: LiteraryGenre;
-    status: 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';
+    status: ReadingStatus;
   }
 
   const books: Book[] = [
@@ -169,7 +169,7 @@ export default function MyBooks() {
               <span
                 className={`rounded-sm p-1 ${book.status === 'NOT_READING' && 'bg-blue-black'} ${book.status === 'READING' && 'bg-ocean-blue'} ${book.status === 'READING' && 'bg-blue-black'} ${book.status === 'FINISHED' && 'bg-sky-blue'} `}
               >
-                {book.status}
+                {READING_STATUS[book.status]}
               </span>
             </div>
           ))}
