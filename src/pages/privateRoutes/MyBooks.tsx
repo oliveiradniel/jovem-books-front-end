@@ -1,5 +1,9 @@
 import { truncateString } from '../../utils/truncateString';
 
+import { BOOK_LITERARY_GENRE } from '../../constants/books';
+
+import { LiteraryGenre } from '../../@types/TypeBook';
+
 import { IoBookSharp } from 'react-icons/io5';
 
 export default function MyBooks() {
@@ -7,7 +11,7 @@ export default function MyBooks() {
     id: number;
     title: string;
     author: string;
-    type: string;
+    genreLiterary: LiteraryGenre;
     status: 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';
   }
 
@@ -16,70 +20,70 @@ export default function MyBooks() {
       id: Math.random(),
       title: 'Harry Potter',
       author: 'J. K. Rowling',
-      type: 'DRAMA',
+      genreLiterary: 'DRAMA',
       status: 'NOT_READING',
     },
     {
       id: Math.random(),
       title: 'The Hobbit',
       author: 'J.R.R. Tolkien',
-      type: 'ADVENTURE',
+      genreLiterary: 'ADVENTURE',
       status: 'READING',
     },
     {
       id: Math.random(),
       title: '1984',
       author: 'George Orwell',
-      type: 'DYSTOPIAN',
+      genreLiterary: 'DYSTOPIAN',
       status: 'NOT_READING',
     },
     {
       id: Math.random(),
       title: 'To Kill a Mockingbird',
       author: 'Harper Lee',
-      type: 'DRAMA',
+      genreLiterary: 'DRAMA',
       status: 'READING',
     },
     {
       id: Math.random(),
       title: 'The Catcher in the Rye',
       author: 'J.D. Salinger',
-      type: 'DRAMA',
+      genreLiterary: 'DRAMA',
       status: 'NOT_READING',
     },
     {
       id: Math.random(),
       title: 'The Great Gatsby',
       author: 'F. Scott Fitzgerald',
-      type: 'DRAMA',
+      genreLiterary: 'DRAMA',
       status: 'FINISHED',
     },
     {
       id: Math.random(),
       title: 'Moby-Dick',
       author: 'Herman Melville',
-      type: 'ADVENTURE',
+      genreLiterary: 'ADVENTURE',
       status: 'FINISHED',
     },
     {
       id: Math.random(),
       title: 'Pride and Prejudice',
       author: 'Jane Austen',
-      type: 'ROMANCE',
+      genreLiterary: 'ROMANCE',
       status: 'ON_HOLD',
     },
     {
       id: Math.random(),
       title: 'The Lord of the Rings',
       author: 'J.R.R. Tolkien',
-      type: 'ADVENTURE',
+      genreLiterary: 'ADVENTURE',
       status: 'NOT_READING',
     },
     {
       id: Math.random(),
       title: 'Brave New World',
       author: 'Aldous Huxley',
-      type: 'DYSTOPIAN',
+      genreLiterary: 'DYSTOPIAN',
       status: 'READING',
     },
   ];
@@ -159,7 +163,9 @@ export default function MyBooks() {
               <span className="w-20 whitespace-nowrap">
                 {truncateString(book.author, 9)}
               </span>
-              <span className="w-20">{book.type}</span>
+              <span className="w-20">
+                {BOOK_LITERARY_GENRE[book.genreLiterary] || '-'}
+              </span>
               <span
                 className={`rounded-sm p-1 ${book.status === 'NOT_READING' && 'bg-blue-black'} ${book.status === 'READING' && 'bg-ocean-blue'} ${book.status === 'READING' && 'bg-blue-black'} ${book.status === 'FINISHED' && 'bg-sky-blue'} `}
               >
