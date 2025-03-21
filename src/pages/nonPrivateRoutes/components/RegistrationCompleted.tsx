@@ -36,7 +36,7 @@ export default function RegistrationCompleted({
   const { signIn } = useAuth();
 
   const [username, setUsername] = useState(data.username);
-  console.log(username);
+
   const [password, setPassword] = useState('');
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);

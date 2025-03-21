@@ -21,7 +21,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
   const [areTheProfileOptionsOpen, setAreTheProfileOptionsOpen] =
     useState(false);
 
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const firstTenCharacters = user?.username.slice(0, 10);
   const shortenedUsername =
@@ -58,10 +58,13 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
             <div className="bg-blue-black-op-80 h-[0.1px] w-full"></div>
 
-            <div className="text-mate-gray hover:bg-blue-black flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer">
+            <button
+              onClick={signOut}
+              className="text-mate-gray hover:bg-blue-black flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+            >
               <TbLogout2 className="text-lg" />
               <span className="text-sm">Sair</span>
-            </div>
+            </button>
           </div>
         </div>
       )}

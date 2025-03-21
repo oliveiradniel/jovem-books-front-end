@@ -3,6 +3,7 @@
 
 @theme {
   --color-sky-blue: #03a9f4;
+  --color-ocean-blue: #005a83;
   --color-stormy-blue: #3b7893;
   --color-ashen-purple: #7a78a7;
   --color-royal-purple: #4c44ce;
@@ -30,7 +31,7 @@
   --color-ivory-white: #fffff0;
   --color-light-gray: #adadad;
   --color-light-gray-op-40: #adadad40;
-  --color-light-gray-op-70: #adadad40;
+  --color-light-gray-op-70: #adadad70;
   --color-mate-gray: #c9c9c9;
 
   --font-quicksand: 'Quicksand', sans-serif;
