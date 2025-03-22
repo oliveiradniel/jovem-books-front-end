@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { truncateString } from '../../utils/truncateString';
 
@@ -11,11 +11,18 @@ import { MY_BOOKS_PAGES } from '../../constants/myBooksPages';
 
 export default function MyBooks() {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
-  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
   const [page, setPage] = useState<
     'ALL' | 'NOT_READING' | 'READING' | 'FINISHED'
   >('ALL');
+
+  const isOptionsVisibleRef = useRef(isOptionsVisible);
+
+  function handleTogglingOfOptionsVisibility() {
+    isOptionsVisibleRef.current = !isOptionsVisibleRef.current;
+    setIsOptionsVisible((prevState) => !prevState);
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -32,6 +39,25 @@ export default function MyBooks() {
       window.removeEventListener('resize', handleResize);
     };
   }, [isTheScreenLargeSized]);
+
+  useEffect(() => {
+    function handleClickOutsideTheSelect(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
+      const clickTheSelect = target.closest('#select');
+      const clickTheOptions = target.closest('#options');
+
+      if (!clickTheSelect && !clickTheOptions && isOptionsVisibleRef.current) {
+        setIsOptionsVisible(false);
+      }
+    }
+
+    document.addEventListener('click', handleClickOutsideTheSelect);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutsideTheSelect);
+    };
+  }, [isOptionsVisible]);
 
   return (
     <div>
@@ -93,14 +119,18 @@ export default function MyBooks() {
           {!isTheScreenLargeSized && (
             <div className="relative">
               <button
+                id="select"
                 type="button"
-                onClick={() => setIsNavigationOpen((prevState) => !prevState)}
-                className={`bg-navy-blue text-sky-blue font-quicksand hover:bg-navy-blue-op-80 mb-2 flex w-[120px] justify-center rounded-lg p-2 text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer ${isNavigationOpen && 'hover:bg-navy-blue!'}`}
+                onClick={handleTogglingOfOptionsVisibility}
+                className={`bg-navy-blue text-sky-blue font-quicksand hover:bg-navy-blue-op-80 mb-2 flex w-[120px] justify-center rounded-lg p-2 text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer ${isOptionsVisible && 'hover:bg-navy-blue!'}`}
               >
                 {MY_BOOKS_PAGES[page]}
               </button>
-              {isNavigationOpen && (
-                <div className="font-roboto bg-navy-blue absolute flex w-[170px] flex-col gap-1 rounded-lg p-1">
+              {isOptionsVisible && (
+                <div
+                  id="options"
+                  className="font-roboto bg-navy-blue absolute flex w-[170px] flex-col gap-1 rounded-lg p-1"
+                >
                   <button
                     onClick={() => setPage('ALL')}
                     type="button"
