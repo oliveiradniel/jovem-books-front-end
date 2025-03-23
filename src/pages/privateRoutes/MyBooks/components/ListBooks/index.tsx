@@ -13,7 +13,7 @@ interface ListBooksProps {
 
 export default function ListBooks({ books }: ListBooksProps) {
   return (
-    <div className="h-[500px] overflow-y-auto">
+    <div className="h-[460px] overflow-y-auto">
       {books.map((book) => (
         <div
           key={book.id}
