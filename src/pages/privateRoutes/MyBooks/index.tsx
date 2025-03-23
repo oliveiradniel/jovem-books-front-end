@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { books as dataBooks } from '../../../assets/mocks/books';
 
 import { Book } from '../../../@types/Book';
 import { Page } from './@types/Page';
+
+import { RingLoader } from 'react-spinners';
 
 import LargeOptionsMenu from './components/LargeOptionsMenu';
 import Select from './components/Select';
@@ -14,8 +16,24 @@ export default function MyBooks() {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [books, setBooks] = useState<Book[]>([]);
   const [page, setPage] = useState<Page>('ALL');
+
+  const handleGetAllBooks = useCallback(async () => {
+    try {
+      setIsLoading(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      setBooks(dataBooks);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   function handleTogglingOfOptionsVisibility() {
     setIsOptionsVisible((prevState) => !prevState);
@@ -58,20 +76,14 @@ export default function MyBooks() {
         break;
       }
       default: {
-        setBooks(dataBooks);
+        handleGetAllBooks();
       }
     }
-  }, [page]);
+  }, [handleGetAllBooks, page]);
 
   useEffect(() => {
-    async function handleGetAllBooks() {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-
-      setBooks(dataBooks);
-    }
-
     handleGetAllBooks();
-  }, []);
+  }, [handleGetAllBooks]);
 
   useEffect(() => {
     function handleResize() {
@@ -117,7 +129,7 @@ export default function MyBooks() {
         </p>
       </div>
 
-      <div className="bg-blue-black-op-80 p-5">
+      <div className="bg-blue-black-op-80 min-h-[600px] p-5">
         <div className="flex h-[40px] justify-between">
           {isTheScreenLargeSized ? (
             <LargeOptionsMenu />
@@ -136,7 +148,7 @@ export default function MyBooks() {
           )}
 
           <span className="text-mate-gray flex items-center">
-            Total encontrado ({books.length})
+            {isLoading ? 'Carregando...' : `Total encontrado (${books.length})`}
           </span>
         </div>
 
@@ -149,7 +161,13 @@ export default function MyBooks() {
           <span>Status</span>
         </div>
 
-        {books.length > 0 && <ListBooks books={books} />}
+        {isLoading && (
+          <div className="flex h-[500px] items-center justify-center">
+            <RingLoader color="#03a9f4" />
+          </div>
+        )}
+
+        {!isLoading && books.length > 0 && <ListBooks books={books} />}
       </div>
     </div>
   );
