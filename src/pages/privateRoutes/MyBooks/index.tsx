@@ -1,28 +1,77 @@
 import { useEffect, useState } from 'react';
 
-import { truncateString } from '../../../utils/truncateString';
+import { books as dataBooks } from '../../../assets/mocks/books';
 
-import { books } from '../../../assets/mocks/books';
-
-import { BOOK_LITERARY_GENRE, READING_STATUS } from '../../../constants/books';
-
+import { Book } from '../../../@types/Book';
 import { Page } from './@types/Page';
 
 import LargeOptionsMenu from './components/LargeOptionsMenu';
 import Select from './components/Select';
 import Options from './components/Select/Options';
+import ListBooks from './components/ListBooks';
 
 export default function MyBooks() {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-  const [page, setPage] = useState<
-    'ALL' | 'NOT_READING' | 'READING' | 'FINISHED'
-  >('ALL');
+  const [books, setBooks] = useState<Book[]>([]);
+  const [page, setPage] = useState<Page>('ALL');
 
   function handleTogglingOfOptionsVisibility() {
     setIsOptionsVisible((prevState) => !prevState);
   }
+
+  function handleWithUnreadBooksFiltration() {
+    const filteredBooks = dataBooks.filter(
+      (book) => book.status === 'NOT_READING'
+    );
+
+    setBooks(filteredBooks);
+  }
+
+  function handleWithFilteringBooksInReading() {
+    const filteredBooks = dataBooks.filter((book) => book.status === 'READING');
+
+    setBooks(filteredBooks);
+  }
+
+  function handleFilteringCompletedBooks() {
+    const filteredBooks = dataBooks.filter(
+      (book) => book.status === 'FINISHED'
+    );
+
+    setBooks(filteredBooks);
+  }
+
+  useEffect(() => {
+    switch (page) {
+      case 'NOT_READING': {
+        handleWithUnreadBooksFiltration();
+        break;
+      }
+      case 'READING': {
+        handleWithFilteringBooksInReading();
+        break;
+      }
+      case 'FINISHED': {
+        handleFilteringCompletedBooks();
+        break;
+      }
+      default: {
+        setBooks(dataBooks);
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    async function handleGetAllBooks() {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      setBooks(dataBooks);
+    }
+
+    handleGetAllBooks();
+  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -60,15 +109,15 @@ export default function MyBooks() {
   }, [isOptionsVisible]);
 
   return (
-    <div>
-      <div className="flex justify-between">
+    <div className="h-full">
+      <div className="mb-3 flex justify-between">
         <h1 className="font-quicksand text-snow-white text-2xl">Meus Livros</h1>
         <p className="font-quicksand text-snow-white text-xl font-bold">
           Bom dia!
         </p>
       </div>
 
-      <div className="bg-blue-black-op-80 mt-3 p-5">
+      <div className="bg-blue-black-op-80 p-5">
         <div className="flex h-[40px] justify-between">
           {isTheScreenLargeSized ? (
             <LargeOptionsMenu />
@@ -87,11 +136,11 @@ export default function MyBooks() {
           )}
 
           <span className="text-mate-gray flex items-center">
-            Total encontrado (10)
+            Total encontrado ({books.length})
           </span>
         </div>
 
-        <div className="bg-light-gray-op-40 mt-4 mb-4 h-[0.1px] w-full" />
+        <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />
 
         <div className="bg-navy-blue-op-80 text-mate-gray font-roboto flex justify-around rounded-lg p-2 font-bold">
           <span>Título</span>
@@ -100,27 +149,7 @@ export default function MyBooks() {
           <span>Status</span>
         </div>
 
-        <div className="h-full overflow-auto">
-          {books.map((book) => (
-            <div
-              key={book.id}
-              className="text-mate-gray font-roboto flex justify-around border-b p-2 text-sm last:border-0"
-            >
-              <span className="w-20">{truncateString(book.title, 9)}</span>
-              <span className="w-20 whitespace-nowrap">
-                {truncateString(book.author, 9)}
-              </span>
-              <span className="w-20">
-                {BOOK_LITERARY_GENRE[book.genreLiterary] || '-'}
-              </span>
-              <span
-                className={`rounded-sm p-1 ${book.status === 'NOT_READING' && 'bg-blue-black'} ${book.status === 'READING' && 'bg-ocean-blue'} ${book.status === 'READING' && 'bg-blue-black'} ${book.status === 'FINISHED' && 'bg-sky-blue'} `}
-              >
-                {READING_STATUS[book.status]}
-              </span>
-            </div>
-          ))}
-        </div>
+        {books.length > 0 && <ListBooks books={books} />}
       </div>
     </div>
   );

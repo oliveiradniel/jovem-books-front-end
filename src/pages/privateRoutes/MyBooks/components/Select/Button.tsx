@@ -1,7 +1,6 @@
 import { Page } from '../../@types/Page';
 
 interface ButtonProps {
-  numberOfItems: number;
   label: string;
   currentPage: Page;
   page: Page;
@@ -9,7 +8,6 @@ interface ButtonProps {
 }
 
 export default function Button({
-  numberOfItems,
   label,
   currentPage,
   page,
@@ -21,14 +19,7 @@ export default function Button({
       type="button"
       className={`text-light-gray hover:bg-blue-black-op-80 flex items-center rounded-lg p-2 transition-colors duration-300 ease-in-out hover:cursor-pointer ${page === currentPage && 'text-sky-blue hover:bg-navy-blue hover:cursor-default!'}`}
     >
-      <p className="font-quicksand text-sm">
-        {label}
-        <span
-          className={`text-mate-gray ml-1 ${page === currentPage && 'text-sky-blue'}`}
-        >
-          ({numberOfItems})
-        </span>
-      </p>
+      <p className="font-quicksand text-sm">{label}</p>
     </button>
   );
 }
