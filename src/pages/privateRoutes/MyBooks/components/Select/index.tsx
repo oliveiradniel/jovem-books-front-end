@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { MY_BOOKS_PAGES } from '../../../../../constants/myBooksPages';
 
 import { Page } from '../../@types/Page';
 import Options from './Options';
+import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside ';
 
 interface SelectProps {
   page: Page;
@@ -18,24 +19,11 @@ export default function Select({ page, disabled, onChangePage }: SelectProps) {
     setIsOptionsVisible((prevState) => !prevState);
   }
 
-  useEffect(() => {
-    function handleClickOutsideTheSelect(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-
-      const clickTheSelect = target.closest('#select');
-      const clickTheOptions = target.closest('#options');
-
-      if (!clickTheSelect && !clickTheOptions) {
-        setIsOptionsVisible(false);
-      }
-    }
-
-    document.addEventListener('click', handleClickOutsideTheSelect);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutsideTheSelect);
-    };
-  }, [isOptionsVisible]);
+  useCloseOnClickOutside({
+    containerIds: ['select', 'options'],
+    isVisible: isOptionsVisible,
+    onClose: () => setIsOptionsVisible(false),
+  });
 
   return (
     <div className="z-1 flex w-[140px]">

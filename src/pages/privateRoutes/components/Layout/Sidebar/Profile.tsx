@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { useAuth } from '../../../../../app/hooks/useAuth.ts';
 
@@ -12,6 +12,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
+import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside .ts';
 
 interface ProfileProps {
   isExpanded: boolean;
@@ -36,30 +37,15 @@ export default function Profile({ isExpanded }: ProfileProps) {
     animatedElementRef: animatedOptionsRef,
   } = useAnimatedUnmount<HTMLDivElement>(isOptionsVisible);
 
+  useCloseOnClickOutside({
+    containerIds: ['select', 'options'],
+    isVisible: isOptionsVisible,
+    onClose: () => setIsOptionsVisible(false),
+  });
+
   function handleVisibilityOfProfileOptionsToggle() {
     setIsOptionsVisible((prevState) => !prevState);
   }
-
-  useEffect(() => {
-    function handleClickOutsideTheSelect(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-
-      const clickTheSelect = target.closest('#select');
-      const clickTheOptions = target.closest('#options');
-
-      console.log(clickTheSelect);
-
-      if (!clickTheSelect && !clickTheOptions) {
-        setIsOptionsVisible(false);
-      }
-    }
-
-    document.addEventListener('click', handleClickOutsideTheSelect);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutsideTheSelect);
-    };
-  }, [isOptionsVisible]);
 
   return (
     <>
