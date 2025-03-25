@@ -10,10 +10,12 @@ interface TabelBooksProps {
 
 export default function TableBooks({ books, isLoading }: TabelBooksProps) {
   return (
-    <table className="w-full">
-      <TableHeader />
+    <div className="h-[500px] overflow-y-auto">
+      <table className="w-full">
+        <TableHeader />
 
-      {!isLoading && <TableBody books={books} />}
-    </table>
+        {!isLoading && <TableBody books={books} />}
+      </table>
+    </div>
   );
 }
