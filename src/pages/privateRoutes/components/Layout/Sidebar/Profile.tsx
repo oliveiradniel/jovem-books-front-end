@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAuth } from '../../../../../app/hooks/useAuth.ts';
 
@@ -20,8 +20,7 @@ interface ProfileProps {
 export default function Profile({ isExpanded }: ProfileProps) {
   const [hoverOnProfile, setHoverOnProfile] = useState(false);
 
-  const [areTheProfileOptionsOpen, setAreTheProfileOptionsOpen] =
-    useState(false);
+  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
   const { user, signOut } = useAuth();
 
@@ -35,18 +34,40 @@ export default function Profile({ isExpanded }: ProfileProps) {
   const {
     shouldRender: shouldRenderOptions,
     animatedElementRef: animatedOptionsRef,
-  } = useAnimatedUnmount<HTMLDivElement>(areTheProfileOptionsOpen);
+  } = useAnimatedUnmount<HTMLDivElement>(isOptionsVisible);
 
   function handleVisibilityOfProfileOptionsToggle() {
-    setAreTheProfileOptionsOpen((prevState) => !prevState);
+    setIsOptionsVisible((prevState) => !prevState);
   }
+
+  useEffect(() => {
+    function handleClickOutsideTheSelect(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+
+      const clickTheSelect = target.closest('#select');
+      const clickTheOptions = target.closest('#options');
+
+      console.log(clickTheSelect);
+
+      if (!clickTheSelect && !clickTheOptions) {
+        setIsOptionsVisible(false);
+      }
+    }
+
+    document.addEventListener('click', handleClickOutsideTheSelect);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutsideTheSelect);
+    };
+  }, [isOptionsVisible]);
 
   return (
     <>
       {shouldRenderOptions && (
         <div
+          id="options"
           ref={animatedOptionsRef}
-          className={`animate-move-in-top-300 absolute bottom-14 left-0 w-[220px] p-1 ${!areTheProfileOptionsOpen && 'animate-return-to-bottom-200'} ${!isExpanded && 'w-[220px]!'}`}
+          className={`animate-move-in-top-300 absolute bottom-14 left-0 w-[220px] p-1 ${!isOptionsVisible && 'animate-return-to-bottom-200'} ${!isExpanded && 'w-[220px]!'}`}
         >
           <div className="bg-navy-blue flex h-full flex-col gap-1 rounded-lg p-1">
             <div className="text-mate-gray hover:bg-blue-black flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer">
@@ -68,6 +89,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
       )}
 
       <button
+        id="select"
         type="button"
         onClick={handleVisibilityOfProfileOptionsToggle}
         onMouseOver={() => setHoverOnProfile(true)}

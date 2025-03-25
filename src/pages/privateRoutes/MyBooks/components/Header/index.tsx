@@ -41,7 +41,11 @@ export default function Header({
       {isTheScreenLargeSized ? (
         <LargeOptionsMenu />
       ) : (
-        <Select page={page} onChangePage={(page: Page) => onChangePage(page)} />
+        <Select
+          page={page}
+          disabled={isLoading}
+          onChangePage={(page: Page) => onChangePage(page)}
+        />
       )}
 
       <span className="text-mate-gray animate-fade-in flex items-center">
