@@ -5,12 +5,10 @@ import { books as dataBooks } from '../../../assets/mocks/books';
 import { Book } from '../../../@types/Book';
 import { Page } from './@types/Page';
 
-import { RingLoader } from 'react-spinners';
-
 import LargeOptionsMenu from './components/LargeOptionsMenu';
 import Select from './components/Select';
 import Options from './components/Select/Options';
-import ListBooks from './components/ListBooks';
+import TableBooks from './components/TableBooks';
 
 export default function MyBooks() {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
@@ -76,7 +74,7 @@ export default function MyBooks() {
         break;
       }
       default: {
-        handleGetAllBooks();
+        setBooks(dataBooks);
       }
     }
   }, [handleGetAllBooks, page]);
@@ -147,27 +145,20 @@ export default function MyBooks() {
             </Select>
           )}
 
-          <span className="text-mate-gray flex items-center">
-            {isLoading ? 'Carregando...' : `Total encontrado (${books.length})`}
+          <span className="text-mate-gray animate-fade-in flex items-center">
+            {isLoading ? (
+              <span>Carregando...</span>
+            ) : (
+              <span className="animate-fade-in">
+                Total encontrado ({books.length})
+              </span>
+            )}
           </span>
         </div>
 
         <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />
 
-        <div className="bg-navy-blue-op-80 text-mate-gray font-roboto flex justify-around rounded-lg p-2 font-bold">
-          <span>Título</span>
-          <span>Autores(as)</span>
-          <span>Gênero Literário</span>
-          <span>Status</span>
-        </div>
-
-        {isLoading && (
-          <div className="flex h-[500px] items-center justify-center">
-            <RingLoader color="#03a9f4" />
-          </div>
-        )}
-
-        {!isLoading && books.length > 0 && <ListBooks books={books} />}
+        <TableBooks books={books} isLoading={isLoading} />
       </div>
     </div>
   );
