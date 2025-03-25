@@ -5,13 +5,14 @@ import { books as dataBooks } from '../../../assets/mocks/books';
 import { Book } from '../../../@types/Book';
 import { Page } from './@types/Page';
 
-import LargeOptionsMenu from './components/LargeOptionsMenu';
-import Select from './components/Select';
 import TableBooks from './components/TableBooks';
+import Header from './components/Header';
+
+function Line() {
+  return <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />;
+}
 
 export default function MyBooks() {
-  const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const [books, setBooks] = useState<Book[]>([]);
@@ -77,22 +78,6 @@ export default function MyBooks() {
     handleGetAllBooks();
   }, [handleGetAllBooks]);
 
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 1024 && isTheScreenLargeSized) {
-        setIsTheScreenLargeSized(false);
-      } else if (window.innerWidth > 1024 && !isTheScreenLargeSized) {
-        setIsTheScreenLargeSized(true);
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isTheScreenLargeSized]);
-
   return (
     <div className="h-full">
       <div className="mb-3 flex justify-between">
@@ -103,25 +88,14 @@ export default function MyBooks() {
       </div>
 
       <div className="bg-blue-black-op-80 min-h-[600px] p-5">
-        <div className="flex h-[40px] justify-between">
-          {isTheScreenLargeSized ? (
-            <LargeOptionsMenu />
-          ) : (
-            <Select page={page} onPage={(page: Page) => setPage(page)} />
-          )}
+        <Header
+          page={page}
+          numberOfBooks={books.length}
+          isLoading={isLoading}
+          onChangePage={(page: Page) => setPage(page)}
+        />
 
-          <span className="text-mate-gray animate-fade-in flex items-center">
-            {isLoading ? (
-              <span>Carregando...</span>
-            ) : (
-              <span className="animate-fade-in">
-                Total encontrado ({books.length})
-              </span>
-            )}
-          </span>
-        </div>
-
-        <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />
+        <Line />
 
         <TableBooks books={books} isLoading={isLoading} />
       </div>

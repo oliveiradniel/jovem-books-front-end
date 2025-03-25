@@ -7,10 +7,10 @@ import Options from './Options';
 
 interface SelectProps {
   page: Page;
-  onPage: (page: Page) => void;
+  onChangePage: (page: Page) => void;
 }
 
-export default function Select({ page, onPage }: SelectProps) {
+export default function Select({ page, onChangePage }: SelectProps) {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
   function handleTogglingOfOptionsVisibility() {
@@ -50,7 +50,7 @@ export default function Select({ page, onPage }: SelectProps) {
       <Options
         page={page}
         isVisible={isOptionsVisible}
-        onSelect={(page: Page) => onPage(page)}
+        onSelect={(page: Page) => onChangePage(page)}
       />
     </div>
   );
