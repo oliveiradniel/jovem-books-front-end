@@ -6,17 +6,13 @@ import Button from './Button';
 
 interface OptionsProps {
   page: Page;
-  isOptionsVisible: boolean;
+  isVisible: boolean;
   onSelect: (page: Page) => void;
 }
 
-export default function Options({
-  page,
-  isOptionsVisible,
-  onSelect,
-}: OptionsProps) {
+export default function Options({ page, isVisible, onSelect }: OptionsProps) {
   const { shouldRender, animatedElementRef } =
-    useAnimatedUnmount<HTMLDivElement>(isOptionsVisible);
+    useAnimatedUnmount<HTMLDivElement>(isVisible);
 
   if (!shouldRender) {
     return null;
@@ -26,7 +22,7 @@ export default function Options({
     <div
       ref={animatedElementRef}
       id="options"
-      className={`font-roboto bg-navy-blue animate-move-in-bottom-d300-y30 absolute mt-12 flex w-[140px] flex-col gap-1 rounded-lg p-1 ${!isOptionsVisible && 'animate-return-to-top-d200-y50'}`}
+      className={`font-roboto bg-navy-blue animate-move-in-bottom-d300-y30 absolute mt-12 flex w-[140px] flex-col gap-1 rounded-lg p-1 ${!isVisible && 'animate-return-to-top-d200-y50'}`}
     >
       <Button
         label="Todos os livros"

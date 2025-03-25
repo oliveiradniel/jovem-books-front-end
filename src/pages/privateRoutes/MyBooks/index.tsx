@@ -7,12 +7,10 @@ import { Page } from './@types/Page';
 
 import LargeOptionsMenu from './components/LargeOptionsMenu';
 import Select from './components/Select';
-import Options from './components/Select/Options';
 import TableBooks from './components/TableBooks';
 
 export default function MyBooks() {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
-  const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,10 +30,6 @@ export default function MyBooks() {
       setIsLoading(false);
     }
   }, []);
-
-  function handleTogglingOfOptionsVisibility() {
-    setIsOptionsVisible((prevState) => !prevState);
-  }
 
   function handleWithUnreadBooksFiltration() {
     const filteredBooks = dataBooks.filter(
@@ -99,25 +93,6 @@ export default function MyBooks() {
     };
   }, [isTheScreenLargeSized]);
 
-  useEffect(() => {
-    function handleClickOutsideTheSelect(event: MouseEvent) {
-      const target = event.target as HTMLElement;
-
-      const clickTheSelect = target.closest('#select');
-      const clickTheOptions = target.closest('#options');
-
-      if (!clickTheSelect && !clickTheOptions) {
-        setIsOptionsVisible(false);
-      }
-    }
-
-    document.addEventListener('click', handleClickOutsideTheSelect);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutsideTheSelect);
-    };
-  }, [isOptionsVisible]);
-
   return (
     <div className="h-full">
       <div className="mb-3 flex justify-between">
@@ -132,17 +107,7 @@ export default function MyBooks() {
           {isTheScreenLargeSized ? (
             <LargeOptionsMenu />
           ) : (
-            <Select
-              page={page}
-              isOptionsVisible={isOptionsVisible}
-              onTogglingOfOptionsVisibility={handleTogglingOfOptionsVisibility}
-            >
-              <Options
-                page={page}
-                isOptionsVisible={isOptionsVisible}
-                onSelect={(page: Page) => setPage(page)}
-              />
-            </Select>
+            <Select page={page} onPage={(page: Page) => setPage(page)} />
           )}
 
           <span className="text-mate-gray animate-fade-in flex items-center">
