@@ -6,14 +6,17 @@ import {
 } from '../../../../../constants/books';
 
 import { Book } from '../../../../../@types/Book';
+import { useNavigate } from 'react-router-dom';
 
 interface TableBodyProps {
   books: Book[];
 }
 
 export default function TableBody({ books }: TableBodyProps) {
+  const navigate = useNavigate();
+
   function handleClickOnBookData(bookId: string) {
-    console.log(bookId);
+    navigate(`/book/${bookId}`);
   }
 
   return (
