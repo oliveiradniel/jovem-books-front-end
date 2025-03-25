@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useAuth } from '../../../app/hooks/useAuth';
+
+import { getGreeting } from '../../../utils/getGreeting';
+
 import { books as dataBooks } from '../../../assets/mocks/books';
 
 import { Book } from '../../../@types/Book';
@@ -13,6 +17,8 @@ function Line() {
 }
 
 export default function MyBooks() {
+  const { user } = useAuth();
+
   const [isLoading, setIsLoading] = useState(true);
 
   const [books, setBooks] = useState<Book[]>([]);
@@ -83,7 +89,7 @@ export default function MyBooks() {
       <div className="mb-3 flex justify-between">
         <h1 className="font-quicksand text-snow-white text-2xl">Meus Livros</h1>
         <p className="font-quicksand text-snow-white text-xl font-bold">
-          Bom dia!
+          {getGreeting({ name: user?.firstName as string })}
         </p>
       </div>
 
