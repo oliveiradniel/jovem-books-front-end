@@ -4,10 +4,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { books } from '../../assets/mocks/books';
 
-import { Book as IBook } from '../../@types/Book';
+import { Book as IBook, ReadingStatus } from '../../@types/Book';
 
 import { GoArrowLeft } from 'react-icons/go';
 import { GrInProgress } from 'react-icons/gr';
+import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
+import { FaStopwatch } from 'react-icons/fa';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -16,10 +18,20 @@ export default function Book() {
 
   const navigate = useNavigate();
 
-  function handleWithTheBeginninOfReading() {
-    const newBook = { ...book, status: 'READING' };
+  const isReading = book.status === 'READING' || book.status === 'ON_HOLD';
+
+  function handleChangeBookStatus(status: ReadingStatus) {
+    const newBook = { ...book, status };
 
     setBook(newBook as IBook);
+  }
+
+  function handlePauseOrContinuationReading() {
+    if (book.status === 'READING') {
+      handleChangeBookStatus('ON_HOLD');
+    } else if (book.status === 'ON_HOLD') {
+      handleChangeBookStatus('READING');
+    }
   }
 
   useEffect(() => {
@@ -56,11 +68,11 @@ export default function Book() {
             {book?.sinopse}
           </p>
 
-          <div>
+          <div className="flex gap-2">
             <button
               type="button"
               disabled={book.status !== 'NOT_READING'}
-              onClick={handleWithTheBeginninOfReading}
+              onClick={() => handleChangeBookStatus('READING')}
               className="hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
             >
               {book.status === 'NOT_READING' && 'INICIAR LEITURA'}
@@ -69,7 +81,26 @@ export default function Book() {
                   <GrInProgress /> EM LEITURA
                 </p>
               )}
+              {book.status === 'ON_HOLD' && (
+                <p className="flex items-center justify-center gap-2">
+                  <FaStopwatch /> EM PAUSA
+                </p>
+              )}
             </button>
+
+            {isReading && (
+              <button
+                type="button"
+                onClick={handlePauseOrContinuationReading}
+                className="animate-fade-in-500 hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
+              >
+                <p className="flex items-center justify-center gap-2">
+                  {book.status === 'READING' && <IoPauseOutline size={20} />}
+
+                  {book.status === 'ON_HOLD' && <IoPlayOutline size={20} />}
+                </p>
+              </button>
+            )}
           </div>
         </div>
 
@@ -82,8 +113,8 @@ export default function Book() {
         </div>
       </div>
 
-      {book.status === 'READING' && (
-        <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 rounded-lg px-4 py-2">
+      {book.status !== 'NOT_READING' && (
+        <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 rounded-lg px-4 py-2 text-sm">
           <p className="flex gap-2">
             Leitura iniciada em:{' '}
             <span className="text-light-gray font-semibold">
@@ -93,7 +124,7 @@ export default function Book() {
           <p className="flex gap-2">
             Total de páginas:{' '}
             <span className="text-light-gray font-semibold">
-              <p> 302</p>
+              <p>302</p>
             </span>
           </p>
           <p className="flex gap-2">
