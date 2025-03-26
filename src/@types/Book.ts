@@ -5,7 +5,10 @@ export interface Book {
   sinopse: string;
   imagePath: string;
   genreLiterary: LiteraryGenre;
+  numberOfPages: number;
+  currentPage: number;
   status: ReadingStatus;
+  createdAt: string | null;
 }
 
 export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';

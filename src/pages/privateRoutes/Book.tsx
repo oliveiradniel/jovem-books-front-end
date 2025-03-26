@@ -10,6 +10,7 @@ import { GoArrowLeft } from 'react-icons/go';
 import { GrInProgress } from 'react-icons/gr';
 import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
 import { FaStopwatch } from 'react-icons/fa';
+import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -77,29 +78,47 @@ export default function Book() {
             >
               {book.status === 'NOT_READING' && 'INICIAR LEITURA'}
               {book.status === 'READING' && (
-                <p className="flex items-center justify-center gap-2">
+                <p className="animate-fade-in flex items-center justify-center gap-2">
                   <GrInProgress /> EM LEITURA
                 </p>
               )}
               {book.status === 'ON_HOLD' && (
-                <p className="flex items-center justify-center gap-2">
+                <p className="animate-fade-in flex items-center justify-center gap-2">
                   <FaStopwatch /> EM PAUSA
+                </p>
+              )}
+              {book.status === 'FINISHED' && (
+                <p className="animate-fade-in text-sky-blue flex items-center justify-center gap-2">
+                  <BsFillBookmarkCheckFill />
+                  CONCLUÍDO
                 </p>
               )}
             </button>
 
             {isReading && (
-              <button
-                type="button"
-                onClick={handlePauseOrContinuationReading}
-                className="animate-fade-in-500 hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
-              >
-                <p className="flex items-center justify-center gap-2">
-                  {book.status === 'READING' && <IoPauseOutline size={20} />}
+              <>
+                <button
+                  type="button"
+                  onClick={handlePauseOrContinuationReading}
+                  className="animate-fade-in-500 hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
+                >
+                  <p className="flex items-center justify-center gap-2">
+                    {book.status === 'READING' && <IoPauseOutline size={20} />}
 
-                  {book.status === 'ON_HOLD' && <IoPlayOutline size={20} />}
-                </p>
-              </button>
+                    {book.status === 'ON_HOLD' && <IoPlayOutline size={20} />}
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleChangeBookStatus('FINISHED')}
+                  className="animate-fade-in-500 hover:bg-stormy-blue-op-80 text-snow-white font-roboto bg-stormy-blue mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
+                >
+                  <p className="flex items-center justify-center gap-2">
+                    FINALIZAR LIVRO
+                  </p>
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -116,7 +135,7 @@ export default function Book() {
       {book.status !== 'NOT_READING' && (
         <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 rounded-lg px-4 py-2 text-sm">
           <p className="flex gap-2">
-            Leitura iniciada em:{' '}
+            Leitura {book.status === 'READING' ? 'iniciada' : 'concluída'} em:{' '}
             <span className="text-light-gray font-semibold">
               24 de dezembro de 2024
             </span>
@@ -124,13 +143,17 @@ export default function Book() {
           <p className="flex gap-2">
             Total de páginas:{' '}
             <span className="text-light-gray font-semibold">
-              <p>302</p>
+              <p>{book.numberOfPages}</p>
             </span>
           </p>
-          <p className="flex gap-2">
-            <p>Página atual: </p>{' '}
-            <span className="text-light-gray font-semibold">225</span>
-          </p>
+          {isReading && (
+            <p className="flex gap-2">
+              <p>Página atual: </p>{' '}
+              <span className="text-light-gray font-semibold">
+                {book.currentPage}
+              </span>
+            </p>
+          )}
         </div>
       )}
     </div>
