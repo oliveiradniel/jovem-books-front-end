@@ -11,6 +11,7 @@ import { GrInProgress } from 'react-icons/gr';
 import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
 import { FaStopwatch } from 'react-icons/fa';
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
+import { delay } from '../../utils/delay';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -51,6 +52,8 @@ export default function Book() {
 
   useEffect(() => {
     async function getBookById() {
+      await delay(1000);
+
       const dataBook = books.find((book) => book.id === Number(id));
 
       setBook(dataBook as IBook);
@@ -58,6 +61,8 @@ export default function Book() {
 
     getBookById();
   }, [id]);
+
+  console.log(book.status);
 
   return (
     <div>
@@ -88,7 +93,7 @@ export default function Book() {
               type="button"
               disabled={book.status !== 'NOT_READING'}
               onClick={() => handleChangeBookStatus('READING')}
-              className="hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
+              className={`hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 mt-10 flex h-10 w-[140px] items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default ${book.status === 'FINISHED' && 'border-sky-blue!'}`}
             >
               {book.status === 'NOT_READING' && 'INICIAR LEITURA'}
               {book.status === 'READING' && (

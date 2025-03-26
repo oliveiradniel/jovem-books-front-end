@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useAuth } from '../../../app/hooks/useAuth';
 
+import { delay } from '../../../utils/delay';
 import { getGreeting } from '../../../utils/getGreeting';
 
 import { books as dataBooks } from '../../../assets/mocks/books';
@@ -28,7 +29,7 @@ export default function MyBooks() {
     try {
       setIsLoading(true);
 
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await delay(1000);
 
       setBooks(dataBooks);
     } catch (error) {
