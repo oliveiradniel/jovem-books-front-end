@@ -24,6 +24,7 @@ export const books: Book[] = [
     currentPage: 0,
     status: 'NOT_READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -37,6 +38,7 @@ export const books: Book[] = [
     currentPage: 102,
     status: 'READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -50,6 +52,7 @@ export const books: Book[] = [
     currentPage: 0,
     status: 'NOT_READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -63,6 +66,7 @@ export const books: Book[] = [
     currentPage: 42,
     status: 'READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -76,6 +80,7 @@ export const books: Book[] = [
     currentPage: 0,
     status: 'NOT_READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -89,6 +94,7 @@ export const books: Book[] = [
     currentPage: 103,
     status: 'FINISHED',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -102,6 +108,7 @@ export const books: Book[] = [
     currentPage: 504,
     status: 'FINISHED',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -115,6 +122,7 @@ export const books: Book[] = [
     currentPage: 93,
     status: 'ON_HOLD',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -128,6 +136,7 @@ export const books: Book[] = [
     currentPage: 0,
     status: 'NOT_READING',
     createdAt: null,
+    updatedAt: null,
   },
   {
     id: Math.random(),
@@ -141,5 +150,6 @@ export const books: Book[] = [
     currentPage: 56,
     status: 'READING',
     createdAt: null,
+    updatedAt: null,
   },
 ];

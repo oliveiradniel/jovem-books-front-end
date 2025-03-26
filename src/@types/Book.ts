@@ -9,6 +9,7 @@ export interface Book {
   currentPage: number;
   status: ReadingStatus;
   createdAt: string | null;
+  updatedAt: string | null;
 }
 
 export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';

@@ -22,7 +22,21 @@ export default function Book() {
   const isReading = book.status === 'READING' || book.status === 'ON_HOLD';
 
   function handleChangeBookStatus(status: ReadingStatus) {
-    const newBook = { ...book, status };
+    let newBook = { ...book, status };
+
+    const date = new Date().toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+
+    if (status === 'READING') {
+      newBook = { ...newBook, createdAt: date };
+    }
+
+    if (status === 'FINISHED') {
+      newBook = { ...newBook, updatedAt: date };
+    }
 
     setBook(newBook as IBook);
   }
@@ -135,9 +149,10 @@ export default function Book() {
       {book.status !== 'NOT_READING' && (
         <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 rounded-lg px-4 py-2 text-sm">
           <p className="flex gap-2">
-            Leitura {book.status === 'READING' ? 'iniciada' : 'concluída'} em:{' '}
+            Leitura {isReading ? 'iniciada' : 'concluída'} em:{' '}
             <span className="text-light-gray font-semibold">
-              24 de dezembro de 2024
+              {isReading && book.createdAt}
+              {book.status === 'FINISHED' && book.updatedAt}
             </span>
           </p>
           <p className="flex gap-2">
