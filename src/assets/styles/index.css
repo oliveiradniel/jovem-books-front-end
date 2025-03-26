@@ -3,6 +3,8 @@
 
 @theme {
   --color-sky-blue: #03a9f4;
+  --color-sky-blue-op-60: #03a9f460;
+  --color-sky-blue-op-80: #03a9f480;
   --color-ocean-blue: #005a83;
   --color-stormy-blue: #3b7893;
   --color-ashen-purple: #7a78a7;

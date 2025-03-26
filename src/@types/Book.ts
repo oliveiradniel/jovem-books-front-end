@@ -2,6 +2,8 @@ export interface Book {
   id: number;
   title: string;
   author: string;
+  sinopse: string;
+  imagePath: string;
   genreLiterary: LiteraryGenre;
   status: ReadingStatus;
 }
