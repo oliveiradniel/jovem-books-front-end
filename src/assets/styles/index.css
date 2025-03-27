@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 
+input[type='number'] {
+  -webkit-appearance: none; /* Para navegadores WebKit (Chrome, Safari) */
+  -moz-appearance: textfield; /* Para navegadores Firefox */
+  appearance: none; /* Para navegadores modernos */
+}
+
 @theme {
   --color-sky-blue: #03a9f4;
   --color-sky-blue-op-60: #03a9f460;
@@ -18,6 +24,7 @@
   --color-navy-blue: #19243a;
   --color-navy-blue-op-40: #19243a40;
   --color-navy-blue-op-80: #19243a80;
+  --color-navy-blue-2: #1f2c47;
   --color-shadow-blue: #141243;
   --color-galatic-blue: #1d1b39;
   --color-dark-burgundy: #100e35;
