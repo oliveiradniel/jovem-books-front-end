@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import ReactDOM from 'react-dom';
+import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
 
 interface ConfirmationModal {
   bookTitle: string;
@@ -18,7 +19,9 @@ export default function ConfirmationModal({
 }: ConfirmationModal) {
   const [title, setTitle] = useState('');
 
-  if (!isVisible) {
+  const { shouldRender, animatedElementRef } =
+    useAnimatedUnmount<HTMLDivElement>(isVisible);
+  if (!shouldRender) {
     return null;
   }
 
@@ -38,12 +41,17 @@ export default function ConfirmationModal({
   function handleConfirm() {
     onConfirm();
 
-    onClose();
+    handleClose();
   }
 
   return ReactDOM.createPortal(
-    <div className="fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black/60 backdrop-blur-[1px]">
-      <div className="bg-blue-black-op-80 flex flex-col gap-2 rounded-lg p-5">
+    <div
+      ref={animatedElementRef}
+      className={`animate-fade-in fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black/60 backdrop-blur-[1px] ${!isVisible && 'animate-fade-out-100'}`}
+    >
+      <div
+        className={`bg-blue-black-op-80 animate-scale-in-300 flex flex-col gap-2 rounded-lg p-5 ${!isVisible && 'animate-scale-out-100'}`}
+      >
         <p className="font-quicksand text-snow-white">
           Essa ação não poderá ser desfeita. Digite o título do livro para
           continuar.

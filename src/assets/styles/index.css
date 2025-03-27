@@ -72,6 +72,16 @@
     }
   }
 
+  --animate-fade-out-400: fade-out-400 0.4s ease-in-out forwards;
+  @keyframes fade-out-400 {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
   --animate-move-in-right: move-in-right 0.2s ease-in-out forwards;
   @keyframes move-in-right {
     0% {
@@ -215,6 +225,26 @@
     100% {
       opacity: 1;
       transform: translateY(0px);
+    }
+  }
+
+  --animate-scale-in-300: scale-in-300 0.3s ease-in-out forwards;
+  @keyframes scale-in-300 {
+    0% {
+      transform: scale(0.8);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  --animate-scale-out-100: scale-out-100 0.1s ease-in-out forwards;
+  @keyframes scale-out-100 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0.8);
     }
   }
 }
