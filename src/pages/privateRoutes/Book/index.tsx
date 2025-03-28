@@ -12,10 +12,11 @@ import { GoArrowLeft } from 'react-icons/go';
 import { GrInProgress } from 'react-icons/gr';
 import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
 import { FaStopwatch } from 'react-icons/fa';
-import { BsFillBookmarkCheckFill } from 'react-icons/bs';
-import ConfirmationModal from './ConfirmationModal';
 import { CiEdit } from 'react-icons/ci';
-import EditModal from './EditModal';
+import { BsFillBookmarkCheckFill } from 'react-icons/bs';
+
+import ConfirmationModal from './components/ConfirmationModal';
+import EditModal from './components/EditModal';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -27,6 +28,8 @@ export default function Book() {
   const { id } = useParams();
 
   const navigate = useNavigate();
+
+  const currentPage = book.currentPage === null ? 0 : book.currentPage;
 
   const isReading = book.status === 'READING' || book.status === 'ON_HOLD';
 
@@ -71,7 +74,7 @@ export default function Book() {
 
   function handlePagesNumberChange(number: number) {
     const newBook = { ...book, currentPage: number };
-    console.log(newBook);
+
     setBook(newBook);
   }
 
@@ -91,13 +94,14 @@ export default function Book() {
     <>
       <ConfirmationModal
         bookTitle={book.title}
-        remainingPages={book.numberOfPages - book.currentPage}
+        remainingPages={book.numberOfPages - currentPage}
         isVisible={isConfirmationModalVisible}
         onClose={() => setIsConfirmationModalVisible(false)}
         onConfirm={handleWithBookCompletion}
       />
 
       <EditModal
+        currentPage={book.currentPage}
         pagesTotalNumber={book.numberOfPages}
         isVisible={isEditModalVisible}
         onClose={() => setIsEditModalVisible(false)}
@@ -205,14 +209,14 @@ export default function Book() {
               <p className="flex gap-2">
                 Total de páginas:{' '}
                 <span className="text-light-gray font-semibold">
-                  <p>{book.numberOfPages}</p>
+                  {book.numberOfPages}
                 </span>
               </p>
               {isReading && (
                 <p className="flex gap-2">
                   <p>Página atual: </p>{' '}
                   <span className="text-light-gray font-semibold">
-                    {book.currentPage}
+                    {currentPage}
                   </span>
                 </p>
               )}

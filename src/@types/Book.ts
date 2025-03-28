@@ -6,7 +6,7 @@ export interface Book {
   imagePath: string;
   genreLiterary: LiteraryGenre;
   numberOfPages: number;
-  currentPage: number;
+  currentPage: number | null;
   status: ReadingStatus;
   createdAt: string | null;
   updatedAt: string | null;
