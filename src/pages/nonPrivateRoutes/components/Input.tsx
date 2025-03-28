@@ -28,6 +28,7 @@ export default function Input({
 
   const typeField =
     isAPasswordInput && isThePasswordVisible ? 'text' : 'password';
+
   const errors = errorsData.filter((error) => {
     return (
       fieldName.includes(error.fieldName) || error.fieldName === 'credentials'

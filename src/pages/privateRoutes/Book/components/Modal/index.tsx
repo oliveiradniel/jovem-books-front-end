@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 
-import useAnimatedUnmount from '../../../../app/hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
 
 interface ModalProps {
   title: string;

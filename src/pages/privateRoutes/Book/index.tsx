@@ -8,15 +8,15 @@ import { books } from '../../../assets/mocks/books';
 
 import { Book as IBook, ReadingStatus } from '../../../@types/Book';
 
-import ConfirmationModal from './components/ConfirmationModal';
-import EditModal from './components/EditModal';
+import ConfirmationModal from './components/Modal/ConfirmationModal';
+import EditModal from './components/Modal/EditModal';
 import GoBack from './components/GoBack';
 import Title from './components/Title';
 import Author from './components/Author';
 import Sinopse from './components/Sinopse';
 import InformationButton from './components/InformationButton';
 import PauseOrPlayButton from './components/PauseOrPlayButton';
-import FinishButton from './components/Finish';
+import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
 

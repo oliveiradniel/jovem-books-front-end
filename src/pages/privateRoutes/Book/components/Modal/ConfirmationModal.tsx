@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
-import Modal from './Modal.tsx';
-import Input from './Input.tsx';
+import Modal from './index.tsx';
+import Input from './../Input.tsx';
 
 interface ConfirmationModal {
   bookTitle: string;
