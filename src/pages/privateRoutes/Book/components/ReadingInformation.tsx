@@ -1,8 +1,8 @@
 import { CiEdit } from 'react-icons/ci';
-import { Book } from '../../../../@types/Book';
+import { IBook } from '../../../../@types/Book';
 
 interface ReadingInformationProps {
-  book: Book;
+  book: IBook;
   currentPage: number;
   onFinish: () => void;
 }

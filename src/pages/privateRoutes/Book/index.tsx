@@ -6,7 +6,7 @@ import { delay } from '../../../utils/delay';
 
 import { books } from '../../../assets/mocks/books';
 
-import { Book as IBook, ReadingStatus } from '../../../@types/Book';
+import { IBook, ReadingStatus } from '../../../@types/Book';
 
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditModal from './components/Modal/EditModal';

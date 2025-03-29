@@ -1,4 +1,20 @@
-export interface Book {
+export interface IBookAPI {
+  id: number;
+  title: string;
+  author: string;
+  sinopse: string;
+  imagePath: string;
+  genreLiterary: LiteraryGenre;
+  numberOfPages: number;
+  reads: {
+    status: ReadingStatus;
+    currentPage: number | null;
+    createdAt: string | null;
+    updatedAt: string | null;
+  };
+}
+
+export interface IBook {
   id: number;
   title: string;
   author: string;

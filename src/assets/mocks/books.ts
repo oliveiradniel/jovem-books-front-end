@@ -9,9 +9,9 @@ import theHobbit from './the-hobbit.jpg';
 import theLordOfTheRings from './the-lord-of-the-rings.jpg';
 import toKillAMockinbird from './to-kill-a-mockinbird.jpg';
 
-import { Book } from '../../@types/Book';
+import { IBook } from '../../@types/Book';
 
-export const books: Book[] = [
+export const books: IBook[] = [
   {
     id: Math.random(),
     title: 'Harry Potter',

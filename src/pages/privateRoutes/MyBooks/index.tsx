@@ -7,7 +7,7 @@ import { getGreeting } from '../../../utils/getGreeting';
 
 import { books as dataBooks } from '../../../assets/mocks/books';
 
-import { Book } from '../../../@types/Book';
+import { IBook } from '../../../@types/Book';
 import { Page } from './@types/Page';
 
 import TableBooks from './components/TableBooks';
@@ -23,7 +23,7 @@ export default function MyBooks() {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<IBook[]>([]);
   const [page, setPage] = useState<Page>('ALL');
 
   const handleGetAllBooks = useCallback(async () => {
