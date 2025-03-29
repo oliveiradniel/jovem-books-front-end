@@ -25,6 +25,7 @@ export default function Modal({
 }: ModalProps) {
   const { shouldRender, animatedElementRef } =
     useAnimatedUnmount<HTMLDivElement>(isVisible);
+
   if (!shouldRender) {
     return null;
   }

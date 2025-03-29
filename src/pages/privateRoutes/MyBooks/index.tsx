@@ -12,6 +12,7 @@ import { Page } from './@types/Page';
 
 import TableBooks from './components/TableBooks';
 import Header from './components/Header';
+import BooksService from '../../../app/services/BooksService';
 
 function Line() {
   return <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />;
@@ -82,6 +83,20 @@ export default function MyBooks() {
   }, [handleGetAllBooks, page]);
 
   useEffect(() => {
+    async function loadBooks() {
+      try {
+        setIsLoading(true);
+
+        const booksList = await BooksService.listBooks();
+
+        console.log(booksList);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    loadBooks();
+
     handleGetAllBooks();
   }, [handleGetAllBooks]);
 
