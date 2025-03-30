@@ -14,7 +14,7 @@ export interface IBook {
   } | null;
 }
 
-export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';
+export type ReadingStatus = 'READING' | 'ON_HOLD' | 'FINISHED';
 
 export type LiteraryGenre =
   | 'ROMANCE'
