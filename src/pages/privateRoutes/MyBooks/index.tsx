@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import BooksService from '../../../app/services/BooksService';
 
 import { useAuth } from '../../../app/hooks/useAuth';
 
-import { delay } from '../../../utils/delay';
 import { getGreeting } from '../../../utils/getGreeting';
 
 import { books as dataBooks } from '../../../assets/mocks/books';
@@ -26,20 +25,6 @@ export default function MyBooks() {
 
   const [books, setBooks] = useState<IBook[]>([]);
   const [page, setPage] = useState<Page>('ALL');
-
-  const handleGetAllBooks = useCallback(async () => {
-    try {
-      setIsLoading(true);
-
-      await delay(1000);
-
-      setBooks(dataBooks);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
 
   function handleWithUnreadBooksFiltration() {
     const filteredBooks = dataBooks.filter((book) => book.read === null);
@@ -81,7 +66,7 @@ export default function MyBooks() {
         setBooks(dataBooks);
       }
     }
-  }, [handleGetAllBooks, page]);
+  }, [page]);
 
   useEffect(() => {
     async function loadBooks() {
@@ -90,16 +75,16 @@ export default function MyBooks() {
 
         const booksList = await BooksService.listBooks();
 
-        console.log(booksList);
+        setBooks(booksList);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     loadBooks();
-
-    handleGetAllBooks();
-  }, [handleGetAllBooks]);
+  }, []);
 
   return (
     <div className="h-full">

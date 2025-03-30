@@ -4,10 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { delay } from '../../../utils/delay';
 import { formatDate } from '../../../utils/formatDate';
-
-import { books } from '../../../assets/mocks/books';
 
 import { IBook } from '../../../@types/Book';
 
@@ -23,6 +20,7 @@ import PauseOrPlayButton from './components/PauseOrPlayButton';
 import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
+import BooksService from '../../../app/services/BooksService';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -115,15 +113,13 @@ export default function Book() {
   }
 
   useEffect(() => {
-    async function getBookById() {
-      await delay(1000);
+    async function loadContact() {
+      const bookData = await BooksService.getContactById(id!);
 
-      const dataBook = books.find((book) => book.id === id);
-
-      setBook(dataBook as IBook);
+      setBook(bookData);
     }
 
-    getBookById();
+    loadContact();
   }, [id]);
 
   return (
