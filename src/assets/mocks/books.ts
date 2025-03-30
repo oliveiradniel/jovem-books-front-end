@@ -15,11 +15,11 @@ export const books: IBook[] = [
   {
     id: String(Math.random()),
     title: 'Harry Potter',
-    authors: ['J. K. Rowling'],
+    authors: ['J. K. Rowling', 'George Orwell', 'George Orwell'],
     sinopse:
       'Harry Potter é um garoto órfão que vive com seus tios e primo, a quem é tratado de forma cruel e negligente. No entanto, ao completar 11 anos, Harry descobre que é, na verdade, um bruxo e recebe uma carta de admissão para estudar na Escola de Magia e Bruxaria de Hogwarts. Lá, ele conhece novos amigos, como Ron Weasley e Hermione Granger, e descobre que é famoso no mundo bruxo por ter sobrevivido a um ataque do bruxo das trevas Lord Voldemort, que matou seus pais quando Harry ainda era um bebê.',
     imagePath: harry,
-    genreLiterary: ['DRAMA'],
+    genreLiterary: ['DRAMA', 'ADVENTURE'],
     numberOfPages: 302,
     read: null,
   },
@@ -30,7 +30,7 @@ export const books: IBook[] = [
     sinopse:
       'O Hobbit segue as aventuras de Bilbo Baggins, um hobbit tranquilo que vive uma vida pacata na Comarca, até o dia em que é inesperadamente recrutado pelo mago Gandalf e um grupo de anões liderados por Thorin Oakenshield. Juntos, eles partem em uma jornada para recuperar o Reino de Erebor, tomado por um dragão chamado Smaug. Ao longo de sua jornada, Bilbo enfrenta trolls, orcs, elfos e encontra um anel mágico que mais tarde se revela de grande importância.',
     imagePath: theHobbit,
-    genreLiterary: ['ADVENTURE'],
+    genreLiterary: ['ADVENTURE', 'BIOGRAPHY'],
     numberOfPages: 490,
     read: {
       currentPage: 1,
@@ -42,11 +42,11 @@ export const books: IBook[] = [
   {
     id: String(Math.random()),
     title: '1984',
-    authors: ['George Orwell'],
+    authors: ['George Orwell', 'George Orwell'],
     sinopse:
       'Em um futuro distópico, o governo de Oceânia é liderado pelo Grande Irmão, uma figura onipresente que monitora todos os aspectos da vida dos cidadãos. Winston Smith, um funcionário do governo, começa a questionar o regime totalitário e a verdade imposta pelo Partido, levando-o a um caminho de rebelião. O livro é uma reflexão profunda sobre os perigos do totalitarismo, da vigilância e da manipulação da realidade.',
     imagePath: george,
-    genreLiterary: ['DYSTOPIAN'],
+    genreLiterary: ['DYSTOPIAN', 'CHILDRENS'],
     numberOfPages: 309,
     read: null,
   },
@@ -80,7 +80,7 @@ export const books: IBook[] = [
   {
     id: String(Math.random()),
     title: 'The Great Gatsby',
-    authors: ['F. Scott Fitzgerald'],
+    authors: ['F. Scott Fitzgerald', 'F. Scott Fitzgerald'],
     sinopse:
       'A história se passa na década de 1920 e segue o misterioso Jay Gatsby, um milionário que organiza festas luxuosas em sua mansão, na esperança de reencontrar seu amor perdido, Daisy Buchanan. Através dos olhos de Nick Carraway, o romance explora os excessos, a decadência e a busca insaciável pelo sonho americano.',
     imagePath: theGreatGatsby,

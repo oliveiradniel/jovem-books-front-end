@@ -1,11 +1,11 @@
-import { Book } from '../../../../../@types/Book';
+import { IBook } from '../../../../../@types/Book';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBoby';
 import { RingLoader } from 'react-spinners';
 
 interface TabelBooksProps {
-  books: Book[];
+  books: IBook[];
   isLoading: boolean;
 }
 
