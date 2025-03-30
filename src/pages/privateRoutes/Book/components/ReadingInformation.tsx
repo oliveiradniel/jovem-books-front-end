@@ -45,7 +45,7 @@ export default function ReadingInformation({
             </p>
           )}
 
-          {isReading && (
+          {isReading && book.numberOfPages && (
             <p className="flex gap-2">
               Progresso:
               <span className="text-light-gray font-semibold">

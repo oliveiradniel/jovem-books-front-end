@@ -13,7 +13,6 @@ import { IBook } from '../../../@types/Book';
 
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
-import EditSinopseModal from './components/Modal/EditSinopseModal';
 
 import GoBack from './components/GoBack';
 import Title from './components/Title';
@@ -39,6 +38,11 @@ export default function Book() {
 
   let authors = '';
   book.authors?.forEach((author, index) => {
+    if (book.authors.length === 1) {
+      authors = author;
+      return;
+    }
+
     if (index === book.authors.length - 1) {
       authors += `e ${author}`;
       return;
@@ -92,9 +96,15 @@ export default function Book() {
   }
 
   function handlePagesNumberChange(number: number) {
-    const newBook = { ...book, currentPage: number };
-
-    setBook(newBook);
+    setBook((prevState) => ({
+      ...prevState,
+      read: {
+        status: prevState.read?.status!,
+        currentPage: number,
+        createdAt: prevState.read?.createdAt!,
+        finishedAt: prevState.read?.finishedAt ?? null,
+      },
+    }));
   }
 
   function handleSinopseEdit(sinopse: string) {
