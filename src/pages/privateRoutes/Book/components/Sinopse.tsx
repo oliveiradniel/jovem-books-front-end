@@ -22,9 +22,11 @@ export default function Sinopse({ text, onSinopseEdit }: SinopseProps) {
         onConfirm={onSinopseEdit}
       />
 
-      <div className="h-[200px]">
+      <div className="mt-8 h-[200px] max-w-[500px] overflow-auto">
         {text ? (
-          <p className="text-snow-white-op-70 font-quicksand mt-8">{text}</p>
+          <p className="text-snow-white-op-70 font-quicksand break-words">
+            {text}
+          </p>
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-8">
             <p className="text-mate-gray font-quicksand text-sm">

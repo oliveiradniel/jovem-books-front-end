@@ -155,7 +155,7 @@ export default function Book() {
 
             <Sinopse text={book.sinopse!} onSinopseEdit={handleSinopseEdit} />
 
-            <div className="flex gap-2">
+            <div className="mt-8 flex flex-col gap-2 sm:flex-row">
               <InformationButton
                 status={book.read?.status ?? null}
                 onChangeBookStatus={handleStartReading}

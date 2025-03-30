@@ -87,7 +87,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
             <img
               src={`${env.API_URL}/uploads/users/${user.imagePath}`}
               alt="Foto de Perfil"
-              className="h-7 w-7 rounded-full"
+              className={`h-7 w-7 rounded-full ${!isExpanded && 'min-h-7 min-w-7'}`}
             />
           ) : (
             <FaCircleUser
