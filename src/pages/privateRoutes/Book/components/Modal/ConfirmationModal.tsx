@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import Modal from './index.tsx';
 import Input from './../Input.tsx';
 
-interface ConfirmationModal {
+interface ConfirmationModalProps {
   bookTitle: string;
   remainingPages: number;
   isVisible: boolean;
@@ -17,7 +17,7 @@ export default function ConfirmationModal({
   isVisible,
   onClose,
   onConfirm,
-}: ConfirmationModal) {
+}: ConfirmationModalProps) {
   const [title, setTitle] = useState('');
 
   const subTitle =

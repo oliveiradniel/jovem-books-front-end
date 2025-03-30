@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
 
 interface ModalProps {
-  title: string;
+  title?: string;
   subTitle?: string | null;
   buttonLabelConfirm: string;
   isVisible: boolean;
@@ -46,9 +46,11 @@ export default function Modal({
       <div
         className={`bg-blue-black-op-80 animate-scale-in-300 flex flex-col gap-2 rounded-lg p-5 ${!isVisible && 'animate-scale-out-100'}`}
       >
-        <p className="font-quicksand text-snow-white text-sm">{title}</p>
+        {title && (
+          <p className="font-quicksand text-snow-white text-sm">{title}</p>
+        )}
 
-        <div className="bg-navy-blue h-[0.1px] w-full" />
+        {title && <div className="bg-navy-blue h-[0.1px] w-full" />}
 
         {subTitle && (
           <p className="text-light-gray font-quicksand mt-10 text-xs">
@@ -58,7 +60,7 @@ export default function Modal({
 
         {children}
 
-        <div className="m-4 flex justify-end gap-2">
+        <div className="mt-4 flex justify-end gap-2">
           <button
             onClick={onClose}
             className="text-mate-gray hover:text-mate-gray-op-60 font-roboto transition-colors duration-300 ease-in-out hover:cursor-pointer"

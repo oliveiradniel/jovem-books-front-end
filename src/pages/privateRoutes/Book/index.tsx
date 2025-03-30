@@ -5,13 +5,16 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { delay } from '../../../utils/delay';
+import { formatDate } from '../../../utils/formatDate';
 
 import { books } from '../../../assets/mocks/books';
 
 import { IBook } from '../../../@types/Book';
 
 import ConfirmationModal from './components/Modal/ConfirmationModal';
-import EditModal from './components/Modal/EditModal';
+import EditReadModal from './components/Modal/EditReadModal';
+import EditSinopseModal from './components/Modal/EditSinopseModal';
+
 import GoBack from './components/GoBack';
 import Title from './components/Title';
 import Author from './components/Author';
@@ -21,14 +24,13 @@ import PauseOrPlayButton from './components/PauseOrPlayButton';
 import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
-import { formatDate } from '../../../utils/formatDate';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
 
   const { id } = useParams();
 
@@ -95,6 +97,13 @@ export default function Book() {
     setBook(newBook);
   }
 
+  function handleSinopseEdit(sinopse: string) {
+    setBook((prevState) => ({
+      ...prevState,
+      sinopse,
+    }));
+  }
+
   useEffect(() => {
     async function getBookById() {
       await delay(1000);
@@ -117,11 +126,11 @@ export default function Book() {
         onConfirm={handleWithBookCompletion}
       />
 
-      <EditModal
+      <EditReadModal
         currentPage={book.read?.currentPage ?? null}
         pagesTotalNumber={book.numberOfPages!}
-        isVisible={isEditModalVisible}
-        onClose={() => setIsEditModalVisible(false)}
+        isVisible={isEditReadModalVisible}
+        onClose={() => setIsEditReadModalVisible(false)}
         onConfirm={handlePagesNumberChange}
       />
 
@@ -134,7 +143,7 @@ export default function Book() {
 
             <Author author={authors} />
 
-            <Sinopse text={book.sinopse!} />
+            <Sinopse text={book.sinopse!} onSinopseEdit={handleSinopseEdit} />
 
             <div className="flex gap-2">
               <InformationButton
@@ -164,7 +173,7 @@ export default function Book() {
 
         <ReadingInformation
           book={book}
-          onFinish={() => setIsEditModalVisible(true)}
+          onFinish={() => setIsEditReadModalVisible(true)}
         />
       </div>
     </>
