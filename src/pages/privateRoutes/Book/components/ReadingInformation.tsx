@@ -1,20 +1,21 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+
 import { CiEdit } from 'react-icons/ci';
 import { IBook } from '../../../../@types/Book';
 
 interface ReadingInformationProps {
   book: IBook;
-  currentPage: number;
   onFinish: () => void;
 }
 
 export default function ReadingInformation({
   book,
-  currentPage,
   onFinish,
 }: ReadingInformationProps) {
-  const isReading = book.status === 'READING' || book.status === 'ON_HOLD';
+  const isReading =
+    book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
 
-  const isFinished = book.status === 'FINISHED';
+  const isFinished = book.read?.status === 'FINISHED';
 
   const currentDate = new Date().toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -23,14 +24,15 @@ export default function ReadingInformation({
   });
 
   return (
-    book.status !== 'NOT_READING' && (
+    book.read !== null && (
       <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 flex justify-between rounded-lg px-4 py-2 text-sm">
         <div>
           <p className="flex gap-2">
             Leitura {isReading ? 'iniciada' : 'concluída'} em:{' '}
             <span className="text-light-gray font-semibold">
-              {isReading && book.createdAt}
-              {book.status === 'FINISHED' && (book.updatedAt ?? currentDate)}
+              {isReading && book.read.createdAt}
+              {book.read?.status === 'FINISHED' &&
+                (book.read?.finishedAt ?? currentDate)}
             </span>
           </p>
           <p className="flex gap-2">
@@ -43,16 +45,19 @@ export default function ReadingInformation({
             <p className="flex gap-2">
               Página atual:
               <span className="text-light-gray font-semibold">
-                {currentPage}
+                {book.read?.currentPage!}
               </span>
             </p>
           )}
 
           {isReading && (
             <p className="flex gap-2">
-              Página atual:
+              Progresso:
               <span className="text-light-gray font-semibold">
-                {currentPage}
+                {((book.read.currentPage / book.numberOfPages) * 100).toFixed(
+                  2
+                )}
+                %
               </span>
             </p>
           )}
@@ -65,7 +70,7 @@ export default function ReadingInformation({
           )}
         </div>
 
-        {book.status !== 'FINISHED' && (
+        {book.read?.status !== 'FINISHED' && (
           <button type="button" onClick={onFinish} className="flex">
             <CiEdit
               size={20}

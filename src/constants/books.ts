@@ -1,5 +1,4 @@
 export const READING_STATUS = {
-  NOT_READING: 'Não lido',
   READING: 'Em leitura',
   ON_HOLD: 'Pausado',
   FINISHED: 'Concluído',

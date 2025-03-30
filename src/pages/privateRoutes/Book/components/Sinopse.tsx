@@ -1,3 +1,7 @@
-export default function Sinopse({ sinopse }: { sinopse: string }) {
-  return <p className="text-snow-white-op-70 font-quicksand mt-8">{sinopse}</p>;
+interface SinopseProps {
+  text: string | null;
+}
+
+export default function Sinopse({ text }: SinopseProps) {
+  return <p className="text-snow-white-op-70 font-quicksand mt-8">{text}</p>;
 }

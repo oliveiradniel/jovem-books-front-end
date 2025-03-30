@@ -1,4 +1,3 @@
-import harry from './harry-potter.jpg';
 import george from './1984.jpg';
 import braveNewWord from './brave-new-word.jpg';
 import mobyDick from './moby-dick.jpg';
@@ -11,6 +10,12 @@ import toKillAMockinbird from './to-kill-a-mockinbird.jpg';
 
 import { IBook } from '../../@types/Book';
 
+const date = new Date().toLocaleDateString('pt-BR', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+});
+
 export const books: IBook[] = [
   {
     id: String(Math.random()),
@@ -18,7 +23,7 @@ export const books: IBook[] = [
     authors: ['J. K. Rowling', 'George Orwell', 'George Orwell'],
     sinopse:
       'Harry Potter é um garoto órfão que vive com seus tios e primo, a quem é tratado de forma cruel e negligente. No entanto, ao completar 11 anos, Harry descobre que é, na verdade, um bruxo e recebe uma carta de admissão para estudar na Escola de Magia e Bruxaria de Hogwarts. Lá, ele conhece novos amigos, como Ron Weasley e Hermione Granger, e descobre que é famoso no mundo bruxo por ter sobrevivido a um ataque do bruxo das trevas Lord Voldemort, que matou seus pais quando Harry ainda era um bebê.',
-    imagePath: harry,
+    imagePath: null,
     genreLiterary: ['DRAMA', 'ADVENTURE'],
     numberOfPages: 302,
     read: null,
@@ -35,7 +40,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: new Date(),
+      createdAt: date,
       finishedAt: null,
     },
   },
@@ -46,7 +51,7 @@ export const books: IBook[] = [
     sinopse:
       'Em um futuro distópico, o governo de Oceânia é liderado pelo Grande Irmão, uma figura onipresente que monitora todos os aspectos da vida dos cidadãos. Winston Smith, um funcionário do governo, começa a questionar o regime totalitário e a verdade imposta pelo Partido, levando-o a um caminho de rebelião. O livro é uma reflexão profunda sobre os perigos do totalitarismo, da vigilância e da manipulação da realidade.',
     imagePath: george,
-    genreLiterary: ['DYSTOPIAN', 'CHILDRENS'],
+    genreLiterary: ['DYSTOPIAN'],
     numberOfPages: 309,
     read: null,
   },
@@ -54,15 +59,14 @@ export const books: IBook[] = [
     id: String(Math.random()),
     title: 'To Kill a Mockingbird',
     authors: ['Harper Lee'],
-    sinopse:
-      'Situado no sul dos Estados Unidos durante a Grande Depressão, este romance segue a história de Scout Finch, uma jovem que observa seu pai, Atticus Finch, advogado, defender um homem negro acusado injustamente de estuprar uma mulher branca. Através dos olhos de Scout, o livro aborda questões de racismo, moralidade, e a perda da inocência.',
+    sinopse: null,
     imagePath: toKillAMockinbird,
     genreLiterary: ['DRAMA'],
     numberOfPages: 224,
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: new Date(),
+      createdAt: date,
       finishedAt: null,
     },
   },
@@ -89,8 +93,8 @@ export const books: IBook[] = [
     read: {
       currentPage: 298,
       status: 'FINISHED',
-      createdAt: new Date(),
-      finishedAt: new Date(),
+      createdAt: date,
+      finishedAt: date,
     },
   },
   {
@@ -105,8 +109,8 @@ export const books: IBook[] = [
     read: {
       currentPage: 504,
       status: 'FINISHED',
-      createdAt: new Date(),
-      finishedAt: new Date(),
+      createdAt: date,
+      finishedAt: date,
     },
   },
   {
@@ -121,7 +125,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 104,
       status: 'ON_HOLD',
-      createdAt: new Date(),
+      createdAt: date,
       finishedAt: null,
     },
   },
@@ -148,7 +152,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: new Date(),
+      createdAt: date,
       finishedAt: null,
     },
   },

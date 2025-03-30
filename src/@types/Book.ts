@@ -9,8 +9,8 @@ export interface IBook {
   read: {
     status: ReadingStatus;
     currentPage: number;
-    createdAt: Date;
-    finishedAt: Date | null;
+    createdAt: string;
+    finishedAt: string | null;
   } | null;
 }
 

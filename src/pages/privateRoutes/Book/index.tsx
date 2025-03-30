@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+
 import { useEffect, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
@@ -6,7 +8,7 @@ import { delay } from '../../../utils/delay';
 
 import { books } from '../../../assets/mocks/books';
 
-import { IBook, ReadingStatus } from '../../../@types/Book';
+import { IBook } from '../../../@types/Book';
 
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditModal from './components/Modal/EditModal';
@@ -29,9 +31,8 @@ export default function Book() {
 
   const { id } = useParams();
 
-  const currentPage = book.currentPage === null ? 0 : book.currentPage;
-
-  const isReading = book.status === 'READING' || book.status === 'ON_HOLD';
+  const isReading =
+    book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
 
   const date = new Date().toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -39,37 +40,58 @@ export default function Book() {
     year: 'numeric',
   });
 
-  function handleChangeBookStatus(status: ReadingStatus) {
-    let newBook = { ...book, status };
-
-    if (status === 'READING') {
-      newBook = { ...newBook, createdAt: date };
-    }
-
-    if (status === 'FINISHED') {
-      setIsConfirmationModalVisible(true);
+  let authors = '';
+  book.authors?.forEach((author, index) => {
+    if (index === book.authors.length - 1) {
+      authors += `e ${author}`;
       return;
     }
 
-    setBook(newBook as IBook);
+    if (index === book.authors.length - 2) {
+      authors += `${author} `;
+      return;
+    }
+
+    authors += `${author}, `;
+  });
+
+  function handleStartReading() {
+    setBook((prevState) => ({
+      ...prevState,
+      read: {
+        status: 'READING',
+        currentPage: 1,
+        createdAt: date,
+        finishedAt: null,
+      },
+    }));
   }
 
   function handlePauseOrContinuationReading() {
-    if (book.status === 'READING') {
-      handleChangeBookStatus('ON_HOLD');
-    } else if (book.status === 'ON_HOLD') {
-      handleChangeBookStatus('READING');
-    }
+    const statusDirection =
+      book.read?.status === 'READING' ? 'ON_HOLD' : 'READING';
+
+    setBook((prevState) => ({
+      ...prevState,
+      read: {
+        status: statusDirection,
+        currentPage: prevState.read?.currentPage!,
+        createdAt: prevState.read?.createdAt!,
+        finishedAt: null,
+      },
+    }));
   }
 
   function handleWithBookCompletion() {
-    const newBook = {
-      ...book,
-      status: 'FINISHED' as ReadingStatus,
-      updatedAt: date,
-    };
-
-    setBook(newBook);
+    setBook((prevState) => ({
+      ...prevState,
+      read: {
+        status: 'FINISHED',
+        currentPage: prevState.read?.currentPage!,
+        createdAt: prevState.read?.createdAt!,
+        finishedAt: date,
+      },
+    }));
   }
 
   function handlePagesNumberChange(number: number) {
@@ -82,7 +104,7 @@ export default function Book() {
     async function getBookById() {
       await delay(1000);
 
-      const dataBook = books.find((book) => book.id === Number(id));
+      const dataBook = books.find((book) => book.id === id);
 
       setBook(dataBook as IBook);
     }
@@ -94,15 +116,15 @@ export default function Book() {
     <>
       <ConfirmationModal
         bookTitle={book.title}
-        remainingPages={book.numberOfPages - currentPage}
+        remainingPages={book.numberOfPages! - book.read?.currentPage!}
         isVisible={isConfirmationModalVisible}
         onClose={() => setIsConfirmationModalVisible(false)}
         onConfirm={handleWithBookCompletion}
       />
 
       <EditModal
-        currentPage={book.currentPage}
-        pagesTotalNumber={book.numberOfPages}
+        currentPage={book.read?.currentPage ?? null}
+        pagesTotalNumber={book.numberOfPages!}
         isVisible={isEditModalVisible}
         onClose={() => setIsEditModalVisible(false)}
         onConfirm={handlePagesNumberChange}
@@ -115,26 +137,28 @@ export default function Book() {
           <div className="max-w-[900px]">
             <Title title={book.title} />
 
-            <Author author={book.author} />
+            <Author author={authors} />
 
-            <Sinopse sinopse={book.sinopse} />
+            <Sinopse text={book.sinopse!} />
 
             <div className="flex gap-2">
               <InformationButton
-                status={book.status}
-                onChangeBookStatus={handleChangeBookStatus}
+                status={book.read?.status ?? null}
+                onChangeBookStatus={handleStartReading}
               />
 
               {isReading && (
                 <>
                   <PauseOrPlayButton
-                    status={book.status}
-                    onPauseOrContinuationReading={
-                      handlePauseOrContinuationReading
-                    }
+                    status={book.read?.status ?? null}
+                    onClick={handlePauseOrContinuationReading}
                   />
 
-                  <FinishButton onChangeBookStatus={handleChangeBookStatus} />
+                  <FinishButton
+                    onChangeBookStatus={() =>
+                      setIsConfirmationModalVisible(true)
+                    }
+                  />
                 </>
               )}
             </div>
@@ -145,7 +169,6 @@ export default function Book() {
 
         <ReadingInformation
           book={book}
-          currentPage={currentPage}
           onFinish={() => setIsEditModalVisible(true)}
         />
       </div>
