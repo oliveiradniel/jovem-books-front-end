@@ -1,31 +1,17 @@
-export interface IBookAPI {
-  id: number;
-  title: string;
-  author: string;
-  sinopse: string;
-  imagePath: string;
-  genreLiterary: LiteraryGenre;
-  numberOfPages: number;
-  reads: {
-    status: ReadingStatus;
-    currentPage: number | null;
-    createdAt: string | null;
-    updatedAt: string | null;
-  };
-}
-
 export interface IBook {
-  id: number;
+  id: string;
   title: string;
-  author: string;
-  sinopse: string;
-  imagePath: string;
-  genreLiterary: LiteraryGenre;
-  numberOfPages: number;
-  currentPage: number | null;
-  status: ReadingStatus;
-  createdAt: string | null;
-  updatedAt: string | null;
+  authors: string[];
+  sinopse: string | null;
+  imagePath: string | null;
+  numberOfPages: number | null;
+  genreLiterary: LiteraryGenre[];
+  read: {
+    status: ReadingStatus;
+    currentPage: number;
+    createdAt: Date;
+    finishedAt: Date | null;
+  } | null;
 }
 
 export type ReadingStatus = 'NOT_READING' | 'READING' | 'ON_HOLD' | 'FINISHED';

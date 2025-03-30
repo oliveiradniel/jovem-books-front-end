@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import BooksService from '../../../app/services/BooksService';
+
 import { useAuth } from '../../../app/hooks/useAuth';
 
 import { delay } from '../../../utils/delay';
@@ -12,7 +14,6 @@ import { Page } from './@types/Page';
 
 import TableBooks from './components/TableBooks';
 import Header from './components/Header';
-import BooksService from '../../../app/services/BooksService';
 
 function Line() {
   return <div className="bg-light-gray-op-40 my-4 h-[0.1px] w-full" />;
@@ -41,22 +42,22 @@ export default function MyBooks() {
   }, []);
 
   function handleWithUnreadBooksFiltration() {
-    const filteredBooks = dataBooks.filter(
-      (book) => book.status === 'NOT_READING'
-    );
+    const filteredBooks = dataBooks.filter((book) => book.read === null);
 
     setBooks(filteredBooks);
   }
 
   function handleWithFilteringBooksInReading() {
-    const filteredBooks = dataBooks.filter((book) => book.status === 'READING');
+    const filteredBooks = dataBooks.filter(
+      (book) => book.read?.status === 'READING'
+    );
 
     setBooks(filteredBooks);
   }
 
   function handleFilteringCompletedBooks() {
     const filteredBooks = dataBooks.filter(
-      (book) => book.status === 'FINISHED'
+      (book) => book.read?.status === 'FINISHED'
     );
 
     setBooks(filteredBooks);
