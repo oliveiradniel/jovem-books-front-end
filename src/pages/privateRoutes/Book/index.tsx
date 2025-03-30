@@ -21,6 +21,7 @@ import PauseOrPlayButton from './components/PauseOrPlayButton';
 import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
+import { formatDate } from '../../../utils/formatDate';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -33,12 +34,6 @@ export default function Book() {
 
   const isReading =
     book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
-
-  const date = new Date().toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  });
 
   let authors = '';
   book.authors?.forEach((author, index) => {
@@ -61,7 +56,7 @@ export default function Book() {
       read: {
         status: 'READING',
         currentPage: 1,
-        createdAt: date,
+        createdAt: formatDate(new Date()),
         finishedAt: null,
       },
     }));
@@ -89,7 +84,7 @@ export default function Book() {
         status: 'FINISHED',
         currentPage: prevState.read?.currentPage!,
         createdAt: prevState.read?.createdAt!,
-        finishedAt: date,
+        finishedAt: formatDate(new Date()),
       },
     }));
   }

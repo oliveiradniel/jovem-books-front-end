@@ -9,12 +9,7 @@ import theLordOfTheRings from './the-lord-of-the-rings.jpg';
 import toKillAMockinbird from './to-kill-a-mockinbird.jpg';
 
 import { IBook } from '../../@types/Book';
-
-const date = new Date().toLocaleDateString('pt-BR', {
-  day: '2-digit',
-  month: 'long',
-  year: 'numeric',
-});
+import { formatDate } from '../../utils/formatDate';
 
 export const books: IBook[] = [
   {
@@ -40,7 +35,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: date,
+      createdAt: formatDate(new Date()),
       finishedAt: null,
     },
   },
@@ -66,7 +61,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: date,
+      createdAt: formatDate(new Date()),
       finishedAt: null,
     },
   },
@@ -93,8 +88,8 @@ export const books: IBook[] = [
     read: {
       currentPage: 298,
       status: 'FINISHED',
-      createdAt: date,
-      finishedAt: date,
+      createdAt: formatDate(new Date()),
+      finishedAt: formatDate(new Date()),
     },
   },
   {
@@ -109,8 +104,8 @@ export const books: IBook[] = [
     read: {
       currentPage: 504,
       status: 'FINISHED',
-      createdAt: date,
-      finishedAt: date,
+      createdAt: formatDate(new Date()),
+      finishedAt: formatDate(new Date()),
     },
   },
   {
@@ -125,7 +120,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 104,
       status: 'ON_HOLD',
-      createdAt: date,
+      createdAt: formatDate(new Date()),
       finishedAt: null,
     },
   },
@@ -152,7 +147,7 @@ export const books: IBook[] = [
     read: {
       currentPage: 1,
       status: 'READING',
-      createdAt: date,
+      createdAt: formatDate(new Date()),
       finishedAt: null,
     },
   },

@@ -2,6 +2,7 @@
 
 import { CiEdit } from 'react-icons/ci';
 import { IBook } from '../../../../@types/Book';
+import { formatDate } from '../../../../utils/formatDate';
 
 interface ReadingInformationProps {
   book: IBook;
@@ -17,12 +18,6 @@ export default function ReadingInformation({
 
   const isFinished = book.read?.status === 'FINISHED';
 
-  const currentDate = new Date().toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  });
-
   return (
     book.read !== null && (
       <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-5 flex justify-between rounded-lg px-4 py-2 text-sm">
@@ -32,7 +27,7 @@ export default function ReadingInformation({
             <span className="text-light-gray font-semibold">
               {isReading && book.read.createdAt}
               {book.read?.status === 'FINISHED' &&
-                (book.read?.finishedAt ?? currentDate)}
+                (book.read?.finishedAt ?? formatDate(new Date()))}
             </span>
           </p>
           <p className="flex gap-2">
