@@ -41,12 +41,16 @@ export default function Header({
   return (
     <div className="flex h-[40px] justify-between">
       {isTheScreenLargeSized ? (
-        <LargeOptionsMenu />
+        <LargeOptionsMenu
+          page={page}
+          disabled={isLoading || numberOfBooks === 0}
+          onChange={onChangePage}
+        />
       ) : (
         <Select
           page={page}
           disabled={isLoading || numberOfBooks === 0}
-          onChangePage={(page: Page) => onChangePage(page)}
+          onChangePage={onChangePage}
         />
       )}
 

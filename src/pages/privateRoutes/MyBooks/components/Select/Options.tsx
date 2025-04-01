@@ -26,29 +26,29 @@ export default function Options({ page, isVisible, onSelect }: OptionsProps) {
     >
       <Button
         label="Todos os livros"
-        currentPage={page}
-        page="ALL"
+        page={page}
+        buttonPage="ALL"
         onClick={() => onSelect('ALL')}
       />
 
       <Button
         label="Não lidos"
-        currentPage={page}
-        page={'NOT_READING'}
+        page={page}
+        buttonPage="NOT_READING"
         onClick={() => onSelect('NOT_READING')}
       />
 
       <Button
         label="Em leitura"
-        currentPage={page}
-        page="READING"
+        page={page}
+        buttonPage="READING"
         onClick={() => onSelect('READING')}
       />
 
       <Button
         label="Concluídos"
-        currentPage={page}
-        page="FINISHED"
+        page={page}
+        buttonPage="FINISHED"
         onClick={() => onSelect('FINISHED')}
       />
     </div>

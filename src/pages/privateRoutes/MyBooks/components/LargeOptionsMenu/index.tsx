@@ -1,15 +1,50 @@
+import { Page } from '../../@types/Page';
 import Button from './Button';
 
-export default function LargeOptionsMenu() {
+interface LargeOptionsMenuProps {
+  page: Page;
+  disabled: boolean;
+  onChange: (page: Page) => void;
+}
+
+export default function LargeOptionsMenu({
+  page,
+  disabled,
+  onChange,
+}: LargeOptionsMenuProps) {
   return (
     <div className="flex gap-4">
-      <Button numberOfItems={23} label="Todos os livros" />
+      <Button
+        label="Todos os livros"
+        page={page}
+        buttonPage="ALL"
+        disabled={disabled}
+        onClick={() => onChange('ALL')}
+      />
 
-      <Button numberOfItems={4} label="Não lidos" />
+      <Button
+        label="Não lidos"
+        page={page}
+        buttonPage="NOT_READING"
+        disabled={disabled}
+        onClick={() => onChange('NOT_READING')}
+      />
 
-      <Button numberOfItems={2} label="Em leitura" />
+      <Button
+        label="Em leitura"
+        page={page}
+        buttonPage="READING"
+        disabled={disabled}
+        onClick={() => onChange('READING')}
+      />
 
-      <Button numberOfItems={9} label="Concluídos" />
+      <Button
+        label="Concluídos"
+        page={page}
+        buttonPage="FINISHED"
+        disabled={disabled}
+        onClick={() => onChange('FINISHED')}
+      />
     </div>
   );
 }
