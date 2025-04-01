@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import BooksService from '../../../app/services/BooksService';
 
 import { useAuth } from '../../../app/hooks/useAuth';
 
 import { getGreeting } from '../../../utils/getGreeting';
-
-import { books as dataBooks } from '../../../assets/mocks/books';
 
 import { IBook } from '../../../@types/Book';
 import { Page } from './@types/Page';
@@ -26,47 +24,21 @@ export default function MyBooks() {
   const [books, setBooks] = useState<IBook[]>([]);
   const [page, setPage] = useState<Page>('ALL');
 
-  function handleWithUnreadBooksFiltration() {
-    const filteredBooks = dataBooks.filter((book) => book.read === null);
+  const filteredBooksByStatus = useMemo(
+    () =>
+      books.filter((book) => {
+        if (page === 'NOT_READING') {
+          return !book.read;
+        }
 
-    setBooks(filteredBooks);
-  }
+        if (page === 'ALL') {
+          return books;
+        }
 
-  function handleWithFilteringBooksInReading() {
-    const filteredBooks = dataBooks.filter(
-      (book) => book.read?.status === 'READING'
-    );
-
-    setBooks(filteredBooks);
-  }
-
-  function handleFilteringCompletedBooks() {
-    const filteredBooks = dataBooks.filter(
-      (book) => book.read?.status === 'FINISHED'
-    );
-
-    setBooks(filteredBooks);
-  }
-
-  useEffect(() => {
-    switch (page) {
-      case 'NOT_READING': {
-        handleWithUnreadBooksFiltration();
-        break;
-      }
-      case 'READING': {
-        handleWithFilteringBooksInReading();
-        break;
-      }
-      case 'FINISHED': {
-        handleFilteringCompletedBooks();
-        break;
-      }
-      default: {
-        setBooks(dataBooks);
-      }
-    }
-  }, [page]);
+        return book.read?.status === page;
+      }),
+    [page, books]
+  );
 
   useEffect(() => {
     async function loadBooks() {
@@ -105,7 +77,7 @@ export default function MyBooks() {
 
         <Line />
 
-        <TableBooks books={books} isLoading={isLoading} />
+        <TableBooks books={filteredBooksByStatus} isLoading={isLoading} />
       </div>
     </div>
   );

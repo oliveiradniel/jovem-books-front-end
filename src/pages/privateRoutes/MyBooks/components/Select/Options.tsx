@@ -34,7 +34,7 @@ export default function Options({ page, isVisible, onSelect }: OptionsProps) {
       <Button
         label="Não lidos"
         currentPage={page}
-        page="NOT_READING"
+        page={'NOT_READING'}
         onClick={() => onSelect('NOT_READING')}
       />
 
