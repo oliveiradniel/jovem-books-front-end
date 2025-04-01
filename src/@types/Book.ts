@@ -4,13 +4,13 @@ export interface IBook {
   authors: string[];
   sinopse: string | null;
   imagePath: string | null;
-  numberOfPages: number | null;
+  numberOfPages: number;
   genreLiterary: LiteraryGenre[];
   read: {
     status: ReadingStatus;
     currentPage: number;
-    createdAt: string;
-    finishedAt: string | null;
+    createdAt: Date;
+    finishedAt: Date | null;
   } | null;
 }
 

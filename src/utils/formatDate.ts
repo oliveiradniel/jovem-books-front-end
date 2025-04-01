@@ -1,5 +1,13 @@
 export function formatDate(date: Date) {
-  return date.toLocaleDateString('pt-BR', {
+  let safeDate;
+
+  if (typeof date === 'string') {
+    safeDate = new Date(date);
+  } else {
+    safeDate = date;
+  }
+
+  return safeDate.toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric',

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { formatDate } from '../../../utils/formatDate';
 
@@ -30,6 +30,7 @@ export default function Book() {
   const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const isReading =
     book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
@@ -60,7 +61,7 @@ export default function Book() {
       read: {
         status: 'READING',
         currentPage: 1,
-        createdAt: formatDate(new Date()),
+        createdAt: new Date(formatDate(new Date())),
         finishedAt: null,
       },
     }));
@@ -88,7 +89,7 @@ export default function Book() {
         status: 'FINISHED',
         currentPage: prevState.read?.currentPage!,
         createdAt: prevState.read?.createdAt!,
-        finishedAt: formatDate(new Date()),
+        finishedAt: new Date(formatDate(new Date())),
       },
     }));
   }
@@ -114,13 +115,18 @@ export default function Book() {
 
   useEffect(() => {
     async function loadContact() {
-      const bookData = await BooksService.getContactById(id!);
+      try {
+        const bookData = await BooksService.getContactById(id!);
+        console.log(bookData);
 
-      setBook(bookData);
+        setBook(bookData);
+      } catch {
+        navigate('/my-books');
+      }
     }
 
     loadContact();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <>

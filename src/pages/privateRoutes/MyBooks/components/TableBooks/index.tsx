@@ -1,8 +1,9 @@
 import { IBook } from '../../../../../@types/Book';
 
+import { RingLoader } from 'react-spinners';
+
 import TableHeader from './TableHeader';
 import TableBody from './TableBoby';
-import { RingLoader } from 'react-spinners';
 
 interface TabelBooksProps {
   books: IBook[];
