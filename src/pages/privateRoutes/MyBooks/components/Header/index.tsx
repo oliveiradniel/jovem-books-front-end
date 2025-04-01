@@ -8,6 +8,7 @@ import Select from '../Select';
 interface HeaderProps {
   page: Page;
   numberOfBooks: number;
+  numberOfFilteredBooks: number;
   isLoading: boolean;
   onChangePage: (page: Page) => void;
 }
@@ -15,6 +16,7 @@ interface HeaderProps {
 export default function Header({
   page,
   numberOfBooks,
+  numberOfFilteredBooks,
   isLoading,
   onChangePage,
 }: HeaderProps) {
@@ -43,7 +45,7 @@ export default function Header({
       ) : (
         <Select
           page={page}
-          disabled={isLoading}
+          disabled={isLoading || numberOfBooks === 0}
           onChangePage={(page: Page) => onChangePage(page)}
         />
       )}
@@ -53,7 +55,7 @@ export default function Header({
           <span>Carregando...</span>
         ) : (
           <span className="animate-fade-in">
-            Total encontrado ({numberOfBooks})
+            Total encontrado ({numberOfFilteredBooks})
           </span>
         )}
       </span>

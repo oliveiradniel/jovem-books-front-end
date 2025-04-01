@@ -67,17 +67,23 @@ export default function MyBooks() {
         </p>
       </div>
 
-      <div className="bg-blue-black-op-80 min-h-[600px] p-5">
+      <div className="bg-blue-black-op-80 min-h-[600px] rounded-lg p-5">
         <Header
           page={page}
           numberOfBooks={books.length}
+          numberOfFilteredBooks={filteredBooksByStatus.length}
           isLoading={isLoading}
           onChangePage={(page: Page) => setPage(page)}
         />
 
         <Line />
 
-        <TableBooks books={filteredBooksByStatus} isLoading={isLoading} />
+        <TableBooks
+          books={books}
+          filteredBooks={filteredBooksByStatus}
+          page={page}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );
