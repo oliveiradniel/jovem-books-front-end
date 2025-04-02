@@ -23,6 +23,12 @@ export default function Header({
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
 
   useEffect(() => {
+    if (window.innerWidth < 1024 && isTheScreenLargeSized) {
+      setIsTheScreenLargeSized(false);
+    } else if (window.innerWidth > 1024 && !isTheScreenLargeSized) {
+      setIsTheScreenLargeSized(true);
+    }
+
     function handleResize() {
       if (window.innerWidth < 1024 && isTheScreenLargeSized) {
         setIsTheScreenLargeSized(false);

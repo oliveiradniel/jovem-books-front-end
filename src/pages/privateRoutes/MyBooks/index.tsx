@@ -73,7 +73,7 @@ export default function MyBooks() {
           numberOfBooks={books.length}
           numberOfFilteredBooks={filteredBooksByStatus.length}
           isLoading={isLoading}
-          onChangePage={(page: Page) => setPage(page)}
+          onChangePage={setPage}
         />
 
         <Line />

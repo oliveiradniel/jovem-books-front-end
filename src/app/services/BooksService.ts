@@ -3,7 +3,7 @@ import { httpClient } from './httpClient';
 import { IBook } from '../../@types/Book';
 
 class BooksService {
-  async getContactById(id: string) {
+  async getBookById(id: string) {
     const { data } = await httpClient.get<IBook>(`/books/${id}`);
 
     return data;

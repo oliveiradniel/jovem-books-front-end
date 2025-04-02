@@ -26,8 +26,6 @@ export default function ReadingInformation({
       : '0'
   ).toFixed(0);
 
-  console.log(book);
-
   return (
     <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 mt-3 flex justify-between rounded-lg px-4 py-2 text-sm sm:mt-5">
       <div>

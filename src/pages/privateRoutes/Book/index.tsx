@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react';
 
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { formatDate } from '../../../utils/formatDate';
+import BooksService from '../../../app/services/BooksService';
+import ReadsService from '../../../app/services/ReadsService';
 
-import { IBook } from '../../../@types/Book';
+import { formatDate } from '../../../utils/formatDate';
 
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
@@ -20,7 +21,8 @@ import PauseOrPlayButton from './components/PauseOrPlayButton';
 import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
-import BooksService from '../../../app/services/BooksService';
+
+import { IBook } from '../../../@types/Book';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -55,16 +57,23 @@ export default function Book() {
     authors += `${author}, `;
   });
 
-  function handleStartReading() {
-    setBook((prevState) => ({
-      ...prevState,
-      read: {
+  async function handleStartReading() {
+    try {
+      const createdRead = await ReadsService.createRead({
+        bookId: id!,
         status: 'READING',
         currentPage: 1,
-        createdAt: new Date(formatDate(new Date())),
-        finishedAt: null,
-      },
-    }));
+      });
+
+      setBook((prevState) => ({
+        ...prevState,
+        read: {
+          ...createdRead,
+        },
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handlePauseOrContinuationReading() {
@@ -114,10 +123,9 @@ export default function Book() {
   }
 
   useEffect(() => {
-    async function loadContact() {
+    async function loadBook() {
       try {
-        const bookData = await BooksService.getContactById(id!);
-        console.log(bookData);
+        const bookData = await BooksService.getBookById(id!);
 
         setBook(bookData);
       } catch {
@@ -125,7 +133,7 @@ export default function Book() {
       }
     }
 
-    loadContact();
+    loadBook();
   }, [id, navigate]);
 
   return (
