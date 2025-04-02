@@ -12,9 +12,20 @@ interface CreateReadProps {
   finishedAt?: Date;
 }
 
+type UpdateReadProps = Omit<Partial<CreateReadProps>, 'bookId'> &
+  Pick<CreateReadProps, 'bookId'>;
+
 class ReadsService {
   async createRead({ bookId, ...data }: CreateReadProps) {
     const { data: read } = await httpClient.post<Read>(`/reads/${bookId}`, {
+      ...data,
+    });
+
+    return read;
+  }
+
+  async updateRead({ bookId, ...data }: UpdateReadProps) {
+    const { data: read } = await httpClient.put<Read>(`/reads/${bookId}`, {
       ...data,
     });
 

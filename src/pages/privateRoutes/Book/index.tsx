@@ -76,19 +76,25 @@ export default function Book() {
     }
   }
 
-  function handlePauseOrContinuationReading() {
+  async function handlePauseOrContinuationReading() {
     const statusDirection =
       book.read?.status === 'READING' ? 'ON_HOLD' : 'READING';
 
-    setBook((prevState) => ({
-      ...prevState,
-      read: {
+    try {
+      const updatedRead = await ReadsService.updateRead({
+        bookId: id as string,
         status: statusDirection,
-        currentPage: prevState.read?.currentPage!,
-        createdAt: prevState.read?.createdAt!,
-        finishedAt: null,
-      },
-    }));
+      });
+
+      setBook((prevState) => ({
+        ...prevState,
+        read: {
+          ...updatedRead,
+        },
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleWithBookCompletion() {
