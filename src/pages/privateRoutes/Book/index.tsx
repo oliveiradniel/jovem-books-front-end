@@ -7,8 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
 
-import { formatDate } from '../../../utils/formatDate';
-
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
 
@@ -77,12 +75,12 @@ export default function Book() {
   }
 
   async function handlePauseOrContinuationReading() {
-    const statusDirection =
-      book.read?.status === 'READING' ? 'ON_HOLD' : 'READING';
-
     try {
+      const statusDirection =
+        book.read?.status === 'READING' ? 'ON_HOLD' : 'READING';
+
       const updatedRead = await ReadsService.updateRead({
-        bookId: id as string,
+        bookId: id!,
         status: statusDirection,
       });
 
@@ -97,16 +95,22 @@ export default function Book() {
     }
   }
 
-  function handleWithBookCompletion() {
-    setBook((prevState) => ({
-      ...prevState,
-      read: {
+  async function handleFinishReading() {
+    try {
+      const updatedRead = await ReadsService.updateRead({
+        bookId: id!,
         status: 'FINISHED',
-        currentPage: prevState.read?.currentPage!,
-        createdAt: prevState.read?.createdAt!,
-        finishedAt: new Date(formatDate(new Date())),
-      },
-    }));
+      });
+
+      setBook((prevState) => ({
+        ...prevState,
+        read: {
+          ...updatedRead,
+        },
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handlePagesNumberChange(number: number) {
@@ -149,7 +153,7 @@ export default function Book() {
         remainingPages={book.numberOfPages! - book.read?.currentPage!}
         isVisible={isConfirmationModalVisible}
         onClose={() => setIsConfirmationModalVisible(false)}
-        onConfirm={handleWithBookCompletion}
+        onConfirm={handleFinishReading}
       />
 
       <EditReadModal
