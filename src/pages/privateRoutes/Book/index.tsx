@@ -131,11 +131,10 @@ export default function Book() {
     }
   }
 
-  function handleSinopseEdit(sinopse: string) {
-    setBook((prevState) => ({
-      ...prevState,
-      sinopse,
-    }));
+  async function handleSinopseEdit(sinopse: string) {
+    const updatedBook = await BooksService.updateBook({ id: id!, sinopse });
+
+    setBook(updatedBook);
   }
 
   useEffect(() => {

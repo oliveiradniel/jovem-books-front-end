@@ -17,19 +17,25 @@ type UpdateReadProps = Omit<Partial<CreateReadProps>, 'bookId'> &
 
 class ReadsService {
   async createRead({ bookId, ...data }: CreateReadProps) {
-    const { data: read } = await httpClient.post<Read>(`/reads/${bookId}`, {
-      ...data,
-    });
+    const { data: updatedRead } = await httpClient.post<Read>(
+      `/reads/${bookId}`,
+      {
+        ...data,
+      }
+    );
 
-    return read;
+    return updatedRead;
   }
 
   async updateRead({ bookId, ...data }: UpdateReadProps) {
-    const { data: read } = await httpClient.put<Read>(`/reads/${bookId}`, {
-      ...data,
-    });
+    const { data: updatedRead } = await httpClient.put<Read>(
+      `/reads/${bookId}`,
+      {
+        ...data,
+      }
+    );
 
-    return read;
+    return updatedRead;
   }
 }
 
