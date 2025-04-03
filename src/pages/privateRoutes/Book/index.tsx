@@ -113,16 +113,22 @@ export default function Book() {
     }
   }
 
-  function handlePagesNumberChange(number: number) {
-    setBook((prevState) => ({
-      ...prevState,
-      read: {
-        status: prevState.read?.status!,
+  async function handlePagesNumberChange(number: number) {
+    try {
+      const updatedRead = await ReadsService.updateRead({
+        bookId: id!,
         currentPage: number,
-        createdAt: prevState.read?.createdAt!,
-        finishedAt: prevState.read?.finishedAt ?? null,
-      },
-    }));
+      });
+
+      setBook((prevState) => ({
+        ...prevState,
+        read: {
+          ...updatedRead,
+        },
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleSinopseEdit(sinopse: string) {
