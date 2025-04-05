@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { Page } from '../../@types/Page';
+import { Page } from '../@types/Page';
 
-import LargeOptionsMenu from '../LargeOptionsMenu';
-import Select from '../Select';
+import LargeOptionsMenu from '../components/LargeOptionsMenu';
+import Select from '../components/Select';
 
 interface HeaderProps {
   page: Page;

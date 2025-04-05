@@ -1,19 +1,66 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import BooksService from '../../app/services/BooksService';
+import { env } from '../../config/env';
+
 import { GoArrowLeft } from 'react-icons/go';
 
-import BooksService from '../../app/services/BooksService';
 import { IBook } from '../../@types/Book';
-import { env } from '../../config/env';
+import { GiBookCover } from 'react-icons/gi';
+import { truncateString } from '../../utils/truncateString';
+import { ClipLoader } from 'react-spinners';
 
 export default function EditBook() {
   const [book, setBook] = useState<IBook>({} as IBook);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
+  const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const src = `${env.API_URL}/uploads/books/${book.imagePath}`;
+  const src = selectedImage
+    ? URL.createObjectURL(selectedImage)
+    : `${env.API_URL}/uploads/books/${book.imagePath}`;
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      setSelectedImage(file);
+
+      reader.onload = (e) => {
+        const img = document.getElementById('book-cover') as HTMLImageElement;
+        img.src = e.target?.result as string;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function handleBookCoverUpdate() {
+    if (selectedImage) {
+      try {
+        setIsUpdatingBookCover(true);
+
+        const updatedBook = await BooksService.updateImage({
+          id: id!,
+          image: selectedImage,
+        });
+
+        setBook(updatedBook);
+        setSelectedImage(null);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsUpdatingBookCover(false);
+      }
+    } else {
+      document.getElementById('book-cover')?.click();
+    }
+  }
 
   useEffect(() => {
     async function loadBook() {
@@ -39,27 +86,50 @@ export default function EditBook() {
         <GoArrowLeft size={20} />
       </button>
 
+      <h1 className="text-snow-white font-quicksand mt-12 mb-6 text-2xl font-thin">
+        Capa
+      </h1>
+
       <div className="bg-navy-blue flex items-center justify-around rounded-lg py-4">
-        <img
-          src={src}
-          alt="Capa do Livro"
-          className="h-[65px] w-[65px] rounded-full"
-        />
+        {book.imagePath || selectedImage ? (
+          <img
+            src={src}
+            alt="Capa do Livro"
+            className="h-[65px] w-[65px] rounded-full"
+          />
+        ) : (
+          <div className="border-sky-blue-op-60 flex h-[65px] w-[65px] items-center justify-center rounded-full border">
+            <GiBookCover size={45} color="#03a9f494 " />
+          </div>
+        )}
 
         <p className="text-light-gray font-quicksand font-semibold">
-          {book.title}
+          {truncateString(book.title, 16)}
         </p>
 
         <button
           type="button"
-          className="bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue-op-94 rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
+          onClick={handleBookCoverUpdate}
+          className={`bg-sky-blue text-snow-white font-roboto flex w-[140px] items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out ${isUpdatingBookCover ? 'hover:cursor-default' : 'hover:bg-sky-blue-op-94 hover:cursor-pointer'}`}
         >
-          {book.imagePath ? 'Alterar' : 'Adicionar'} foto
+          {isUpdatingBookCover && <ClipLoader color="#ffffff" size={20} />}
+          {!isUpdatingBookCover &&
+            (selectedImage
+              ? 'Salvar'
+              : book.imagePath
+                ? 'Alterar capa'
+                : 'Adicionar capa')}
+          <input
+            id="book-cover"
+            type="file"
+            onChange={handleImageChange}
+            className="hidden"
+          />
         </button>
       </div>
 
       <div className="mt-8">
-        <h1 className="text-snow-white font-quicksand text-2xl font-thin">
+        <h1 className="text-snow-white font-quicksand mt-12 mb-6 text-2xl font-thin">
           Editar livro
         </h1>
 
