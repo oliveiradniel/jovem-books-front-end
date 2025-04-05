@@ -7,7 +7,7 @@ type UpdateBookProps = Omit<Partial<IBook>, 'id' | 'imagePath'> &
 
 interface UpdateBookCoverProps {
   id: string;
-  image: File;
+  image: File | null;
 }
 
 class BooksService {
@@ -40,7 +40,9 @@ class BooksService {
   async updateImage({ id, image }: UpdateBookCoverProps) {
     const form = new FormData();
 
-    form.append('image', image);
+    if (image) {
+      form.append('image', image);
+    }
 
     const { data: updatedBook } = await httpClient.put<IBook>(
       `/books/${id}`,

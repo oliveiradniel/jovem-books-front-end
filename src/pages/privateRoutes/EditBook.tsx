@@ -10,12 +10,15 @@ import { IBook } from '../../@types/Book';
 import { GiBookCover } from 'react-icons/gi';
 import { truncateString } from '../../utils/truncateString';
 import { ClipLoader } from 'react-spinners';
+import { FiTrash2 } from 'react-icons/fi';
 
 export default function EditBook() {
   const [book, setBook] = useState<IBook>({} as IBook);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
+
+  const [isToRemoveTheBookCover, setIsToRemoveTheBookCover] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ export default function EditBook() {
   }
 
   async function handleBookCoverUpdate() {
-    if (selectedImage) {
+    if (selectedImage || isToRemoveTheBookCover) {
       try {
         setIsUpdatingBookCover(true);
 
@@ -52,6 +55,7 @@ export default function EditBook() {
 
         setBook(updatedBook);
         setSelectedImage(null);
+        setIsToRemoveTheBookCover(false);
       } catch (error) {
         console.log(error);
       } finally {
@@ -91,7 +95,7 @@ export default function EditBook() {
       </h1>
 
       <div className="bg-navy-blue flex items-center justify-around rounded-lg py-4">
-        {book.imagePath || selectedImage ? (
+        {(book.imagePath || selectedImage) && !isToRemoveTheBookCover ? (
           <img
             src={src}
             alt="Capa do Livro"
@@ -107,25 +111,35 @@ export default function EditBook() {
           {truncateString(book.title, 16)}
         </p>
 
-        <button
-          type="button"
-          onClick={handleBookCoverUpdate}
-          className={`bg-sky-blue text-snow-white font-roboto flex w-[140px] items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out ${isUpdatingBookCover ? 'hover:cursor-default' : 'hover:bg-sky-blue-op-94 hover:cursor-pointer'}`}
-        >
-          {isUpdatingBookCover && <ClipLoader color="#ffffff" size={20} />}
-          {!isUpdatingBookCover &&
-            (selectedImage
-              ? 'Salvar'
-              : book.imagePath
-                ? 'Alterar capa'
-                : 'Adicionar capa')}
-          <input
-            id="book-cover"
-            type="file"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={handleBookCoverUpdate}
+            className={`bg-sky-blue text-snow-white font-roboto flex w-[140px] items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out ${isUpdatingBookCover ? 'hover:cursor-default' : 'hover:bg-sky-blue-op-94 hover:cursor-pointer'}`}
+          >
+            {isUpdatingBookCover && <ClipLoader color="#ffffff" size={20} />}
+            {!isUpdatingBookCover &&
+              (selectedImage || isToRemoveTheBookCover
+                ? 'Salvar'
+                : book.imagePath
+                  ? 'Alterar capa'
+                  : 'Adicionar capa')}
+            <input
+              id="book-cover"
+              type="file"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsToRemoveTheBookCover((prevState) => !prevState)}
+            className={`text-snow-white flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out ${book.imagePath === null ? 'bg-light-gray/70' : 'bg-blood-red hover:bg-blood-red/70 hover:cursor-pointer'}`}
+          >
+            {!isToRemoveTheBookCover ? <FiTrash2 /> : <span>X</span>}
+          </button>
+        </div>
       </div>
 
       <div className="mt-8">
