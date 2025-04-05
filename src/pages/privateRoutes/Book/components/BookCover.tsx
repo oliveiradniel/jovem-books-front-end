@@ -1,3 +1,5 @@
+import { env } from '../../../../config/env';
+
 import { GiBookCover } from 'react-icons/gi';
 
 interface BookCoverProps {
@@ -5,7 +7,7 @@ interface BookCoverProps {
 }
 
 export default function BookCover({ imagePath }: BookCoverProps) {
-  const src = `http://localhost:3001/uploads/books/${imagePath}`;
+  const src = `${env.API_URL}/uploads/books/${imagePath}`;
 
   return (
     <div className="hidden max-w-[240px] min-w-[240px] items-center justify-center lg:flex">

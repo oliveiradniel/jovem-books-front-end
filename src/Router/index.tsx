@@ -11,6 +11,7 @@ import Dashboard from '../pages/privateRoutes/Dashboard';
 import MyBooks from '../pages/privateRoutes/MyBooks';
 import GoogleBooks from '../pages/privateRoutes/GoogleBooks';
 import Book from '../pages/privateRoutes/Book';
+import EditBook from '../pages/privateRoutes/EditBook';
 
 export default function Router() {
   return (
@@ -28,6 +29,7 @@ export default function Router() {
             <Route path="/my-books" element={<MyBooks />} />
             <Route path="/google-books" element={<GoogleBooks />} />
             <Route path="/book/:id" element={<Book />} />
+            <Route path="/book/edit/:id" element={<EditBook />} />
           </Route>
         </Route>
       </Routes>
