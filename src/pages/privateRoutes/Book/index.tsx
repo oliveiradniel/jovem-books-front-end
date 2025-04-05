@@ -10,7 +10,7 @@ import ReadsService from '../../../app/services/ReadsService';
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
 
-import GoBack from './components/GoBack';
+import Actions from './components/Actions';
 import Title from './components/Title';
 import Author from './components/Author';
 import Sinopse from './components/Sinopse';
@@ -170,7 +170,7 @@ export default function Book() {
       />
 
       <div>
-        <GoBack />
+        <Actions />
 
         <div className="mt-8 flex justify-between gap-4">
           <div className="max-w-[900px]">
