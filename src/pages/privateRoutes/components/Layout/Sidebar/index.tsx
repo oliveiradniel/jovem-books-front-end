@@ -17,9 +17,9 @@ export default function Sidebar() {
 
   useEffect(() => {
     function handleResize() {
-      if (window.innerWidth < 640 && isExpanded) {
+      if (window.innerWidth <= 700 && isExpanded) {
         setIsExpanded(false);
-      } else if (window.innerWidth > 640 && !isExpanded) {
+      } else if (window.innerWidth > 700 && !isExpanded) {
         setIsExpanded(true);
       }
     }

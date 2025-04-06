@@ -26,6 +26,8 @@ import { formatAuthors } from '../../../utils/formatAuthors';
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
   const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
@@ -123,11 +125,15 @@ export default function Book() {
   useEffect(() => {
     async function loadBook() {
       try {
+        setIsLoading(true);
+
         const bookData = await BooksService.getBookById(id!);
 
         setBook(bookData);
       } catch {
         navigate('/my-books');
+      } finally {
+        setIsLoading(true);
       }
     }
 
@@ -153,23 +159,28 @@ export default function Book() {
       />
 
       <div>
-        <Actions />
+        <Actions isLoadingBook={isLoading} />
 
         <div className="mt-8 flex justify-between gap-4">
-          <div className="max-w-[900px]">
-            <Title title={book.title} />
+          <div className="w-full lg:max-w-[900px]">
+            <Title title={book.title} isLoadingBook={isLoading} />
 
-            <Author author={formattedAuthors} />
+            <Author author={formattedAuthors} isLoadingBook={isLoading} />
 
-            <Sinopse text={book.sinopse!} onSinopseEdit={handleSinopseEdit} />
+            <Sinopse
+              text={book.sinopse!}
+              onSinopseEdit={handleSinopseEdit}
+              isLoadingBook={isLoading}
+            />
 
             <div className="mt-8 flex flex-col gap-2 sm:flex-row">
               <InformationButton
                 status={book.read?.status ?? null}
                 onChangeBookStatus={handleStartReading}
+                isLoadingBook={isLoading}
               />
 
-              {isReading && (
+              {isReading && !isLoading && (
                 <>
                   <PauseOrPlayButton
                     status={book.read?.status ?? null}
@@ -189,10 +200,16 @@ export default function Book() {
           <BookCover imagePath={book.imagePath} />
         </div>
 
-        <ReadingInformation
-          book={book}
-          onFinish={() => setIsEditReadModalVisible(true)}
-        />
+        {!isLoading ? (
+          <ReadingInformation
+            book={book}
+            onFinish={() => setIsEditReadModalVisible(true)}
+          />
+        ) : (
+          <p className="text-light-gray/60 mt-4">
+            Carregando informações de leitura...
+          </p>
+        )}
       </div>
     </>
   );
