@@ -42,6 +42,8 @@ class BooksService {
 
     if (image) {
       form.append('image', image);
+    } else {
+      form.append('removeImage', 'true');
     }
 
     const { data: updatedBook } = await httpClient.put<IBook>(

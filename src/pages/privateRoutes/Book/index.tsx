@@ -21,6 +21,7 @@ import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
 
 import { IBook } from '../../../@types/Book';
+import { formatAuthors } from '../../../utils/formatAuthors';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -35,25 +36,7 @@ export default function Book() {
   const isReading =
     book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
 
-  let authors = '';
-  book.authors?.forEach((author, index) => {
-    if (book.authors.length === 1) {
-      authors = author;
-      return;
-    }
-
-    if (index === book.authors.length - 1) {
-      authors += `e ${author}`;
-      return;
-    }
-
-    if (index === book.authors.length - 2) {
-      authors += `${author} `;
-      return;
-    }
-
-    authors += `${author}, `;
-  });
+  const formattedAuthors = formatAuthors({ authors: book.authors });
 
   async function handleStartReading() {
     try {
@@ -176,7 +159,7 @@ export default function Book() {
           <div className="max-w-[900px]">
             <Title title={book.title} />
 
-            <Author author={authors} />
+            <Author author={formattedAuthors} />
 
             <Sinopse text={book.sinopse!} onSinopseEdit={handleSinopseEdit} />
 
