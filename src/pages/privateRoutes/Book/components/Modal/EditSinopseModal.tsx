@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 
-import Modal from './index.tsx';
+import Modal from '../../../components/Modal';
 
 interface EditSinopseModalProps {
   text: string;

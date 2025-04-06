@@ -2,8 +2,9 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useAuth } from '../../../../../app/hooks/useAuth.ts';
 
-import Modal from './index.tsx';
-import Input from '../Input.tsx';
+import Input from '../../../components/InputModal.tsx';
+import Modal from '../../../components/Modal.tsx';
+
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 interface EditModal {

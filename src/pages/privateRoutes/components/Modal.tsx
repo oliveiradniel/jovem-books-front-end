@@ -1,13 +1,12 @@
 import ReactDOM from 'react-dom';
-
-import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
 
 interface ModalProps {
   title?: string;
   subTitle?: string | null;
   buttonLabelConfirm: string;
   isVisible: boolean;
-  buttonDisabled: boolean;
+  buttonDisabled?: boolean;
   children: React.ReactNode;
   onClose: () => void;
   onConfirm: () => void;
@@ -17,7 +16,7 @@ export default function Modal({
   title,
   buttonLabelConfirm,
   isVisible,
-  buttonDisabled,
+  buttonDisabled = false,
   onClose,
   onConfirm,
   children,

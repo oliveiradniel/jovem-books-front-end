@@ -1,29 +1,22 @@
 import { ChangeEvent, useState } from 'react';
 
-import Modal from '../../../components/Modal.tsx';
-import Input from '../../../components/InputModal.tsx';
+import Modal from '../../components/Modal';
+import Input from '../../components/InputModal';
 
 interface ConfirmationModalProps {
   bookTitle: string;
-  remainingPages: number;
   isVisible: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
 export default function ConfirmationModal({
-  remainingPages,
   bookTitle,
   isVisible,
   onClose,
   onConfirm,
 }: ConfirmationModalProps) {
   const [title, setTitle] = useState('');
-
-  const subTitle =
-    remainingPages !== 0
-      ? `Ainda ${remainingPages > 1 ? 'faltam' : 'falta'} ${remainingPages} ${remainingPages > 1 ? 'páginas' : 'página'} para terminar ${bookTitle}.`
-      : null;
 
   function handleBookTitleChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -44,13 +37,12 @@ export default function ConfirmationModal({
 
   return (
     <Modal
-      title="Essa ação não poderá ser desfeita. Digite o título do livro para continuar."
+      title="A exclusão do livro não poderá ser desfeita. Digite o título do livro para continuar."
       buttonDisabled={title !== bookTitle}
       isVisible={isVisible}
       onClose={handleClose}
       onConfirm={handleConfirm}
-      subTitle={subTitle}
-      buttonLabelConfirm="Confirmar"
+      buttonLabelConfirm="Excluir"
     >
       <Input
         autoFocus

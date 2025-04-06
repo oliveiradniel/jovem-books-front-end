@@ -53,6 +53,10 @@ class BooksService {
 
     return updatedBook;
   }
+
+  async delete(id: string) {
+    await httpClient.delete(`/books/${id}`);
+  }
 }
 
 export default new BooksService();
