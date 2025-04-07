@@ -112,7 +112,11 @@ export default function SectionToEditBookCover({
             onClick={() => setIsToRemoveTheBookCover((prevState) => !prevState)}
             className={`text-snow-white flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out ${book.imagePath === null ? 'bg-light-gray/70' : 'bg-blood-red hover:bg-blood-red/70 hover:cursor-pointer'}`}
           >
-            {!isToRemoveTheBookCover ? <FiTrash2 /> : <span>X</span>}
+            {!isToRemoveTheBookCover ? (
+              <FiTrash2 />
+            ) : (
+              <span className="font-quicksand">X</span>
+            )}
           </button>
         </div>
       </div>

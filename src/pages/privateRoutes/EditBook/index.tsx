@@ -1,39 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import BooksService from '../../../app/services/BooksService';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { GoArrowLeft } from 'react-icons/go';
-import { formatAuthors } from '../../../utils/formatAuthors';
 
 import SectionToEditBookCover from './components/SectionToEditBookCover';
-import { IBook } from '../../../@types/Book';
 import SectionToEditBook from './components/SectionToEditBook';
 
 export default function EditBook() {
-  const [book, setBook] = useState<IBook>({} as IBook);
-
-  const { id } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  const formattedAuthors = formatAuthors({
-    authors: book.authors,
-    onlyCommas: true,
-  });
-
-  useEffect(() => {
-    async function loadBook() {
-      try {
-        const bookData = await BooksService.getBookById(id!);
-
-        setBook(bookData);
-      } catch {
-        navigate('/my-books');
-      }
-    }
-
-    loadBook();
-  }, [id, navigate, formattedAuthors]);
+  const [book, setBook] = useState(state.bookData);
 
   return (
     <>

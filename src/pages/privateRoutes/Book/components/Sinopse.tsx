@@ -1,12 +1,10 @@
-import EmptyBox from '../../../../assets/images/empty-box.svg?react';
-
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface SinopseProps {
   text: string | null;
   isLoadingBook: boolean;
 }
-console.log(EmptyBox);
+
 export default function Sinopse({ text, isLoadingBook }: SinopseProps) {
   return (
     <div className="relative mt-8 h-[200px] w-full overflow-y-auto lg:flex">
