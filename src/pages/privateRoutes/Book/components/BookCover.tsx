@@ -1,6 +1,6 @@
 import { env } from '../../../../config/env';
 
-import { GiBookCover } from 'react-icons/gi';
+import { MdOutlinePermMedia } from 'react-icons/md';
 
 interface BookCoverProps {
   imagePath: string | null;
@@ -14,8 +14,8 @@ export default function BookCover({ imagePath }: BookCoverProps) {
       {imagePath ? (
         <img src={src} alt="Capa do Livro" className="h-auto w-[100%]" />
       ) : (
-        <div className="border-sky-blue flex h-full w-full items-center justify-center rounded-lg border">
-          <GiBookCover size={160} color="#03a9f4 " />
+        <div className="border-navy-blue flex h-full w-full items-center justify-center rounded-lg border">
+          <MdOutlinePermMedia size={160} color="#19243a" />
         </div>
       )}
     </div>

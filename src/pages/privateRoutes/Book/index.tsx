@@ -116,12 +116,6 @@ export default function Book() {
     }
   }
 
-  async function handleSinopseEdit(sinopse: string) {
-    const updatedBook = await BooksService.updateBook({ id: id!, sinopse });
-
-    setBook(updatedBook);
-  }
-
   useEffect(() => {
     async function loadBook() {
       try {
@@ -133,7 +127,7 @@ export default function Book() {
       } catch {
         navigate('/my-books');
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     }
 
@@ -167,11 +161,7 @@ export default function Book() {
 
             <Author author={formattedAuthors} isLoadingBook={isLoading} />
 
-            <Sinopse
-              text={book.sinopse!}
-              onSinopseEdit={handleSinopseEdit}
-              isLoadingBook={isLoading}
-            />
+            <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
 
             <div className="mt-8 flex flex-col gap-2 sm:flex-row">
               <InformationButton
