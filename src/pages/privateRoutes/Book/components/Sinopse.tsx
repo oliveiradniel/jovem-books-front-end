@@ -1,6 +1,6 @@
 import EmptyBox from '../../../../assets/images/empty-box.svg?react';
 
-import { RingLoader } from 'react-spinners';
+import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface SinopseProps {
   text: string | null;
@@ -9,12 +9,8 @@ interface SinopseProps {
 console.log(EmptyBox);
 export default function Sinopse({ text, isLoadingBook }: SinopseProps) {
   return (
-    <div className="mt-8 h-[200px] w-full overflow-y-auto lg:flex">
-      {isLoadingBook && (
-        <div className="flex h-full w-full items-center justify-center">
-          <RingLoader color="#03a9f4" />
-        </div>
-      )}
+    <div className="relative mt-8 h-[200px] w-full overflow-y-auto lg:flex">
+      {isLoadingBook && <SkeletonLoading />}
 
       {!isLoadingBook &&
         (text ? (

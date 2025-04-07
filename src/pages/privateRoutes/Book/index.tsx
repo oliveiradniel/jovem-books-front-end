@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
 
+import { formatAuthors } from '../../../utils/formatAuthors';
+
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
 
@@ -21,7 +23,6 @@ import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
 
 import { IBook } from '../../../@types/Book';
-import { formatAuthors } from '../../../utils/formatAuthors';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -187,19 +188,14 @@ export default function Book() {
             </div>
           </div>
 
-          <BookCover imagePath={book.imagePath} />
+          <BookCover imagePath={book.imagePath} isLoadingBook={isLoading} />
         </div>
 
-        {!isLoading ? (
-          <ReadingInformation
-            book={book}
-            onFinish={() => setIsEditReadModalVisible(true)}
-          />
-        ) : (
-          <p className="text-light-gray/60 mt-4">
-            Carregando informações de leitura...
-          </p>
-        )}
+        <ReadingInformation
+          book={book}
+          isLoadingBook={isLoading}
+          onFinish={() => setIsEditReadModalVisible(true)}
+        />
       </div>
     </>
   );
