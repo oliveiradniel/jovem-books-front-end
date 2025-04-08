@@ -34,6 +34,8 @@ export default function EditBook() {
           setIsUpdatingBookCover={setIsUpdatingBookCover}
         />
 
+        <div className="bg-navy-blue my-8 h-[0.4px] w-full"></div>
+
         <SectionToEditBook
           book={book}
           setBook={setBook}

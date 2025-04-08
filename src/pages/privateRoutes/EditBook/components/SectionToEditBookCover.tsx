@@ -11,7 +11,6 @@ import SaveButton from './SaveButton';
 import DeleteButton from './DeleteButton';
 
 import { IBook } from '../../../../@types/Book';
-import SectionTitle from './SectionTitle';
 
 interface EditBookCoverProps {
   book: IBook;
@@ -77,9 +76,7 @@ export default function SectionToEditBookCover({
 
   return (
     <div>
-      <SectionTitle>Capa</SectionTitle>
-
-      <div className="bg-navy-blue/60 flex items-center justify-between rounded-lg px-4 py-4">
+      <div className="bg-blue-black/40 flex items-center justify-between rounded-lg px-4 py-4">
         {(book.imagePath || selectedImage) && !isToRemoveTheBookCover ? (
           <img
             src={src}
@@ -88,7 +85,7 @@ export default function SectionToEditBookCover({
           />
         ) : (
           <div className="flex h-[65px] w-[65px] items-center justify-center">
-            <MdOutlinePermMedia size={45} color="#0a112360" />
+            <MdOutlinePermMedia size={45} color="#adadad40" />
           </div>
         )}
 
@@ -101,6 +98,7 @@ export default function SectionToEditBookCover({
                   ? 'Alterar capa'
                   : 'Adicionar capa'
             }
+            disabled={isUpdatingBookCover || isUpdatingBook}
             isLoading={isUpdatingBookCover}
             isLoadingOther={isUpdatingBook}
             onClick={handleBookCoverUpdate}

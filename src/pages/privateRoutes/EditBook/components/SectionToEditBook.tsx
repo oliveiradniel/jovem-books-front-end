@@ -12,7 +12,6 @@ import SaveButton from './SaveButton';
 import { FiTrash2 } from 'react-icons/fi';
 
 import { IBook } from '../../../../@types/Book';
-import SectionTitle from './SectionTitle';
 
 interface SectionToEditBookProps {
   book: IBook;
@@ -103,73 +102,67 @@ export default function SectionToEditBook({
         onConfirm={handleDeleteBook}
       />
 
-      <div className="mt-8">
-        <SectionTitle>Livro</SectionTitle>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 rounded-lg">
+        <Input
+          label="Título"
+          name="title"
+          placeholder="Título do livro"
+          value={title}
+          disabled={isUpdatingBook || isUpdatingBookCover}
+          onChange={({ target }) => setTitle(target.value)}
+        />
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 rounded-lg py-4"
-        >
+        <div>
+          <span className="font-quicksand text-light-gray text-xs">
+            Separe os autores(as) por vírgula.
+          </span>
           <Input
-            label="Título"
+            label="Autores"
             name="title"
-            placeholder="Título do livro"
-            value={title}
+            placeholder="Autores(as)"
+            value={authors}
             disabled={isUpdatingBook || isUpdatingBookCover}
-            onChange={({ target }) => setTitle(target.value)}
+            onChange={handleAuthorsChange}
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <label
+            htmlFor="title"
+            className="text-snow-white font-quicksand w-16"
+          >
+            Sinopse
+          </label>
+          <textarea
+            name="title"
+            placeholder="Sinopse do livro"
+            value={sinopse}
+            disabled={isUpdatingBook || isUpdatingBookCover}
+            onChange={(event) => setSinopse(event.target.value)}
+            className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
+          />
+        </div>
+
+        <div className="flex gap-2">
+          <SaveButton
+            buttonLabel="Salvar alterações"
+            fullWidth
+            disabled={isUpdatingBook || isUpdatingBookCover}
+            isLoading={isUpdatingBook}
+            isLoadingOther={isUpdatingBookCover}
+            onClick={handleSubmit}
           />
 
-          <div>
-            <span className="font-quicksand text-light-gray text-xs">
-              Separe os autores(as) por vírgula.
-            </span>
-            <Input
-              label="Autores"
-              name="title"
-              placeholder="Autores(as)"
-              value={authors}
-              disabled={isUpdatingBook || isUpdatingBookCover}
-              onChange={handleAuthorsChange}
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <label
-              htmlFor="title"
-              className="text-snow-white font-quicksand w-16"
-            >
-              Sinopse
-            </label>
-            <textarea
-              name="title"
-              placeholder="Sinopse do livro"
-              value={sinopse}
-              disabled={isUpdatingBook || isUpdatingBookCover}
-              onChange={(event) => setSinopse(event.target.value)}
-              className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <SaveButton
-              buttonLabel="Salvar alterações"
-              fullWidth
-              isLoading={isUpdatingBook}
-              isLoadingOther={isUpdatingBookCover}
-              onClick={handleSubmit}
-            />
-
-            <button
-              type="button"
-              disabled={isUpdatingBook || isUpdatingBookCover}
-              onClick={() => setIsConfirmationModalVisible(true)}
-              className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
-            >
-              <FiTrash2 />
-            </button>
-          </div>
-        </form>
-      </div>
+          <button
+            type="button"
+            disabled={isUpdatingBook || isUpdatingBookCover}
+            onClick={() => setIsConfirmationModalVisible(true)}
+            className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
+          >
+            <FiTrash2 />
+          </button>
+        </div>
+      </form>
     </>
   );
 }
