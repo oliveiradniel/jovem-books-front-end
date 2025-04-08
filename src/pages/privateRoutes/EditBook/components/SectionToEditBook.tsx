@@ -6,22 +6,28 @@ import BooksService from '../../../../app/services/BooksService';
 import { formatAuthors } from '../../../../utils/formatAuthors';
 
 import ConfirmationModal from './ConfirmationModal';
+import Input from './Input';
+import SaveButton from './SaveButton';
 
 import { FiTrash2 } from 'react-icons/fi';
 
-import { ClipLoader } from 'react-spinners';
-
 import { IBook } from '../../../../@types/Book';
-import Input from './Input';
+import SectionTitle from './SectionTitle';
 
 interface SectionToEditBookProps {
   book: IBook;
   setBook: (book: IBook) => void;
+  isUpdatingBookCover: boolean;
+  isUpdatingBook: boolean;
+  setIsUpdatingBook: (value: boolean) => void;
 }
 
 export default function SectionToEditBook({
   book,
   setBook,
+  isUpdatingBookCover,
+  isUpdatingBook,
+  setIsUpdatingBook,
 }: SectionToEditBookProps) {
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
@@ -29,8 +35,6 @@ export default function SectionToEditBook({
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
-
-  const [isUpdatingBook, setIsUpdatingBook] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,9 +56,7 @@ export default function SectionToEditBook({
     }
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  async function handleSubmit() {
     try {
       setIsUpdatingBook(true);
 
@@ -102,9 +104,7 @@ export default function SectionToEditBook({
       />
 
       <div className="mt-8">
-        <h1 className="text-snow-white font-quicksand mt-6 mb-6 text-2xl font-thin">
-          Livro
-        </h1>
+        <SectionTitle>Livro</SectionTitle>
 
         <form
           onSubmit={handleSubmit}
@@ -115,6 +115,7 @@ export default function SectionToEditBook({
             name="title"
             placeholder="Título do livro"
             value={title}
+            disabled={isUpdatingBook || isUpdatingBookCover}
             onChange={({ target }) => setTitle(target.value)}
           />
 
@@ -127,6 +128,7 @@ export default function SectionToEditBook({
               name="title"
               placeholder="Autores(as)"
               value={authors}
+              disabled={isUpdatingBook || isUpdatingBookCover}
               onChange={handleAuthorsChange}
             />
           </div>
@@ -142,24 +144,26 @@ export default function SectionToEditBook({
               name="title"
               placeholder="Sinopse do livro"
               value={sinopse}
+              disabled={isUpdatingBook || isUpdatingBookCover}
               onChange={(event) => setSinopse(event.target.value)}
               className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none"
             />
           </div>
 
           <div className="flex gap-2">
-            <button
-              type="submit"
-              className={`bg-sky-blue text-snow-white font-roboto flex w-full items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out ${isUpdatingBook ? 'hover:cursor-default' : 'hover:bg-sky-blue-op-94 hover:cursor-pointer'}`}
-            >
-              {isUpdatingBook && <ClipLoader color="#ffffff" size={20} />}
-              Salvar alterações
-            </button>
+            <SaveButton
+              buttonLabel="Salvar alterações"
+              fullWidth
+              isLoading={isUpdatingBook}
+              isLoadingOther={isUpdatingBookCover}
+              onClick={handleSubmit}
+            />
 
             <button
               type="button"
+              disabled={isUpdatingBook || isUpdatingBookCover}
               onClick={() => setIsConfirmationModalVisible(true)}
-              className={`text-snow-white bg-blood-red hover:bg-blood-red/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer`}
+              className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
             >
               <FiTrash2 />
             </button>

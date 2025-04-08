@@ -1,26 +1,34 @@
 import { useState } from 'react';
 
+import BooksService from '../../../../app/services/BooksService';
+
 import { env } from '../../../../config/env';
 
 import { FiTrash2 } from 'react-icons/fi';
-import { GiBookCover } from 'react-icons/gi';
-import { ClipLoader } from 'react-spinners';
+import { MdOutlinePermMedia } from 'react-icons/md';
+
+import SaveButton from './SaveButton';
+import DeleteButton from './DeleteButton';
 
 import { IBook } from '../../../../@types/Book';
-import BooksService from '../../../../app/services/BooksService';
+import SectionTitle from './SectionTitle';
 
 interface EditBookCoverProps {
   book: IBook;
   setBook: (book: IBook) => void;
+  isUpdatingBook: boolean;
+  isUpdatingBookCover: boolean;
+  setIsUpdatingBookCover: (value: boolean) => void;
 }
 
 export default function SectionToEditBookCover({
   book,
   setBook,
+  isUpdatingBook,
+  isUpdatingBookCover,
+  setIsUpdatingBookCover,
 }: EditBookCoverProps) {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-
-  const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
 
   const [isToRemoveTheBookCover, setIsToRemoveTheBookCover] = useState(false);
 
@@ -69,11 +77,9 @@ export default function SectionToEditBookCover({
 
   return (
     <div>
-      <h1 className="text-snow-white font-quicksand mt-6 mb-6 text-2xl font-thin">
-        Capa
-      </h1>
+      <SectionTitle>Capa</SectionTitle>
 
-      <div className="bg-navy-blue/80 flex items-center justify-between rounded-lg px-4 py-4">
+      <div className="bg-navy-blue/60 flex items-center justify-between rounded-lg px-4 py-4">
         {(book.imagePath || selectedImage) && !isToRemoveTheBookCover ? (
           <img
             src={src}
@@ -81,43 +87,45 @@ export default function SectionToEditBookCover({
             className="h-[65px] w-[65px] rounded-full"
           />
         ) : (
-          <div className="border-sky-blue-op-60 flex h-[65px] w-[65px] items-center justify-center rounded-full border">
-            <GiBookCover size={45} color="#03a9f494 " />
+          <div className="flex h-[65px] w-[65px] items-center justify-center">
+            <MdOutlinePermMedia size={45} color="#0a112360" />
           </div>
         )}
 
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={handleBookCoverUpdate}
-            className={`bg-sky-blue text-snow-white font-roboto flex w-[140px] items-center justify-center rounded-lg px-4 py-2 font-semibold transition-colors duration-300 ease-in-out ${isUpdatingBookCover ? 'hover:cursor-default' : 'hover:bg-sky-blue-op-94 hover:cursor-pointer'}`}
-          >
-            {isUpdatingBookCover && <ClipLoader color="#ffffff" size={20} />}
-            {!isUpdatingBookCover &&
-              (selectedImage || isToRemoveTheBookCover
+          <SaveButton
+            buttonLabel={
+              selectedImage || isToRemoveTheBookCover
                 ? 'Salvar'
                 : book.imagePath
                   ? 'Alterar capa'
-                  : 'Adicionar capa')}
+                  : 'Adicionar capa'
+            }
+            isLoading={isUpdatingBookCover}
+            isLoadingOther={isUpdatingBook}
+            onClick={handleBookCoverUpdate}
+          >
             <input
               id="book-cover"
               type="file"
               onChange={handleImageChange}
               className="hidden"
             />
-          </button>
+          </SaveButton>
 
-          <button
-            type="button"
+          <DeleteButton
+            buttonLabel={
+              !isToRemoveTheBookCover ? (
+                <FiTrash2 />
+              ) : (
+                <span className="font-quicksand">X</span>
+              )
+            }
+            disabled={
+              isUpdatingBookCover || isUpdatingBook || book.imagePath === null
+            }
             onClick={() => setIsToRemoveTheBookCover((prevState) => !prevState)}
-            className={`text-snow-white flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out ${book.imagePath === null ? 'bg-light-gray/70' : 'bg-blood-red hover:bg-blood-red/70 hover:cursor-pointer'}`}
-          >
-            {!isToRemoveTheBookCover ? (
-              <FiTrash2 />
-            ) : (
-              <span className="font-quicksand">X</span>
-            )}
-          </button>
+          />
         </div>
       </div>
     </div>

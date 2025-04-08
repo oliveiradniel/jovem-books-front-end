@@ -12,6 +12,9 @@ export default function EditBook() {
 
   const [book, setBook] = useState(state.bookData);
 
+  const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
+  const [isUpdatingBook, setIsUpdatingBook] = useState(false);
+
   return (
     <>
       <div className="animate-fade-in overflow-y-auto">
@@ -23,9 +26,21 @@ export default function EditBook() {
           <GoArrowLeft size={20} />
         </button>
 
-        <SectionToEditBookCover book={book} setBook={setBook} />
+        <SectionToEditBookCover
+          book={book}
+          setBook={setBook}
+          isUpdatingBook={isUpdatingBook}
+          isUpdatingBookCover={isUpdatingBookCover}
+          setIsUpdatingBookCover={setIsUpdatingBookCover}
+        />
 
-        <SectionToEditBook book={book} setBook={setBook} />
+        <SectionToEditBook
+          book={book}
+          setBook={setBook}
+          isUpdatingBookCover={isUpdatingBookCover}
+          isUpdatingBook={isUpdatingBook}
+          setIsUpdatingBook={setIsUpdatingBook}
+        />
       </div>
     </>
   );
