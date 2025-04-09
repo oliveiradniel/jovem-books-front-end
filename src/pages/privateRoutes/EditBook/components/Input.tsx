@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { ErrorData } from '../types/ErrorData';
+import { ErrorData } from '../../../../@types/ErrorData';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;

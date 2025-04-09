@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
-import { CiEdit } from 'react-icons/ci';
-import { IBook } from '../../../../@types/Book';
 import { formatDate } from '../../../../utils/formatDate';
+
+import { CiEdit } from 'react-icons/ci';
+
 import SkeletonLoading from '../../../../components/SkeletonLoading';
+
+import { IBook } from '../../../../@types/Book';
 
 interface ReadingInformationProps {
   book: IBook;

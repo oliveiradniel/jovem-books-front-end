@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-import { ErrorData, FieldName } from '../types/ErrorData';
+import { ErrorData, FieldName } from '../../../@types/ErrorData';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   theFieldIsEmpty: boolean;

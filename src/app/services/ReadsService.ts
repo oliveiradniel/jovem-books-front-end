@@ -1,4 +1,4 @@
-import { Read } from '../../@types/Read';
+import { IRead } from '../../@types/Read';
 
 import { ReadingStatus } from '../../@types/Book';
 
@@ -17,7 +17,7 @@ type UpdateReadProps = Omit<Partial<CreateReadProps>, 'bookId'> &
 
 class ReadsService {
   async createRead({ bookId, ...data }: CreateReadProps) {
-    const { data: updatedRead } = await httpClient.post<Read>(
+    const { data: updatedRead } = await httpClient.post<IRead>(
       `/reads/${bookId}`,
       {
         ...data,
@@ -28,7 +28,7 @@ class ReadsService {
   }
 
   async updateRead({ bookId, ...data }: UpdateReadProps) {
-    const { data: updatedRead } = await httpClient.put<Read>(
+    const { data: updatedRead } = await httpClient.put<IRead>(
       `/reads/${bookId}`,
       {
         ...data,

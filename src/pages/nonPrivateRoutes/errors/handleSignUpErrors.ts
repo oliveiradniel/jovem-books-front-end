@@ -1,8 +1,7 @@
 import { ZodError } from 'zod';
 
 import { AxiosError, AxiosResponse } from 'axios';
-
-import { ErrorData } from '../types/ErrorData';
+import { ErrorData } from '../../../@types/ErrorData';
 
 type Errors = ZodError | AxiosError | unknown;
 

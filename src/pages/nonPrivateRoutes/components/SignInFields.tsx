@@ -6,7 +6,7 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 import Input from './Input';
 import FormGroup from '../../../components/FormGroup';
 
-import { ErrorData } from '../types/ErrorData';
+import { ErrorData } from '../../../@types/ErrorData';
 
 interface SignInFieldsProps {
   username: string;

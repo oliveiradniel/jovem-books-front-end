@@ -1,6 +1,6 @@
 import { ReadingStatus } from './Book';
 
-export interface Read {
+export interface IRead {
   createdAt: Date;
   bookId: string;
   currentPage: number;
