@@ -1,4 +1,6 @@
 export type FieldName =
+  | 'title'
+  | 'authors'
   | 'username'
   | 'firstName'
   | 'lastName'

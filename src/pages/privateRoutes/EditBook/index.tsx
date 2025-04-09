@@ -17,11 +17,11 @@ export default function EditBook() {
 
   return (
     <>
-      <div className="animate-fade-in overflow-y-auto">
+      <div className="animate-fade-in h-full overflow-y-auto">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="text-snow-white hover:text-snow-white-op-70 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+          className="text-snow-white hover:text-snow-white-op-70 mb-10 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
         >
           <GoArrowLeft size={20} />
         </button>
