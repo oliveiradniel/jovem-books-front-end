@@ -28,16 +28,16 @@ export default function Input({
         {label}
       </label>
       <div
-        className={`border-navy-blue flex h-8 w-full items-center rounded-lg border px-2 transition-colors duration-300 ease-in-out ${
+        className={`flex h-8 w-full items-center rounded-lg border px-2 transition-colors duration-300 ease-in-out ${
           isTheFieldFocused && 'border-sky-blue/40'
-        } ${isError && 'border-blood-red!'}`}
+        } ${isError ? 'border-blood-red!' : 'border-navy-blue'}`}
       >
         <input
           type="text"
           onFocus={() => setIsTheFieldFocused(true)}
           onBlur={() => setIsTheFieldFocused(false)}
           {...props}
-          className="text-sky-blue/80 font-quicksand placeholder:text-light-gray w-full outline-none placeholder:text-sm"
+          className={`font-quicksand placeholder:text-light-gray w-full outline-none placeholder:text-sm ${isError ? 'text-blood-red' : 'text-sky-blue/80'}`}
         />
       </div>
     </div>

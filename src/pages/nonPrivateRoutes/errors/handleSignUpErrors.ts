@@ -3,13 +3,13 @@ import { ZodError } from 'zod';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorData } from '../../../@types/ErrorData';
 
-type Errors = ZodError | AxiosError | unknown;
+type Error = ZodError | AxiosError | unknown;
 
 interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleSignUpErrors(error: Errors): ErrorData | null {
+export function handleSignUpErrors(error: Error): ErrorData | null {
   if (error instanceof ZodError) {
     if (error.message.includes('The username must be at least 5 characters')) {
       const message = 'O nome de usuário deve ter no mínimo 5 caracteres';

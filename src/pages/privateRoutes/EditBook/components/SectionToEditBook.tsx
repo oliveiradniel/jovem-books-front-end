@@ -5,15 +5,19 @@ import BooksService from '../../../../app/services/BooksService';
 
 import { formatAuthors } from '../../../../utils/formatAuthors';
 
+import { ErrorData } from '../../../../@types/ErrorData';
+import { handleEditBookErrors } from '../errors/handleEditBookErrors';
+
+import { EditBookSchema } from '../schemas/EditBookSchema';
+
+import FormGroup from '../../../../components/FormGroup';
 import ConfirmationModal from './ConfirmationModal';
 import Input from './Input';
 import SaveButton from './SaveButton';
 
 import { FiTrash2 } from 'react-icons/fi';
 
-import { ErrorData } from '../types/ErrorData';
 import { IBook } from '../../../../@types/Book';
-import FormGroup from '../../../../components/FormGroup';
 
 interface SectionToEditBookProps {
   book: IBook;
@@ -99,18 +103,24 @@ export default function SectionToEditBook({
     try {
       setIsUpdatingBook(true);
 
-      const formData = {
+      const {
+        title: parsedTitle,
+        authors: parsedAuthors,
+        sinopse: parsedSinopse,
+      } = EditBookSchema.parse({
         title,
-        authors: authors
-          .split(',')
-          .map((author) => author.trim())
-          .filter((author) => author !== ''),
+        authors: authors.split(',').map((author) => author.trim()),
         sinopse,
-      };
+      });
 
       const updatedBook = await BooksService.updateBook({
         id: book.id,
-        ...formData,
+        title: parsedTitle,
+        authors: formatAuthors({ authors: parsedAuthors, onlyCommas: true })
+          .split(',')
+          .map((author) => author.trim())
+          .filter((author) => author !== ''),
+        sinopse: parsedSinopse,
       });
 
       setBook(updatedBook);
@@ -121,7 +131,10 @@ export default function SectionToEditBook({
       );
       setSinopse(updatedBook.sinopse ?? '');
     } catch (error) {
-      console.log(error);
+      const result = handleEditBookErrors(error);
+      if (result) {
+        setErrorsData((prevState) => [...prevState, result]);
+      }
     } finally {
       setIsUpdatingBook(false);
     }
@@ -129,7 +142,7 @@ export default function SectionToEditBook({
 
   useEffect(() => {
     setTitle(book.title);
-    setAuthors(formatAuthors({ authors: book.authors }));
+    setAuthors(formatAuthors({ authors: book.authors, onlyCommas: true }));
     setSinopse(book.sinopse ?? '');
   }, [book]);
 
@@ -197,9 +210,16 @@ export default function SectionToEditBook({
           <SaveButton
             buttonLabel="Salvar alterações"
             fullWidth
-            disabled={isUpdatingBook || isUpdatingBookCover || !isFormValid}
+            disabled={
+              isUpdatingBook ||
+              isUpdatingBookCover ||
+              !isFormValid ||
+              errorsData.length > 0
+            }
             isLoading={isUpdatingBook}
-            isLoadingOther={isUpdatingBookCover || !isFormValid}
+            isLoadingOther={
+              isUpdatingBookCover || !isFormValid || errorsData.length > 0
+            }
             onClick={handleSubmit}
           />
 
