@@ -1,6 +1,22 @@
 export interface IBook {
   id: string;
   title: string;
+  authors: string;
+  sinopse: string | null;
+  imagePath: string | null;
+  numberOfPages: number;
+  genreLiterary: LiteraryGenre[];
+  read: {
+    status: ReadingStatus;
+    currentPage: number;
+    createdAt: string | Date;
+    finishedAt: string | Date | null;
+  } | null;
+}
+
+export interface IBookAPIResponse {
+  id: string;
+  title: string;
   authors: string[];
   sinopse: string | null;
   imagePath: string | null;

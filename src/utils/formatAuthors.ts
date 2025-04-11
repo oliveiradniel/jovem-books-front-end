@@ -7,7 +7,9 @@ export function formatAuthors({
   authors,
   onlyCommas = false,
 }: FormatAuthorsProps) {
-  if (authors?.length === 0 || !authors) return '';
+  authors = authors[0].split(',').map((author) => author.trim());
+
+  if (authors.length === 0 || !authors) return '';
 
   authors = authors.map((author) => author.trim().replace(/\s+/g, ' '));
 

@@ -1,27 +1,26 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../../app/services/BooksService';
 
-import { formatAuthors } from '../../../../utils/formatAuthors';
+import AuthorsMapper from '../../../../app/services/mappers/AuthorsMapper';
 
 import { ErrorData } from '../../../../@types/ErrorData';
 import { handleEditBookErrors } from '../errors/handleEditBookErrors';
 
 import { EditBookSchema } from '../schemas/EditBookSchema';
 
+import { FiTrash2 } from 'react-icons/fi';
+
 import FormGroup from '../../../../components/FormGroup';
 import ConfirmationModal from './ConfirmationModal';
 import Input from './Input';
 import SaveButton from './SaveButton';
 
-import { FiTrash2 } from 'react-icons/fi';
-
 import { IBook } from '../../../../@types/Book';
 
 interface SectionToEditBookProps {
   book: IBook;
-  setBook: (book: IBook) => void;
   isUpdatingBookCover: boolean;
   isUpdatingBook: boolean;
   setIsUpdatingBook: (value: boolean) => void;
@@ -29,21 +28,21 @@ interface SectionToEditBookProps {
 
 export default function SectionToEditBook({
   book,
-  setBook,
   isUpdatingBookCover,
   isUpdatingBook,
   setIsUpdatingBook,
 }: SectionToEditBookProps) {
-  const [title, setTitle] = useState('');
-  const [authors, setAuthors] = useState('');
-  const [sinopse, setSinopse] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [title, setTitle] = useState(book.title);
+  const [authors, setAuthors] = useState(book.authors);
+  const [sinopse, setSinopse] = useState(book.sinopse ?? '');
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
-
-  const navigate = useNavigate();
 
   const isFormValid = title.length > 0 && authors.length > 0;
 
@@ -91,7 +90,7 @@ export default function SectionToEditBook({
 
   async function handleDeleteBook() {
     try {
-      await BooksService.delete(book.id);
+      await BooksService.delete(id!);
 
       navigate('/my-books');
     } catch (error) {
@@ -103,32 +102,25 @@ export default function SectionToEditBook({
     try {
       setIsUpdatingBook(true);
 
-      const {
-        title: parsedTitle,
-        authors: parsedAuthors,
-        sinopse: parsedSinopse,
-      } = EditBookSchema.parse({
+      const persistenceAuthors = AuthorsMapper.toPersistence({ authors });
+
+      EditBookSchema.parse({
         title,
-        authors: authors.split(',').map((author) => author.trim()),
+        authors: persistenceAuthors,
         sinopse,
       });
 
+      console.log(authors);
+
       const updatedBook = await BooksService.updateBook({
-        id: book.id,
-        title: parsedTitle,
-        authors: formatAuthors({ authors: parsedAuthors, onlyCommas: true })
-          .split(',')
-          .map((author) => author.trim())
-          .filter((author) => author !== ''),
-        sinopse: parsedSinopse,
+        id: id!,
+        title,
+        authors,
+        sinopse: sinopse ?? null,
       });
 
-      setBook(updatedBook);
-
       setTitle(updatedBook.title);
-      setAuthors(
-        formatAuthors({ authors: updatedBook.authors, onlyCommas: true })
-      );
+      setAuthors(updatedBook.authors);
       setSinopse(updatedBook.sinopse ?? '');
     } catch (error) {
       const result = handleEditBookErrors(error);
@@ -140,16 +132,10 @@ export default function SectionToEditBook({
     }
   }
 
-  useEffect(() => {
-    setTitle(book.title);
-    setAuthors(formatAuthors({ authors: book.authors, onlyCommas: true }));
-    setSinopse(book.sinopse ?? '');
-  }, [book]);
-
   return (
     <>
       <ConfirmationModal
-        bookTitle={book.title}
+        bookTitle={title}
         isVisible={isConfirmationModalVisible}
         onClose={() => setIsConfirmationModalVisible(false)}
         onConfirm={handleDeleteBook}
@@ -198,7 +184,7 @@ export default function SectionToEditBook({
             <textarea
               name="title"
               placeholder="Sinopse do livro"
-              value={sinopse}
+              value={sinopse ?? ''}
               disabled={isUpdatingBook || isUpdatingBookCover}
               onChange={(event) => setSinopse(event.target.value)}
               className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"

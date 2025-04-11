@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+import BooksService from '../../../app/services/BooksService';
 
 import { GoArrowLeft } from 'react-icons/go';
 
@@ -7,13 +9,37 @@ import SectionToEditBookCover from './components/SectionToEditBookCover';
 import SectionToEditBook from './components/SectionToEditBook';
 
 export default function EditBook() {
+  const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
+
+  const isFirstRender = useRef(true);
 
   const [book, setBook] = useState(state.bookData);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
   const [isUpdatingBook, setIsUpdatingBook] = useState(false);
+
+  useEffect(() => {
+    async function loadBook() {
+      try {
+        const updatedBook = await BooksService.getBookById({
+          id: id!,
+          onlyCommas: true,
+        });
+
+        setBook(updatedBook);
+      } catch {
+        navigate('/my-books');
+      }
+    }
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      loadBook();
+    }
+  }, [book, id, navigate]);
 
   return (
     <>
@@ -38,7 +64,6 @@ export default function EditBook() {
 
         <SectionToEditBook
           book={book}
-          setBook={setBook}
           isUpdatingBookCover={isUpdatingBookCover}
           isUpdatingBook={isUpdatingBook}
           setIsUpdatingBook={setIsUpdatingBook}

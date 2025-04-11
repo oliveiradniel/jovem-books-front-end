@@ -7,8 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
 
-import { formatAuthors } from '../../../utils/formatAuthors';
-
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
 
@@ -38,8 +36,6 @@ export default function Book() {
 
   const isReading =
     book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
-
-  const formattedAuthors = formatAuthors({ authors: book.authors });
 
   async function handleStartReading() {
     try {
@@ -122,7 +118,12 @@ export default function Book() {
       try {
         setIsLoading(true);
 
-        const bookData = await BooksService.getBookById(id!);
+        const bookData = await BooksService.getBookById({
+          id: id!,
+          onlyCommas: false,
+        });
+
+        console.log(typeof bookData.authors);
 
         setBook(bookData);
       } catch {
@@ -160,7 +161,7 @@ export default function Book() {
           <div className="w-full lg:max-w-[900px]">
             <Title title={book.title} isLoadingBook={isLoading} />
 
-            <Author author={formattedAuthors} isLoadingBook={isLoading} />
+            <Author author={book.authors} isLoadingBook={isLoading} />
 
             <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
 

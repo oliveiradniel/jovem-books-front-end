@@ -22,7 +22,6 @@ interface EditBookCoverProps {
 
 export default function SectionToEditBookCover({
   book,
-  setBook,
   isUpdatingBook,
   isUpdatingBookCover,
   setIsUpdatingBookCover,
@@ -51,17 +50,16 @@ export default function SectionToEditBookCover({
     }
   }
 
-  async function handleBookCoverUpdate() {
+  async function handleSubmit() {
     if (selectedImage || isToRemoveTheBookCover) {
       try {
         setIsUpdatingBookCover(true);
 
-        const updatedBook = await BooksService.updateImage({
+        await BooksService.updateImage({
           id: book.id,
           image: selectedImage,
         });
 
-        setBook(updatedBook);
         setSelectedImage(null);
         setIsToRemoveTheBookCover(false);
       } catch (error) {
@@ -101,7 +99,7 @@ export default function SectionToEditBookCover({
             disabled={isUpdatingBookCover || isUpdatingBook}
             isLoading={isUpdatingBookCover}
             isLoadingOther={isUpdatingBook}
-            onClick={handleBookCoverUpdate}
+            onClick={handleSubmit}
           >
             <input
               id="book-cover"

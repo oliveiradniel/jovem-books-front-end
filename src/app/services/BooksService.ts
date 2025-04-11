@@ -1,30 +1,41 @@
 import { httpClient } from './httpClient';
 
-import { IBook } from '../../@types/Book';
+import { IBook, IBookAPIResponse } from '../../@types/Book';
+import AuthorsMapper from './mappers/AuthorsMapper';
 
-type UpdateBookProps = Omit<Partial<IBook>, 'id' | 'imagePath'> &
-  Pick<IBook, 'id'> & { image?: File | null };
+type UpdateBookProps = Omit<Partial<IBook>, 'id' | 'authors' | 'imagePath'> &
+  Pick<IBook, 'id' | 'authors'> & { image?: File | null };
 
 interface UpdateBookCoverProps {
   id: string;
   image: File | null;
 }
 
-class BooksService {
-  async getBookById(id: string) {
-    const { data } = await httpClient.get<IBook>(`/books/${id}`);
+interface GetBookByIdProps {
+  id: string;
+  onlyCommas: boolean;
+}
 
-    return data;
+class BooksService {
+  async getBookById({ id, onlyCommas }: GetBookByIdProps): Promise<IBook> {
+    const { data } = await httpClient.get<IBookAPIResponse>(`/books/${id}`);
+
+    const domainAuthors = AuthorsMapper.toDomain({
+      authors: data.authors,
+      onlyCommas,
+    });
+
+    return { ...data, authors: domainAuthors };
   }
 
   async listBooks() {
-    const { data } = await httpClient.get<IBook[]>('/books');
+    const { data } = await httpClient.get<IBookAPIResponse[]>('/books');
 
     return data;
   }
 
-  async updateBook({ id, ...data }: UpdateBookProps) {
-    const { data: updatedBook } = await httpClient.put<IBook>(
+  async updateBook({ id, ...data }: UpdateBookProps): Promise<IBook> {
+    const { data: updatedBook } = await httpClient.put<IBookAPIResponse>(
       `/books/${id}`,
       data,
       {
@@ -34,7 +45,12 @@ class BooksService {
       }
     );
 
-    return updatedBook;
+    const domainAuthors = AuthorsMapper.toDomain({
+      authors: updatedBook.authors,
+      onlyCommas: true,
+    });
+
+    return { ...updatedBook, authors: domainAuthors };
   }
 
   async updateImage({ id, image }: UpdateBookCoverProps) {
@@ -46,7 +62,7 @@ class BooksService {
       form.append('removeImage', 'true');
     }
 
-    const { data: updatedBook } = await httpClient.put<IBook>(
+    const { data: updatedBook } = await httpClient.put<IBookAPIResponse>(
       `/books/${id}`,
       form
     );
