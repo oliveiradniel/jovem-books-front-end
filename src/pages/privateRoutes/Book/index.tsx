@@ -12,7 +12,7 @@ import EditReadModal from './components/Modal/EditReadModal';
 
 import Actions from './components/Actions';
 import Title from './components/Title';
-import Author from './components/Author';
+import Authors from './components/Authors';
 import Sinopse from './components/Sinopse';
 import InformationButton from './components/InformationButton';
 import PauseOrPlayButton from './components/PauseOrPlayButton';
@@ -159,7 +159,7 @@ export default function Book() {
           <div className="w-full lg:max-w-[900px]">
             <Title title={book.title} isLoadingBook={isLoading} />
 
-            <Author author={book.authors} isLoadingBook={isLoading} />
+            <Authors authors={book.authors} isLoadingBook={isLoading} />
 
             <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
 

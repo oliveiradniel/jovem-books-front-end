@@ -140,10 +140,6 @@ export default function SectionToEditBook({
     setSinopse(book.sinopse ?? '');
   }, [book.title, book.authors, book.sinopse]);
 
-  console.log({ title });
-  console.log({ authors });
-  console.log({ sinopse });
-
   return (
     <>
       <ConfirmationModal
