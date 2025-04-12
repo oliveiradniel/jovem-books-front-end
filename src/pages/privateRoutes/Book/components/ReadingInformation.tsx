@@ -34,7 +34,9 @@ export default function ReadingInformation({
 
   return (
     <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 relative mt-3 flex h-26 justify-between rounded-lg px-4 py-2 text-sm sm:mt-5">
-      {!isLoadingBook ? (
+      {isLoadingBook ? (
+        <SkeletonLoading rounded="lg" />
+      ) : (
         <div>
           <p className="flex gap-2">
             {book.read ? (
@@ -84,8 +86,6 @@ export default function ReadingInformation({
             </p>
           )}
         </div>
-      ) : (
-        <SkeletonLoading />
       )}
 
       {!isLoadingBook && book.read && book.read?.status !== 'FINISHED' && (

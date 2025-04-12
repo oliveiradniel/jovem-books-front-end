@@ -1,17 +1,21 @@
 import { useState } from 'react';
 
+import SkeletonLoading from '../../../../components/SkeletonLoading';
+
 import { ErrorData } from '../../../../@types/ErrorData';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   errorsData: ErrorData[];
   fieldName: string;
+  isLoading: boolean;
 }
 
 export default function Input({
   label,
   errorsData,
   fieldName,
+  isLoading,
   ...props
 }: InputProps) {
   const [isTheFieldFocused, setIsTheFieldFocused] = useState(false);
@@ -30,15 +34,18 @@ export default function Input({
       <div
         className={`flex h-8 w-full items-center rounded-lg border px-2 transition-colors duration-300 ease-in-out ${
           isTheFieldFocused && 'border-sky-blue/40'
-        } ${isError ? 'border-blood-red!' : 'border-navy-blue'}`}
+        } ${isError ? 'border-blood-red!' : 'border-navy-blue'} ${isLoading && 'border-transparent!'} relative`}
       >
-        <input
-          type="text"
-          onFocus={() => setIsTheFieldFocused(true)}
-          onBlur={() => setIsTheFieldFocused(false)}
-          {...props}
-          className={`font-quicksand placeholder:text-light-gray w-full outline-none placeholder:text-sm ${isError ? 'text-blood-red' : 'text-sky-blue/80'}`}
-        />
+        {isLoading && <SkeletonLoading rounded="lg" />}
+        {!isLoading && (
+          <input
+            type="text"
+            onFocus={() => setIsTheFieldFocused(true)}
+            onBlur={() => setIsTheFieldFocused(false)}
+            {...props}
+            className={`font-quicksand placeholder:text-light-gray w-full outline-none placeholder:text-sm ${isError ? 'text-blood-red' : 'text-sky-blue/80'}`}
+          />
+        )}
       </div>
     </div>
   );

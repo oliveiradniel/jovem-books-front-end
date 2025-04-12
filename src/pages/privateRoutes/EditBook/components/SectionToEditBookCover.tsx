@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import BooksService from '../../../../app/services/BooksService';
 
@@ -9,44 +10,40 @@ import { MdOutlinePermMedia } from 'react-icons/md';
 
 import SaveButton from './SaveButton';
 import DeleteButton from './DeleteButton';
-
-import { IBook } from '../../../../@types/Book';
+import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface EditBookCoverProps {
-  book: IBook;
-  setBook: (book: IBook) => void;
+  imagePath: string | null;
+  isLoadingBook: boolean;
   isUpdatingBook: boolean;
   isUpdatingBookCover: boolean;
   setIsUpdatingBookCover: (value: boolean) => void;
 }
 
 export default function SectionToEditBookCover({
-  book,
+  imagePath,
+  isLoadingBook,
   isUpdatingBook,
   isUpdatingBookCover,
   setIsUpdatingBookCover,
 }: EditBookCoverProps) {
+  const { id } = useParams();
+
+  const isFirstRender = useRef(true);
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
 
   const [isToRemoveTheBookCover, setIsToRemoveTheBookCover] = useState(false);
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
-    : `${env.API_URL}/uploads/books/${book.imagePath}`;
+    : `${env.API_URL}/uploads/books/${imageName}`;
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-
       setSelectedImage(file);
-
-      reader.onload = (e) => {
-        const img = document.getElementById('book-cover') as HTMLImageElement;
-        img.src = e.target?.result as string;
-      };
-
-      reader.readAsDataURL(file);
     }
   }
 
@@ -55,13 +52,17 @@ export default function SectionToEditBookCover({
       try {
         setIsUpdatingBookCover(true);
 
-        await BooksService.updateImage({
-          id: book.id,
+        const updatedBook = await BooksService.updateImage({
+          id: id!,
           image: selectedImage,
         });
 
+        console.log(updatedBook);
+
         setSelectedImage(null);
+        setImageName(updatedBook.imagePath);
         setIsToRemoveTheBookCover(false);
+        if (!selectedImage) setSelectedImage(null);
       } catch (error) {
         console.log(error);
       } finally {
@@ -72,33 +73,48 @@ export default function SectionToEditBookCover({
     }
   }
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      if (!imagePath) {
+        setImageName(null);
+        return;
+      }
+      setImageName(imagePath);
+
+      isFirstRender.current = false;
+    }
+  }, [imagePath]);
+
   return (
     <div>
       <div className="bg-blue-black/40 flex items-center justify-between rounded-lg px-4 py-4">
-        {(book.imagePath || selectedImage) && !isToRemoveTheBookCover ? (
-          <img
-            src={src}
-            alt="Capa do Livro"
-            className="h-[65px] w-[65px] rounded-full"
-          />
-        ) : (
-          <div className="flex h-[65px] w-[65px] items-center justify-center">
-            <MdOutlinePermMedia size={45} color="#adadad40" />
-          </div>
-        )}
+        <div className="relative flex h-[65px] w-[65px] items-center justify-center rounded-full">
+          {isLoadingBook && <SkeletonLoading rounded="full" />}
+
+          {!isLoadingBook &&
+            ((selectedImage || imageName) && !isToRemoveTheBookCover ? (
+              <img
+                src={src}
+                alt="Capa do Livro"
+                className="h-[65px] w-[65px] rounded-full"
+              />
+            ) : (
+              <MdOutlinePermMedia size={45} color="#adadad40" />
+            ))}
+        </div>
 
         <div className="flex gap-2">
           <SaveButton
             buttonLabel={
               selectedImage || isToRemoveTheBookCover
                 ? 'Salvar'
-                : book.imagePath
+                : imagePath
                   ? 'Alterar capa'
                   : 'Adicionar capa'
             }
-            disabled={isUpdatingBookCover || isUpdatingBook}
+            disabled={isUpdatingBookCover || isUpdatingBook || isLoadingBook}
             isLoading={isUpdatingBookCover}
-            isLoadingOther={isUpdatingBook}
+            isLoadingOther={isUpdatingBook || isLoadingBook}
             onClick={handleSubmit}
           >
             <input
@@ -118,7 +134,10 @@ export default function SectionToEditBookCover({
               )
             }
             disabled={
-              isUpdatingBookCover || isUpdatingBook || book.imagePath === null
+              isUpdatingBookCover ||
+              isUpdatingBook ||
+              !imageName ||
+              isLoadingBook
             }
             onClick={() => setIsToRemoveTheBookCover((prevState) => !prevState)}
           />

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../../app/services/BooksService';
@@ -16,11 +16,13 @@ import FormGroup from '../../../../components/FormGroup';
 import ConfirmationModal from './ConfirmationModal';
 import Input from './Input';
 import SaveButton from './SaveButton';
+import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 import { IBook } from '../../../../@types/Book';
 
 interface SectionToEditBookProps {
   book: IBook;
+  isLoadingBook: boolean;
   isUpdatingBookCover: boolean;
   isUpdatingBook: boolean;
   setIsUpdatingBook: (value: boolean) => void;
@@ -28,23 +30,25 @@ interface SectionToEditBookProps {
 
 export default function SectionToEditBook({
   book,
+  isLoadingBook,
   isUpdatingBookCover,
   isUpdatingBook,
   setIsUpdatingBook,
 }: SectionToEditBookProps) {
-  const navigate = useNavigate();
   const { id } = useParams();
 
-  const [title, setTitle] = useState(book.title);
-  const [authors, setAuthors] = useState(book.authors);
-  const [sinopse, setSinopse] = useState(book.sinopse ?? '');
+  const navigate = useNavigate();
+
+  const [title, setTitle] = useState('');
+  const [authors, setAuthors] = useState('');
+  const [sinopse, setSinopse] = useState('');
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
 
-  const isFormValid = title.length > 0 && authors.length > 0;
+  const isFormValid = title?.length > 0 && authors?.length > 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -110,8 +114,6 @@ export default function SectionToEditBook({
         sinopse,
       });
 
-      console.log(authors);
-
       const updatedBook = await BooksService.updateBook({
         id: id!,
         title,
@@ -132,6 +134,16 @@ export default function SectionToEditBook({
     }
   }
 
+  useEffect(() => {
+    setTitle(book.title ?? '');
+    setAuthors(book.authors ?? '');
+    setSinopse(book.sinopse ?? '');
+  }, [book.title, book.authors, book.sinopse]);
+
+  console.log({ title });
+  console.log({ authors });
+  console.log({ sinopse });
+
   return (
     <>
       <ConfirmationModal
@@ -142,7 +154,7 @@ export default function SectionToEditBook({
       />
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-10">
-        <div className="flex flex-col gap-4">
+        <div className="relative flex flex-col gap-4">
           <FormGroup fieldName={['title']} errorsData={errorsData}>
             <Input
               label="Título"
@@ -151,6 +163,7 @@ export default function SectionToEditBook({
               name="title"
               placeholder="Título do livro"
               value={title}
+              isLoading={isLoadingBook}
               disabled={isUpdatingBook || isUpdatingBookCover}
               onChange={handleTitleChange}
             />
@@ -168,6 +181,7 @@ export default function SectionToEditBook({
                 name="authors"
                 placeholder="Autores(as)"
                 value={authors}
+                isLoading={isLoadingBook}
                 disabled={isUpdatingBook || isUpdatingBookCover}
                 onChange={handleAuthorsChange}
               />
@@ -181,14 +195,20 @@ export default function SectionToEditBook({
             >
               Sinopse
             </label>
-            <textarea
-              name="title"
-              placeholder="Sinopse do livro"
-              value={sinopse ?? ''}
-              disabled={isUpdatingBook || isUpdatingBookCover}
-              onChange={(event) => setSinopse(event.target.value)}
-              className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
-            />
+            <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
+              {isLoadingBook && <SkeletonLoading rounded="lg" />}
+
+              {!isLoadingBook && (
+                <textarea
+                  name="title"
+                  placeholder="Sinopse do livro"
+                  value={sinopse ?? ''}
+                  disabled={isUpdatingBook || isUpdatingBookCover}
+                  onChange={(event) => setSinopse(event.target.value)}
+                  className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
+                />
+              )}
+            </div>
           </div>
         </div>
 
@@ -200,18 +220,22 @@ export default function SectionToEditBook({
               isUpdatingBook ||
               isUpdatingBookCover ||
               !isFormValid ||
-              errorsData.length > 0
+              errorsData.length > 0 ||
+              isLoadingBook
             }
             isLoading={isUpdatingBook}
             isLoadingOther={
-              isUpdatingBookCover || !isFormValid || errorsData.length > 0
+              isUpdatingBookCover ||
+              !isFormValid ||
+              errorsData.length > 0 ||
+              isLoadingBook
             }
             onClick={handleSubmit}
           />
 
           <button
             type="button"
-            disabled={isUpdatingBook || isUpdatingBookCover}
+            disabled={isUpdatingBook || isUpdatingBookCover || isLoadingBook}
             onClick={() => setIsConfirmationModalVisible(true)}
             className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
           >

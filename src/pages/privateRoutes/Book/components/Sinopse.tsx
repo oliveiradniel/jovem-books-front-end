@@ -8,7 +8,7 @@ interface SinopseProps {
 export default function Sinopse({ text, isLoadingBook }: SinopseProps) {
   return (
     <div className="relative mt-8 h-[200px] w-full overflow-y-auto lg:flex">
-      {isLoadingBook && <SkeletonLoading />}
+      {isLoadingBook && <SkeletonLoading rounded="lg" />}
 
       {!isLoadingBook &&
         (text ? (

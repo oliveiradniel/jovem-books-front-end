@@ -123,8 +123,6 @@ export default function Book() {
           onlyCommas: false,
         });
 
-        console.log(typeof bookData.authors);
-
         setBook(bookData);
       } catch {
         navigate('/my-books');
@@ -155,7 +153,7 @@ export default function Book() {
       />
 
       <div>
-        <Actions book={book} isLoadingBook={isLoading} />
+        <Actions isLoadingBook={isLoading} />
 
         <div className="mt-8 flex justify-between gap-4">
           <div className="w-full lg:max-w-[900px]">

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
 
@@ -8,14 +8,15 @@ import { GoArrowLeft } from 'react-icons/go';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
 import SectionToEditBook from './components/SectionToEditBook';
 
+import { IBook } from '../../../@types/Book';
+
 export default function EditBook() {
   const { id } = useParams();
-  const { state } = useLocation();
   const navigate = useNavigate();
 
-  const isFirstRender = useRef(true);
+  const [book, setBook] = useState({} as IBook);
 
-  const [book, setBook] = useState(state.bookData);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
   const [isUpdatingBook, setIsUpdatingBook] = useState(false);
@@ -23,6 +24,8 @@ export default function EditBook() {
   useEffect(() => {
     async function loadBook() {
       try {
+        setIsLoading(true);
+
         const updatedBook = await BooksService.getBookById({
           id: id!,
           onlyCommas: true,
@@ -31,15 +34,13 @@ export default function EditBook() {
         setBook(updatedBook);
       } catch {
         navigate('/my-books');
+      } finally {
+        setIsLoading(false);
       }
     }
 
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    } else {
-      loadBook();
-    }
-  }, [book, id, navigate]);
+    loadBook();
+  }, [id, navigate]);
 
   return (
     <>
@@ -53,8 +54,8 @@ export default function EditBook() {
         </button>
 
         <SectionToEditBookCover
-          book={book}
-          setBook={setBook}
+          imagePath={book.imagePath}
+          isLoadingBook={isLoading}
           isUpdatingBook={isUpdatingBook}
           isUpdatingBookCover={isUpdatingBookCover}
           setIsUpdatingBookCover={setIsUpdatingBookCover}
@@ -64,6 +65,7 @@ export default function EditBook() {
 
         <SectionToEditBook
           book={book}
+          isLoadingBook={isLoading}
           isUpdatingBookCover={isUpdatingBookCover}
           isUpdatingBook={isUpdatingBook}
           setIsUpdatingBook={setIsUpdatingBook}
