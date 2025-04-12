@@ -12,7 +12,7 @@ export default function Sinopse({ text, isLoadingBook }: SinopseProps) {
 
       {!isLoadingBook &&
         (text ? (
-          <p className="text-snow-white-op-70 font-quicksand break-words">
+          <p className="text-snow-white-op-70 font-quicksand break-all">
             {text}
           </p>
         ) : (
