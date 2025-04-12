@@ -5,6 +5,8 @@ import BooksService from '../../../../app/services/BooksService';
 
 import { env } from '../../../../config/env';
 
+import { emitToast } from '../../../../utils/emitToast';
+
 import { FiTrash2 } from 'react-icons/fi';
 import { MdOutlinePermMedia } from 'react-icons/md';
 
@@ -57,15 +59,29 @@ export default function SectionToEditBookCover({
           image: selectedImage,
         });
 
-        console.log(updatedBook);
+        if (selectedImage) {
+          emitToast({ type: 'success', message: 'Capa alterada com sucesso.' });
+        } else {
+          emitToast({ type: 'success', message: 'Capa excluída com sucesso.' });
+        }
 
-        setSelectedImage(null);
         setImageName(updatedBook.imagePath);
-        setIsToRemoveTheBookCover(false);
         if (!selectedImage) setSelectedImage(null);
-      } catch (error) {
-        console.log(error);
+      } catch {
+        if (selectedImage) {
+          emitToast({
+            type: 'error',
+            message: 'Não foi possível alterar a capa do livro.',
+          });
+        } else {
+          emitToast({
+            type: 'error',
+            message: 'Não foi possível excluir a capa do livro.',
+          });
+        }
       } finally {
+        setSelectedImage(null);
+        setIsToRemoveTheBookCover(false);
         setIsUpdatingBookCover(false);
       }
     } else {

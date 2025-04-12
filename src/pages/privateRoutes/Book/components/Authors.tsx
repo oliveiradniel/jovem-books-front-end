@@ -22,10 +22,8 @@ export default function Authors({ authors, isLoadingBook }: AuthorsProps) {
     });
   }
 
-  console.log(formatColors(authors));
-
   return (
-    <h6 className="mt-2">
+    <h6 className="text-sky-blue/70 mt-2">
       <span className="text-snow-white font-thin">Escrito por</span>{' '}
       {isLoadingBook ? '...' : formatColors(authors)}
     </h6>

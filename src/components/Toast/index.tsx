@@ -1,6 +1,4 @@
-import { ToastContentProps } from 'react-toastify';
-
-interface ToastProps extends ToastContentProps {
+interface ToastProps {
   message: string;
 }
 

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
 
+import { emitToast } from '../../../utils/emitToast';
+
 import { GoArrowLeft } from 'react-icons/go';
 
 import SectionToEditBookCover from './components/SectionToEditBookCover';
@@ -33,6 +35,11 @@ export default function EditBook() {
 
         setBook(updatedBook);
       } catch {
+        emitToast({
+          type: 'success',
+          message: `Não foi possível encontrar o livro`,
+        });
+
         navigate('/my-books');
       } finally {
         setIsLoading(false);

@@ -5,6 +5,8 @@ import BooksService from '../../../../app/services/BooksService';
 
 import AuthorsMapper from '../../../../app/services/mappers/AuthorsMapper';
 
+import { emitToast } from '../../../../utils/emitToast';
+
 import { ErrorData } from '../../../../@types/ErrorData';
 import { handleEditBookErrors } from '../errors/handleEditBookErrors';
 
@@ -13,10 +15,12 @@ import { EditBookSchema } from '../schemas/EditBookSchema';
 import { FiTrash2 } from 'react-icons/fi';
 
 import FormGroup from '../../../../components/FormGroup';
+import SkeletonLoading from '../../../../components/SkeletonLoading';
+
 import ConfirmationModal from './ConfirmationModal';
 import Input from './Input';
 import SaveButton from './SaveButton';
-import SkeletonLoading from '../../../../components/SkeletonLoading';
+import DeleteButton from './DeleteButton';
 
 import { IBook } from '../../../../@types/Book';
 
@@ -96,9 +100,17 @@ export default function SectionToEditBook({
     try {
       await BooksService.delete(id!);
 
+      emitToast({
+        type: 'success',
+        message: `O livro ${title} foi excluído com sucesso.`,
+      });
+
       navigate('/my-books');
-    } catch (error) {
-      console.log(error);
+    } catch {
+      emitToast({
+        type: 'error',
+        message: `Não foi possível excluir o livro ${title}.`,
+      });
     }
   }
 
@@ -121,6 +133,8 @@ export default function SectionToEditBook({
         sinopse: sinopse ?? null,
       });
 
+      emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
+
       setTitle(updatedBook.title);
       setAuthors(updatedBook.authors);
       setSinopse(updatedBook.sinopse ?? '');
@@ -128,7 +142,13 @@ export default function SectionToEditBook({
       const result = handleEditBookErrors(error);
       if (result) {
         setErrorsData((prevState) => [...prevState, result]);
+        return;
       }
+
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível atualizar o livro.',
+      });
     } finally {
       setIsUpdatingBook(false);
     }
@@ -229,14 +249,11 @@ export default function SectionToEditBook({
             onClick={handleSubmit}
           />
 
-          <button
-            type="button"
-            disabled={isUpdatingBook || isUpdatingBookCover || isLoadingBook}
+          <DeleteButton
+            buttonLabel={<FiTrash2 />}
+            disabled={isUpdatingBookCover || isUpdatingBook || isLoadingBook}
             onClick={() => setIsConfirmationModalVisible(true)}
-            className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
-          >
-            <FiTrash2 />
-          </button>
+          />
         </div>
       </form>
     </>

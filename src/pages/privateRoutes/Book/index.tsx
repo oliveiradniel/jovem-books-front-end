@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
 
+import { emitToast } from '../../../utils/emitToast';
+
 import ConfirmationModal from './components/Modal/ConfirmationModal';
 import EditReadModal from './components/Modal/EditReadModal';
 
@@ -21,11 +23,9 @@ import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
 
 import { IBook } from '../../../@types/Book';
-import { toast } from 'react-toastify';
-import Toast from '../../../components/Toast';
 
 export default function Book() {
-  const [book, setBook] = useState<IBook>({} as IBook);
+  const [book, setBook] = useState({} as IBook);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -127,14 +127,12 @@ export default function Book() {
 
         setBook(bookData);
       } catch {
-        toast.error(
-          (props) => (
-            <Toast message="Não foi possível encontrar o livro." {...props} />
-          )
-          // { toastId: 'book-not-found' }
-        );
+        emitToast({
+          type: 'error',
+          message: 'Não foi possível encontrar o livro.',
+        });
 
-        navigate(-1);
+        navigate('/my-books');
       } finally {
         setIsLoading(false);
       }
