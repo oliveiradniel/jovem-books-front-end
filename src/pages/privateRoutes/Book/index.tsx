@@ -21,6 +21,8 @@ import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
 
 import { IBook } from '../../../@types/Book';
+import { toast } from 'react-toastify';
+import Toast from '../../../components/Toast';
 
 export default function Book() {
   const [book, setBook] = useState<IBook>({} as IBook);
@@ -125,7 +127,14 @@ export default function Book() {
 
         setBook(bookData);
       } catch {
-        navigate('/my-books');
+        toast.error(
+          (props) => (
+            <Toast message="Não foi possível encontrar o livro." {...props} />
+          )
+          // { toastId: 'book-not-found' }
+        );
+
+        navigate(-1);
       } finally {
         setIsLoading(false);
       }

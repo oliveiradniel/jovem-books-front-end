@@ -1,23 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import BooksService from '../../../app/services/BooksService';
-
 import { useAuth } from '../../../app/hooks/useAuth';
+
+import BooksService from '../../../app/services/BooksService';
 
 import { getGreeting } from '../../../utils/getGreeting';
 
-import { IBook } from '../../../@types/Book';
-import { Page } from './@types/Page';
-
 import TableBooks from './components/TableBooks';
 import Header from './components/Header';
+
+import { IBookAPIResponse } from '../../../@types/Book';
+import { Page } from './@types/Page';
 
 export default function MyBooks() {
   const { user } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<IBookAPIResponse[]>([]);
   const [page, setPage] = useState<Page>('ALL');
 
   const filteredBooksByStatus = useMemo(

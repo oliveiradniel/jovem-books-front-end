@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import { truncateString } from '../../../../../utils/truncateString';
 
 import {
@@ -5,11 +7,10 @@ import {
   READING_STATUS,
 } from '../../../../../constants/books';
 
-import { IBook } from '../../../../../@types/Book';
-import { useNavigate } from 'react-router-dom';
+import { IBookAPIResponse } from '../../../../../@types/Book';
 
 interface TableBodyProps {
-  books: IBook[];
+  books: IBookAPIResponse[];
 }
 
 export default function TableBody({ books }: TableBodyProps) {

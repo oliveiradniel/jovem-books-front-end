@@ -3,12 +3,12 @@ import { RingLoader } from 'react-spinners';
 import TableHeader from './TableHeader';
 import TableBody from './TableBoby';
 
-import { IBook } from '../../../../../@types/Book';
+import { IBookAPIResponse } from '../../../../../@types/Book';
 import { Page } from '../../@types/Page';
 
 interface TabelBooksProps {
-  books: IBook[];
-  filteredBooks: IBook[];
+  books: IBookAPIResponse[];
+  filteredBooks: IBookAPIResponse[];
   page: Page;
   isLoading: boolean;
 }
@@ -42,7 +42,7 @@ export default function TableBooks({
         </div>
       )}
 
-      {filteredBooks.length === 0 && (
+      {!isLoading && filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute top-20 flex w-full justify-center">
           <span className="text-ocean-blue font-quicksand font-semibold">
             {message}
