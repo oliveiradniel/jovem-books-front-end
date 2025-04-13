@@ -44,8 +44,8 @@ export default function SectionToEditBookCover({
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-    if (!file) return;
 
+    if (!file) return;
     const validTypes = ['image/jpeg', 'image/png'];
 
     if (!validTypes.includes(file.type)) {
@@ -61,6 +61,14 @@ export default function SectionToEditBookCover({
     }
   }
 
+  function handleRemoveImageFromScreen() {
+    if (selectedImage) {
+      setSelectedImage(null);
+    } else if (!selectedImage) {
+      setIsToRemoveTheBookCover(true);
+    }
+  }
+
   async function handleSubmit() {
     if (selectedImage || isToRemoveTheBookCover) {
       try {
@@ -70,7 +78,7 @@ export default function SectionToEditBookCover({
           id: id!,
           image: selectedImage,
         });
-        console.log(selectedImage);
+
         if (selectedImage) {
           emitToast({ type: 'success', message: 'Capa alterada com sucesso.' });
         } else {
@@ -168,13 +176,7 @@ export default function SectionToEditBookCover({
               (!imageName && !selectedImage) ||
               isLoadingBook
             }
-            onClick={() => {
-              if (imageName && selectedImage) {
-                setIsToRemoveTheBookCover((prevState) => !prevState);
-              } else if (!imageName && selectedImage) {
-                setSelectedImage(null);
-              }
-            }}
+            onClick={handleRemoveImageFromScreen}
           />
         </div>
       </div>
