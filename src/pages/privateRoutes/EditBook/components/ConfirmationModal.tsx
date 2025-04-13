@@ -37,6 +37,7 @@ export default function ConfirmationModal({
 
   return (
     <Modal
+      danger
       title="A exclusão do livro não poderá ser desfeita. Digite o título do livro para continuar."
       buttonDisabled={title !== bookTitle}
       isVisible={isVisible}
@@ -45,6 +46,7 @@ export default function ConfirmationModal({
       buttonLabelConfirm="Excluir"
     >
       <Input
+        danger
         autoFocus
         type="text"
         placeholder={bookTitle}
