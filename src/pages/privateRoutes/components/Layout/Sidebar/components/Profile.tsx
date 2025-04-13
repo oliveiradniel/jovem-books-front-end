@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-import { useAuth } from '../../../../../app/hooks/useAuth.ts';
+import { useAuth } from '../../../../../../app/hooks/useAuth.ts';
 
-import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../../../../app/hooks/useAnimatedUnmount.ts';
+import { useCloseOnClickOutside } from '../../../../../../app/hooks/useCloseOnClickOutside.ts';
 
-import { env } from '../../../../../config/env.ts';
+import { env } from '../../../../../../config/env.ts';
 
-import { truncateString } from '../../../../../utils/truncateString.ts';
+import { truncateString } from '../../../../../../utils/truncateString.ts';
 
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
-import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside .ts';
 
 interface ProfileProps {
   isExpanded: boolean;

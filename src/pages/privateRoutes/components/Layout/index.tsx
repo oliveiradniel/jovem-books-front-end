@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
+import Header from './Sidebar/components/Header';
 
 export default function Layout() {
   return (
@@ -8,6 +9,7 @@ export default function Layout() {
       <Sidebar />
 
       <div className="bg-navy-blue-op-80 flex-1 rounded-e-sm p-5">
+        <Header />
         <Outlet />
       </div>
     </div>

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import Logo from './Logo.tsx';
-import Navigation from './Navigation.tsx';
-import Profile from './Profile.tsx';
+import Logo from './components/Logo.tsx';
+import Navigation from './components/Navigation.tsx';
+import Profile from './components/Profile.tsx';
 
 export default function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(true);
