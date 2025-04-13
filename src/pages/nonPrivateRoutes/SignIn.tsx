@@ -2,7 +2,9 @@ import { ChangeEvent, useState } from 'react';
 
 import { useAuth } from '../../app/hooks/useAuth';
 
-import { authService } from '../../app/services/authService';
+import AuthService from '../../app/services/AuthService';
+
+import { emitToast } from '../../utils/emitToast';
 
 import { SignInSchema } from './schemas/SignInSchema';
 
@@ -11,7 +13,7 @@ import { handleSignInErrors } from './errors/handleSignInErrors';
 import SessionTemplate from './components/SessionTemplate';
 import SignInFields from './components/SignInFields';
 
-import { ErrorData } from './types/ErrorData';
+import { ErrorData } from '../../@types/ErrorData';
 
 export default function SignIn() {
   const { signIn } = useAuth();
@@ -19,6 +21,7 @@ export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [isError, setIsError] = useState(false);
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -74,11 +77,12 @@ export default function SignIn() {
 
   async function handleSubmit() {
     try {
-      const credentials = SignInSchema.parse({ username, password });
-
+      setIsError(false);
       setIsSubmitting(true);
 
-      const { accessToken } = await authService.signIn(credentials);
+      const credentials = SignInSchema.parse({ username, password });
+
+      const { accessToken } = await AuthService.signIn(credentials);
 
       signIn(accessToken);
 
@@ -90,7 +94,15 @@ export default function SignIn() {
       const result = handleSignInErrors(error);
       if (result) {
         setErrorsData((prevState) => [...prevState, result]);
+
+        return;
       }
+
+      setIsError(true);
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível fazer login no momento.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +111,7 @@ export default function SignIn() {
   return (
     <SessionTemplate
       title="Entrar"
-      buttonLabel="Entrar"
+      buttonLabel={isError ? 'Tentar novamente' : 'Entrar'}
       highlightText="Está pronto para terminar um livro hoje e iniciar outro? Entre já e
             atualize os dados sobre seus livros."
       isFormValid={isFormValid}

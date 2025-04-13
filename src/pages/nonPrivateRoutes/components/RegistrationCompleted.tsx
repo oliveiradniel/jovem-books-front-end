@@ -3,9 +3,11 @@ import reactDOM from 'react-dom';
 
 import { useAuth } from '../../../app/hooks/useAuth.ts';
 
-import { authService } from '../../../app/services/authService.ts';
+import AuthService from '../../../app/services/AuthService.ts';
 
-import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts.ts';
+import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
+
+import { emitToast } from '../../../utils/emitToast.tsx';
 
 import { SignInSchema } from '../schemas/SignInSchema';
 import { handleSignInErrors } from '../errors/handleSignInErrors';
@@ -15,7 +17,7 @@ import { ClipLoader } from 'react-spinners';
 
 import SignInFields from './SignInFields.tsx';
 
-import { ErrorData } from '../types/ErrorData.ts';
+import { ErrorData } from '../../../@types/ErrorData.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
@@ -39,6 +41,7 @@ export default function RegistrationCompleted({
 
   const [password, setPassword] = useState('');
 
+  const [isError, setIsError] = useState(false);
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,11 +118,12 @@ export default function RegistrationCompleted({
     event.preventDefault();
 
     try {
-      const credentials = SignInSchema.parse({ username, password });
-
+      setIsError(false);
       setIsSubmitting(true);
 
-      const { accessToken } = await authService.signIn(credentials);
+      const credentials = SignInSchema.parse({ username, password });
+
+      const { accessToken } = await AuthService.signIn(credentials);
 
       signIn(accessToken);
 
@@ -131,7 +135,15 @@ export default function RegistrationCompleted({
       const result = handleSignInErrors(error);
       if (result) {
         setErrorsData((prevState) => [...prevState, result]);
+
+        return;
       }
+
+      setIsError(true);
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível fazer login no momento.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -157,10 +169,11 @@ export default function RegistrationCompleted({
       </h1>
 
       <p
-        className={`font-quicksand text-snow-white animate-move-in-bottom-700 max-w-xl text-center text-xl ${!isVisible && 'animate-return-to-top-700'}`}
+        className={`font-quicksand text-light-gray animate-move-in-bottom-700 max-w-xl text-center text-xl ${!isVisible && 'animate-return-to-top-700'}`}
       >
         <span className="text-sky-blue font-medium">{fullName}</span>, bem vindo
-        ao Jovem Books. Entre agora usando as credenciais usadas no cadastro.
+        ao <span className="text-snow-white">Jovem Books</span>. Entre agora
+        usando as credenciais usadas no cadastro.
       </p>
 
       <form
@@ -181,9 +194,9 @@ export default function RegistrationCompleted({
         <button
           type="submit"
           disabled={!isFormValid}
-          className={`bg-dark-violet text-snow-white font-roboto focus:bg-dark-violet disabled:bg-snow-white-op-70 bottom-0 mt-4 flex h-13 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet hover:cursor-default' : 'hover:bg-dark-violet-op-60 hover:cursor-pointer'}`}
+          className={`bg-dark-violet text-snow-white font-roboto focus:bg-dark-violet disabled:bg-snow-white-op-70 bottom-0 mt-4 flex h-10 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet hover:cursor-default' : 'hover:bg-dark-violet-op-60 hover:cursor-pointer'}`}
         >
-          {!isSubmitting && 'Entrar'}
+          {!isSubmitting && isError ? 'Tentar novamente' : 'Entrar'}
           <ClipLoader color="#ffffff" size={20} loading={isSubmitting} />
         </button>
       </form>

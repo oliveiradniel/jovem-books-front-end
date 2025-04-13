@@ -1,12 +1,13 @@
 import { ChangeEvent, useState } from 'react';
 
-import { authService } from '../../app/services/authService';
+import AuthService from '../../app/services/AuthService';
+
+import { emitToast } from '../../utils/emitToast';
+import { sanitizeAndCapitalize } from '../../utils/sanitizeAndCapitalize';
 
 import { SignUpSchema } from './schemas/SignUpSchema';
 
 import { handleSignUpErrors } from './errors/handleSignUpErrors';
-
-import { sanitizeAndCapitalize } from '../../utils/sanitizeAndCapitalize';
 
 import { FaUserSecret } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
@@ -18,7 +19,7 @@ import SessionTemplate from './components/SessionTemplate';
 import RegistrationCompleted from './components/RegistrationCompleted';
 import FormGroup from '../../components/FormGroup';
 
-import { ErrorData } from './types/ErrorData';
+import { ErrorData } from '../../@types/ErrorData';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -28,6 +29,7 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
 
+  const [isError, setIsError] = useState(false);
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -144,6 +146,9 @@ export default function SignUp() {
 
   async function handleSubmit() {
     try {
+      setIsError(false);
+      setIsSubmitting(true);
+
       const data = SignUpSchema.parse({
         username,
         firstName,
@@ -152,9 +157,7 @@ export default function SignUp() {
         password,
       });
 
-      setIsSubmitting(true);
-
-      await authService.signUp(data);
+      await AuthService.signUp(data);
 
       setFullName(`${firstName} ${lastName}`);
 
@@ -170,7 +173,15 @@ export default function SignUp() {
       const result = handleSignUpErrors(error);
       if (result) {
         setErrorsData((prevState) => [...prevState, result]);
+
+        return;
       }
+
+      setIsError(true);
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível concluir seu cadastro.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -179,7 +190,7 @@ export default function SignUp() {
   return (
     <SessionTemplate
       title="Criar uma nova conta"
-      buttonLabel="Criar"
+      buttonLabel={isError ? 'Tentar novamente' : 'Criar'}
       highlightText="Com uma lista completa de livros da Google BOOKS, você pode criar
             sua própria lista de livros e controlar seu progresso de leitura."
       isFormValid={isFormValid}

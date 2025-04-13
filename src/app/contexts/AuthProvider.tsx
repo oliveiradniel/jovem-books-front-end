@@ -4,10 +4,10 @@ import { AuthContext } from './AuthContext';
 
 import { env } from '../../config/env';
 
-import { UserResponse, usersService } from '../services/usersService';
+import UsersService, { UserAPIResponse } from '../services/UsersService';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserResponse | null>(null);
+  const [user, setUser] = useState<UserAPIResponse | null>(null);
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
 
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const getUser = useCallback(async () => {
     try {
-      const userData = await usersService.me();
+      const userData = await UsersService.getMe();
 
       setUser(userData);
     } catch {

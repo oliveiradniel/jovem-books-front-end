@@ -1,6 +1,6 @@
-import { httpClient } from './httpClient';
+import { httpClient } from './utils/httpClient';
 
-export interface UserResponse {
+export interface UserAPIResponse {
   id: string;
   username: string;
   imagePath: string | null;
@@ -12,12 +12,12 @@ export interface UserResponse {
   updatedAt: string | null;
 }
 
-async function me() {
-  const { data } = await httpClient.get<UserResponse>('/users');
+class UsersService {
+  async getMe() {
+    const { data } = await httpClient.get<UserAPIResponse>('/users');
 
-  return data;
+    return data;
+  }
 }
 
-export const usersService = {
-  me,
-};
+export default new UsersService();

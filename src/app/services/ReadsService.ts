@@ -2,7 +2,7 @@ import { IRead } from '../../@types/Read';
 
 import { ReadingStatus } from '../../@types/Book';
 
-import { httpClient } from './httpClient';
+import { httpClient } from './utils/httpClient';
 
 interface CreateReadProps {
   bookId: string;

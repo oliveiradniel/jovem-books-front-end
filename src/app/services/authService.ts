@@ -1,4 +1,4 @@
-import { httpClient } from './httpClient';
+import { httpClient } from './utils/httpClient';
 
 interface SignUpProps {
   username: string;
@@ -13,20 +13,19 @@ interface SignInProps {
   password: string;
 }
 
-async function signUp(data: SignUpProps) {
-  await httpClient.post('sign-up', data);
+class AuthService {
+  async signIn(credentials: SignInProps) {
+    const { data } = await httpClient.post<{ accessToken: string }>(
+      '/sign-in',
+      credentials
+    );
+
+    return data;
+  }
+
+  async signUp(data: SignUpProps) {
+    await httpClient.post('/sign-up', data);
+  }
 }
 
-async function signIn(credentials: SignInProps) {
-  const { data } = await httpClient.post<{ accessToken: string }>(
-    'sign-in',
-    credentials
-  );
-
-  return data;
-}
-
-export const authService = {
-  signUp,
-  signIn,
-};
+export default new AuthService();

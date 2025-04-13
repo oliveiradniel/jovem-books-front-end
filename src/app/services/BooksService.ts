@@ -1,4 +1,4 @@
-import { httpClient } from './httpClient';
+import { httpClient } from './utils/httpClient';
 
 import { IBook, IBookAPIResponse } from '../../@types/Book';
 import AuthorsMapper from './mappers/AuthorsMapper';
