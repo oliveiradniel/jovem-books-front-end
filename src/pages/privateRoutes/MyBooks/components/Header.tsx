@@ -10,6 +10,7 @@ interface HeaderProps {
   numberOfBooks: number;
   numberOfFilteredBooks: number;
   isLoading: boolean;
+  isError: boolean;
   onChangePage: (page: Page) => void;
 }
 
@@ -18,6 +19,7 @@ export default function Header({
   numberOfBooks,
   numberOfFilteredBooks,
   isLoading,
+  isError,
   onChangePage,
 }: HeaderProps) {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
@@ -49,21 +51,19 @@ export default function Header({
       {isTheScreenLargeSized ? (
         <LargeOptionsMenu
           page={page}
-          disabled={isLoading || numberOfBooks === 0}
+          disabled={isLoading || numberOfBooks === 0 || isError}
           onChange={onChangePage}
         />
       ) : (
         <Select
           page={page}
-          disabled={isLoading || numberOfBooks === 0}
+          disabled={isLoading || numberOfBooks === 0 || isError}
           onChangePage={onChangePage}
         />
       )}
 
       <span className="text-mate-gray animate-fade-in flex items-center">
-        {isLoading ? (
-          <span>Carregando...</span>
-        ) : (
+        {!isLoading && !isError && (
           <span className="animate-fade-in">
             Total encontrado ({numberOfFilteredBooks})
           </span>

@@ -8,27 +8,36 @@ import { Page } from '../../@types/Page';
 
 interface TabelBooksProps {
   books: IBookAPIResponse[];
+  onLoadBooks: () => void;
   filteredBooks: IBookAPIResponse[];
   page: Page;
   isLoading: boolean;
+  isError: boolean;
 }
 
 export default function TableBooks({
   books,
+  onLoadBooks,
   filteredBooks,
   page,
   isLoading,
+  isError,
 }: TabelBooksProps) {
   let message: string;
 
-  if (page === 'ALL') {
+  const allBooks = page === 'ALL';
+  const unreadBooks = page === 'NOT_READING';
+  const booksInReading = page === 'READING';
+  const finishedBooks = page === 'FINISHED';
+
+  if (allBooks) {
     message =
       'Não há nenhum livro cadastrado, vá até o Dashboard para adicionar novos livros.';
-  } else if (page === 'NOT_READING') {
+  } else if (unreadBooks) {
     message = 'Todos os livros cadastrados estão em leitura ou finalizados.';
-  } else if (page === 'READING') {
+  } else if (booksInReading) {
     message = 'Não há nenhum livro em leitura.';
-  } else {
+  } else if (finishedBooks) {
     message = 'Não há nenhum livro concluído.';
   }
 
@@ -44,9 +53,25 @@ export default function TableBooks({
 
       {!isLoading && filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute top-20 flex w-full justify-center">
-          <span className="text-ocean-blue font-quicksand font-semibold">
-            {message}
-          </span>
+          {isError ? (
+            <div className="flex flex-col gap-6">
+              <p className="text-blood-red font-quicksand font-semibold">
+                Não foi possível encontrar seus livros.
+              </p>
+
+              <button
+                type="button"
+                onClick={onLoadBooks}
+                className="text-snow-white bg-blood-red font-roboto hover:bg-blood-red/80 rounded-lg py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
+              >
+                Tentar novamente
+              </button>
+            </div>
+          ) : (
+            <p className="text-ocean-blue font-quicksand font-semibold">
+              {message!}
+            </p>
+          )}
         </div>
       )}
 

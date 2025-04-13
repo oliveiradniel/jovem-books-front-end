@@ -15,10 +15,11 @@ import { Page } from './@types/Page';
 export default function MyBooks() {
   const { user } = useAuth();
 
-  const [isLoading, setIsLoading] = useState(true);
-
   const [books, setBooks] = useState<IBookAPIResponse[]>([]);
   const [page, setPage] = useState<Page>('ALL');
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const filteredBooksByStatus = useMemo(
     () =>
@@ -36,21 +37,22 @@ export default function MyBooks() {
     [page, books]
   );
 
-  useEffect(() => {
-    async function loadBooks() {
-      try {
-        setIsLoading(true);
+  async function loadBooks() {
+    try {
+      setIsError(false);
+      setIsLoading(true);
 
-        const booksList = await BooksService.listBooks();
+      const booksList = await BooksService.listBooks();
 
-        setBooks(booksList);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+      setBooks(booksList);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
+  useEffect(() => {
     loadBooks();
   }, []);
 
@@ -69,6 +71,7 @@ export default function MyBooks() {
           numberOfBooks={books.length}
           numberOfFilteredBooks={filteredBooksByStatus.length}
           isLoading={isLoading}
+          isError={isError}
           onChangePage={setPage}
         />
 
@@ -76,9 +79,11 @@ export default function MyBooks() {
 
         <TableBooks
           books={books}
+          onLoadBooks={loadBooks}
           filteredBooks={filteredBooksByStatus}
           page={page}
           isLoading={isLoading}
+          isError={isError}
         />
       </div>
     </div>
