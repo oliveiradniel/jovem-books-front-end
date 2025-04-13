@@ -5,6 +5,7 @@ import { AuthContext } from './AuthContext';
 import { env } from '../../config/env';
 
 import UsersService, { UserAPIResponse } from '../services/UsersService';
+import { emitToast } from '../../utils/emitToast';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserAPIResponse | null>(null);
@@ -32,6 +33,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(userData);
     } catch {
+      emitToast({
+        type: 'error',
+        message:
+          'Não foi possível encontrar seu usuário. Tente novamente mais tarde.',
+      });
+
       signOut();
     }
   }, [signOut]);
