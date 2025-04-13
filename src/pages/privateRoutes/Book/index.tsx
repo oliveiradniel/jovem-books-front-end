@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 
 import { useEffect, useState } from 'react';
-
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { useAuth } from '../../../app/hooks/useAuth';
 
 import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
@@ -25,6 +26,8 @@ import ReadingInformation from './components/ReadingInformation';
 import { IBook } from '../../../@types/Book';
 
 export default function Book() {
+  const { user } = useAuth();
+
   const [book, setBook] = useState({} as IBook);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -53,16 +56,25 @@ export default function Book() {
           ...createdRead,
         },
       }));
-    } catch (error) {
-      console.log(error);
+
+      emitToast({
+        type: 'success',
+        message: `Boa leitura ${user?.firstName}.`,
+      });
+    } catch {
+      emitToast({
+        type: 'error',
+        message: `Não foi possível iniciar a leitura do livro ${book.title}.`,
+      });
     }
   }
 
   async function handlePauseOrContinuationReading() {
-    try {
-      const statusDirection =
-        book.read?.status === 'READING' ? 'ON_HOLD' : 'READING';
+    const status = book.read?.status;
 
+    const statusDirection = status === 'READING' ? 'ON_HOLD' : 'READING';
+
+    try {
       const updatedRead = await ReadsService.updateRead({
         bookId: id!,
         status: statusDirection,
@@ -74,8 +86,18 @@ export default function Book() {
           ...updatedRead,
         },
       }));
-    } catch (error) {
-      console.log(error);
+    } catch {
+      if (status === 'READING') {
+        emitToast({
+          type: 'error',
+          message: `Não foi possível pausar a leitura do livro.`,
+        });
+      } else if (status === 'ON_HOLD') {
+        emitToast({
+          type: 'error',
+          message: `Não foi possível continuar a leitura do livro.`,
+        });
+      }
     }
   }
 
