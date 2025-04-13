@@ -44,6 +44,18 @@ export default function SectionToEditBookCover({
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png'];
+
+    if (!validTypes.includes(file.type)) {
+      emitToast({
+        type: 'error',
+        message: 'Apenas arquivos de imagens JPEG ou PNG são aceitos.',
+      });
+      return;
+    }
+
     if (file) {
       setSelectedImage(file);
     }
@@ -58,7 +70,7 @@ export default function SectionToEditBookCover({
           id: id!,
           image: selectedImage,
         });
-
+        console.log(selectedImage);
         if (selectedImage) {
           emitToast({ type: 'success', message: 'Capa alterada com sucesso.' });
         } else {
@@ -136,6 +148,7 @@ export default function SectionToEditBookCover({
             <input
               id="book-cover"
               type="file"
+              accept="image/*"
               onChange={handleImageChange}
               className="hidden"
             />
@@ -143,7 +156,7 @@ export default function SectionToEditBookCover({
 
           <DeleteButton
             buttonLabel={
-              !isToRemoveTheBookCover ? (
+              !isToRemoveTheBookCover && !selectedImage ? (
                 <FiTrash2 />
               ) : (
                 <span className="font-quicksand">X</span>
@@ -152,10 +165,16 @@ export default function SectionToEditBookCover({
             disabled={
               isUpdatingBookCover ||
               isUpdatingBook ||
-              !imageName ||
+              (!imageName && !selectedImage) ||
               isLoadingBook
             }
-            onClick={() => setIsToRemoveTheBookCover((prevState) => !prevState)}
+            onClick={() => {
+              if (imageName && selectedImage) {
+                setIsToRemoveTheBookCover((prevState) => !prevState);
+              } else if (!imageName && selectedImage) {
+                setSelectedImage(null);
+              }
+            }}
           />
         </div>
       </div>
