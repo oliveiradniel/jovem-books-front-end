@@ -1,8 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 
-import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
+import useAnimatedUnmount from '../../../../../../app/hooks/useAnimatedUnmount.ts';
 
-import { getMenuItems } from '../../../../../assets/mocks/menuItems.tsx';
+import { getMenuItems } from '../../../../../../assets/mocks/menuItems.tsx';
 
 interface NavigationProps {
   isExpanded: boolean;

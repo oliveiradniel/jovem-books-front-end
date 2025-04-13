@@ -269,6 +269,27 @@ input[type='number'] {
       opacity: 0.7;
     }
   }
+
+  --animate-increase-in-102: increase-in-102 0.3s ease-in-out forwards;
+  @keyframes increase-in-102 {
+    0% {
+      transform: scale(100%);
+    }
+    100% {
+      transform: scale(102%);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  --animate-decrease-in-102: decrease-in-102 0.2s ease-in-out forwards;
+  @keyframes decrease-in-102 {
+    0% {
+      transform: scale(102%);
+    }
+    100% {
+      transform: scale(100%);
+    }
+  }
 }
 
 ::-webkit-scrollbar {

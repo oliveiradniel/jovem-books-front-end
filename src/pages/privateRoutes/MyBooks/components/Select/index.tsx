@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import { MY_BOOKS_PAGES } from '../../../../../constants/myBooksPages';
 
-import { Page } from '../../@types/Page';
+import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside.ts';
+
 import Options from './Options';
-import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside ';
+
+import { Page } from '../../@types/Page';
 
 interface SelectProps {
   page: Page;
