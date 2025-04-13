@@ -1,10 +1,10 @@
 import { ReadingStatus } from './Book';
 
 export interface IRead {
-  createdAt: Date;
+  createdAt: string;
   bookId: string;
   currentPage: number;
   status: ReadingStatus;
   notes: string | null;
-  finishedAt: Date | null;
+  finishedAt: string | null;
 }

@@ -9,8 +9,8 @@ export interface IBook {
   read: {
     status: ReadingStatus;
     currentPage: number;
-    createdAt: string | Date;
-    finishedAt: string | Date | null;
+    createdAt: string;
+    finishedAt: string | null;
   } | null;
 }
 
@@ -25,8 +25,8 @@ export interface IBookAPIResponse {
   read: {
     status: ReadingStatus;
     currentPage: number;
-    createdAt: string | Date;
-    finishedAt: string | Date | null;
+    createdAt: string;
+    finishedAt: string | null;
   } | null;
 }
 
