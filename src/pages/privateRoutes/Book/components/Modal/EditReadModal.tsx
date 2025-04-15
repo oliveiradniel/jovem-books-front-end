@@ -29,7 +29,7 @@ export default function EditModal({
   const buttonDisabled =
     Number(numberOfPage) === 0 || !numberOfPage || currentPage === numberOfPage;
 
-  function handlePageNumberChange(event: ChangeEvent<HTMLInputElement>) {
+  function handleNumberOfPagesChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
     const number = Number(value);
 
@@ -85,7 +85,7 @@ export default function EditModal({
           type="text"
           placeholder="Página atual"
           value={numberOfPage ?? ''}
-          onChange={handlePageNumberChange}
+          onChange={handleNumberOfPagesChange}
         />
 
         <button

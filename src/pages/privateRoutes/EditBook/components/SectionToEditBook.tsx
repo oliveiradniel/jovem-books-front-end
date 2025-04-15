@@ -55,7 +55,10 @@ export default function SectionToEditBook({
   const isFormValid = title?.length > 0 && authors?.length > 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
+    let { value } = event.target;
+
+    value = value.replace(/^\s+/, '');
+    value = value.replace(/\s+/g, ' ');
 
     setErrorsData((prevState) =>
       prevState.filter((error) => error.fieldName !== 'title')
@@ -77,6 +80,7 @@ export default function SectionToEditBook({
   function handleAuthorsChange(event: React.ChangeEvent<HTMLInputElement>) {
     let { value } = event.target;
 
+    value = value.replace(/^\s+/, '');
     value = value.replace(/\s+/g, ' ');
 
     setErrorsData((prevState) =>
@@ -206,7 +210,7 @@ export default function SectionToEditBook({
 
           <div className="flex gap-2">
             <label
-              htmlFor="title"
+              htmlFor="sinopse"
               className="text-snow-white font-quicksand w-16"
             >
               Sinopse
@@ -216,7 +220,7 @@ export default function SectionToEditBook({
 
               {!isLoadingBook && (
                 <textarea
-                  name="title"
+                  name="sinopse"
                   placeholder="Sinopse do livro"
                   value={sinopse ?? ''}
                   disabled={isUpdatingBook || isUpdatingBookCover}

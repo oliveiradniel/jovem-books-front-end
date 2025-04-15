@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { truncateString } from '../../../../../utils/truncateString';
 
 import {
-  BOOK_LITERARY_GENRE,
+  LITERARY_GENRE_LABELS,
   READING_STATUS,
 } from '../../../../../constants/books';
 
@@ -38,7 +38,7 @@ export default function TableBody({ books }: TableBodyProps) {
             {book.authors.length > 1 && `+${book.authors.length - 1}`}
           </td>
           <td className="px-2 py-2 text-center">
-            {BOOK_LITERARY_GENRE[book.genreLiterary[0]]}{' '}
+            {LITERARY_GENRE_LABELS[book.genreLiterary[0]]}{' '}
             {book.genreLiterary.length > 1 &&
               `+${book.genreLiterary.length - 1}`}
           </td>

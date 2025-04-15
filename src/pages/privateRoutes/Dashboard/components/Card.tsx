@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface CardProps {
   buttonLabel: string;
+  to: '/new-book' | '/new-collection';
   Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 }
 
-export default function Card({ Icon, buttonLabel }: CardProps) {
+export default function Card({ buttonLabel, to, Icon }: CardProps) {
   const [isTheMouseOverTheButton, setIsTheMouseOverTheButton] = useState(false);
 
   return (
-    <button
+    <Link
+      to={to}
       type="button"
       onMouseEnter={() => setIsTheMouseOverTheButton(true)}
       onMouseLeave={() => setIsTheMouseOverTheButton(false)}
@@ -30,6 +33,6 @@ export default function Card({ Icon, buttonLabel }: CardProps) {
           {buttonLabel}
         </span>
       </div>
-    </button>
+    </Link>
   );
 }

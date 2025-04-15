@@ -13,8 +13,12 @@ export default function Dashboard() {
       </p>
 
       <div className="mt-10 flex flex-col items-center gap-4 overflow-y-auto p-4 sm:flex-row">
-        <Card Icon={AddBookIcon} buttonLabel="Novo livro" />
-        <Card Icon={AddCategoryIcon} buttonLabel="Nova coleção" />
+        <Card to="/new-book" Icon={AddBookIcon} buttonLabel="Novo livro" />
+        <Card
+          to="/new-collection"
+          Icon={AddCategoryIcon}
+          buttonLabel="Nova coleção"
+        />
       </div>
     </div>
   );

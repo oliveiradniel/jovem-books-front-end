@@ -4,7 +4,7 @@ export const READING_STATUS = {
   FINISHED: 'Concluído',
 };
 
-export const BOOK_LITERARY_GENRE = {
+export const LITERARY_GENRE_LABELS = {
   ROMANCE: 'Romance',
   SCIENCE_FICTION: 'Ficção Científica',
   ADVENTURE: 'Aventura',
