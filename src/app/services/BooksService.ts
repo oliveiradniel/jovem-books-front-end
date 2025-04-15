@@ -3,7 +3,10 @@ import { httpClient } from './utils/httpClient';
 import { IBook, IBookAPIResponse } from '../../@types/Book';
 import AuthorsMapper from './mappers/AuthorsMapper';
 
-type UpdateBookProps = Omit<Partial<IBook>, 'id' | 'authors' | 'imagePath'> &
+export type UpdateBookProps = Omit<
+  Partial<IBook>,
+  'id' | 'authors' | 'imagePath'
+> &
   Pick<IBook, 'id' | 'authors'> & { image?: File | null };
 
 interface UpdateBookCoverProps {

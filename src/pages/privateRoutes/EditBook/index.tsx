@@ -21,7 +21,6 @@ export default function EditBook() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
-  const [isUpdatingBook, setIsUpdatingBook] = useState(false);
 
   useEffect(() => {
     async function loadBook() {
@@ -63,20 +62,14 @@ export default function EditBook() {
         <SectionToEditBookCover
           imagePath={book.imagePath}
           isLoadingBook={isLoading}
-          isUpdatingBook={isUpdatingBook}
+          isUpdatingBook={false}
           isUpdatingBookCover={isUpdatingBookCover}
           setIsUpdatingBookCover={setIsUpdatingBookCover}
         />
 
         <div className="bg-navy-blue my-8 h-[0.4px] w-full"></div>
 
-        <SectionToEditBook
-          book={book}
-          isLoadingBook={isLoading}
-          isUpdatingBookCover={isUpdatingBookCover}
-          isUpdatingBook={isUpdatingBook}
-          setIsUpdatingBook={setIsUpdatingBook}
-        />
+        <SectionToEditBook book={book} />
       </div>
     </>
   );
