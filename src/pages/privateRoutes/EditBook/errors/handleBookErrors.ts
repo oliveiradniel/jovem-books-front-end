@@ -10,7 +10,7 @@ interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleEditBookErrors(error: Error): ErrorData | null {
+export function handleBookErrors(error: Error): ErrorData | null {
   if (error instanceof ZodError) {
     if (error.message.includes('Title must be at least 3 characters')) {
       const message = 'O título do livro deve ter no mínimo 3 caracteres';
@@ -34,6 +34,12 @@ export function handleEditBookErrors(error: Error): ErrorData | null {
     const apiError = error as APIError;
 
     const errorMessage = apiError.response.data.message;
+
+    if (errorMessage === 'Title already in use') {
+      const message = 'O título do livro já está em uso';
+
+      return { fieldName: 'title', message };
+    }
 
     if (errorMessage === 'Title already in use') {
       const message = 'O título do livro já está em uso';

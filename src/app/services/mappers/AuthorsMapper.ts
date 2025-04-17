@@ -2,7 +2,7 @@ import { formatAuthors } from '../../../utils/formatAuthors';
 
 interface ToDomainProps {
   authors: string[];
-  onlyCommas: boolean;
+  onlyCommas?: boolean;
 }
 
 interface ToPersistenceProps {
@@ -10,7 +10,7 @@ interface ToPersistenceProps {
 }
 
 class AuthorsMapper {
-  toDomain({ authors, onlyCommas }: ToDomainProps): string {
+  toDomain({ authors, onlyCommas = true }: ToDomainProps): string {
     const formattedAuthors = formatAuthors({ authors: authors, onlyCommas });
 
     return formattedAuthors;

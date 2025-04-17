@@ -1,21 +1,36 @@
 import { ChangeEvent, useState } from 'react';
 
+import AuthorsMapper from '../app/services/mappers/AuthorsMapper';
+
+import { ZodSchema } from 'zod';
+import { handleBookErrors } from '../pages/privateRoutes/EditBook/errors/handleBookErrors';
+
 import FormGroup from './FormGroup';
 import Input from './Input';
 import Button from './Button';
 
 import { ErrorData } from '../@types/ErrorData';
-import { UpdateBookProps } from '../app/services/BooksService';
+import { useParams } from 'react-router-dom';
+import { emitToast } from '../utils/emitToast';
 
-interface BookFormProps {
-  buttonLabel: string;
-  onSubmit: (book: Omit<UpdateBookProps, 'id'>) => void;
+interface BookFormProps<T> {
+  buttonLabel: 'Criar' | 'Salvar alterações';
+  onSubmit: (book: T) => Promise<void>;
+  validationSchema: ZodSchema<T>;
 }
 
-export default function BookForm({ buttonLabel, onSubmit }: BookFormProps) {
+export default function BookForm<T>({
+  buttonLabel,
+  onSubmit,
+  validationSchema,
+}: BookFormProps<T>) {
+  const { id } = useParams();
+
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
@@ -80,7 +95,35 @@ export default function BookForm({ buttonLabel, onSubmit }: BookFormProps) {
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    onSubmit({ title, authors, sinopse });
+    try {
+      setIsLoading(true);
+
+      const formData = {
+        id: id,
+        title,
+        authors: AuthorsMapper.toPersistence({ authors }),
+        sinopse,
+        imagePath: null,
+        genreLiterary: ['ADVENTURE'],
+        numberOfPages: 100,
+      };
+
+      const data = validationSchema.parse(formData);
+
+      await onSubmit(data);
+    } catch (error) {
+      const result = handleBookErrors(error);
+      if (result) {
+        setErrorsData((prevState) => [...prevState, { ...result }]);
+        return;
+      }
+
+      const errorMessage = `Não foi possível ${buttonLabel === 'Criar' ? 'criar o' : 'salvar as alterações do'} livro.`;
+
+      emitToast({ type: 'error', message: errorMessage });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -134,7 +177,7 @@ export default function BookForm({ buttonLabel, onSubmit }: BookFormProps) {
       <Button
         buttonLabel={buttonLabel}
         disabled={!isFormValid}
-        isLoading={false}
+        isLoading={isLoading}
         onClick={handleSubmit}
       />
     </form>

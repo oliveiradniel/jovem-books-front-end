@@ -7,10 +7,11 @@ import { emitToast } from '../../../utils/emitToast';
 
 import { GoArrowLeft } from 'react-icons/go';
 
+import BookForm from '../../../components/BookForm';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
-import SectionToEditBook from './components/SectionToEditBook';
 
-import { IBook } from '../../../@types/Book';
+import { IBook, TUpdateBookData } from '../../../@types/Book';
+import { UpdateDataBookSchema } from '../../../assets/schemas/BookSchemas';
 
 export default function EditBook() {
   const { id } = useParams();
@@ -21,6 +22,14 @@ export default function EditBook() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
+
+  async function handleSubmit(book: TUpdateBookData) {
+    const updatedBook = await BooksService.updateBook(book);
+
+    console.log(updatedBook);
+
+    emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
+  }
 
   useEffect(() => {
     async function loadBook() {
@@ -67,9 +76,13 @@ export default function EditBook() {
           setIsUpdatingBookCover={setIsUpdatingBookCover}
         />
 
-        <div className="bg-navy-blue my-8 h-[0.4px] w-full"></div>
+        <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
 
-        <SectionToEditBook book={book} />
+        <BookForm
+          buttonLabel="Salvar alterações"
+          onSubmit={handleSubmit}
+          validationSchema={UpdateDataBookSchema}
+        />
       </div>
     </>
   );

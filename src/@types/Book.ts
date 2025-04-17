@@ -1,38 +1,37 @@
-export interface IBook {
+import { z } from 'zod';
+
+import {
+  CreateDataBookSchema,
+  UpdateDataBookSchema,
+} from '../assets/schemas/BookSchemas';
+
+type BaseBook = {
   id: string;
   title: string;
   authors: string;
   sinopse: string | null;
   imagePath: string | null;
   numberOfPages: number;
-  genreLiterary: LiteraryGenre[];
+  genreLiterary: TLiteraryGenre[];
   read: {
     status: ReadingStatus;
     currentPage: number;
     createdAt: string;
     finishedAt: string | null;
   } | null;
+};
+
+export interface IBook extends BaseBook {
+  authors: string;
 }
 
-export interface IBookAPIResponse {
-  id: string;
-  title: string;
+export interface IBookAPI extends Omit<BaseBook, 'authors'> {
   authors: string[];
-  sinopse: string | null;
-  imagePath: string | null;
-  numberOfPages: number;
-  genreLiterary: LiteraryGenre[];
-  read: {
-    status: ReadingStatus;
-    currentPage: number;
-    createdAt: string;
-    finishedAt: string | null;
-  } | null;
 }
 
 export type ReadingStatus = 'READING' | 'ON_HOLD' | 'FINISHED';
 
-export type LiteraryGenre =
+export type TLiteraryGenre =
   | 'ROMANCE'
   | 'SCIENCE_FICTION'
   | 'ADVENTURE'
@@ -65,3 +64,7 @@ export type LiteraryGenre =
   | 'SPORTS'
   | 'FAIRYTALE'
   | 'OTHER';
+
+export type TCreateDataBook = z.infer<typeof CreateDataBookSchema>;
+
+export type TUpdateBookData = z.infer<typeof UpdateDataBookSchema>;

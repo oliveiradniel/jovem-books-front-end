@@ -3,12 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm from '../../../components/BookForm';
+import { TCreateDataBook } from '../../../@types/Book';
+import BooksService from '../../../app/services/BooksService';
+import { emitToast } from '../../../utils/emitToast';
+import { CreateDataBookSchema } from '../../../assets/schemas/BookSchemas';
 
 export default function NewBook() {
   const navigate = useNavigate();
 
-  async function handleSubmit(book: any) {
-    console.log(book);
+  async function handleSubmit(book: TCreateDataBook) {
+    await BooksService.createBook(book);
+
+    emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
   }
 
   return (
@@ -25,7 +31,11 @@ export default function NewBook() {
         <h1 className="font-quicksand text-snow-white text-2xl">Novo livro</h1>
       </div>
 
-      <BookForm buttonLabel="Criar" onSubmit={handleSubmit} />
+      <BookForm
+        buttonLabel="Criar"
+        onSubmit={handleSubmit}
+        validationSchema={CreateDataBookSchema}
+      />
     </div>
   );
 }

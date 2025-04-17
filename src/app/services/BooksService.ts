@@ -1,13 +1,13 @@
 import { httpClient } from './utils/httpClient';
 
-import { IBook, IBookAPIResponse } from '../../@types/Book';
 import AuthorsMapper from './mappers/AuthorsMapper';
 
-export type UpdateBookProps = Omit<
-  Partial<IBook>,
-  'id' | 'authors' | 'imagePath'
-> &
-  Pick<IBook, 'id' | 'authors'> & { image?: File | null };
+import {
+  IBook,
+  IBookAPI,
+  TCreateDataBook,
+  TUpdateBookData,
+} from '../../@types/Book';
 
 interface UpdateBookCoverProps {
   id: string;
@@ -21,7 +21,7 @@ interface GetBookByIdProps {
 
 class BooksService {
   async getBookById({ id, onlyCommas }: GetBookByIdProps): Promise<IBook> {
-    const { data } = await httpClient.get<IBookAPIResponse>(`/books/${id}`);
+    const { data } = await httpClient.get<IBookAPI>(`/books/${id}`);
 
     const domainAuthors = AuthorsMapper.toDomain({
       authors: data.authors,
@@ -32,15 +32,19 @@ class BooksService {
   }
 
   async listBooks() {
-    const { data } = await httpClient.get<IBookAPIResponse[]>('/books');
+    const { data } = await httpClient.get<IBookAPI[]>('/books');
 
     return data;
   }
 
-  async updateBook({ id, ...data }: UpdateBookProps): Promise<IBook> {
-    const { data: updatedBook } = await httpClient.put<IBookAPIResponse>(
+  async createBook(book: TCreateDataBook) {
+    await httpClient.post('/books', book);
+  }
+
+  async updateBook({ id, ...book }: TUpdateBookData): Promise<IBook> {
+    const { data: updatedBook } = await httpClient.put<IBookAPI>(
       `/books/${id}`,
-      data,
+      book,
       {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -50,7 +54,6 @@ class BooksService {
 
     const domainAuthors = AuthorsMapper.toDomain({
       authors: updatedBook.authors,
-      onlyCommas: true,
     });
 
     return { ...updatedBook, authors: domainAuthors };
@@ -65,7 +68,7 @@ class BooksService {
       form.append('removeImage', 'true');
     }
 
-    const { data: updatedBook } = await httpClient.put<IBookAPIResponse>(
+    const { data: updatedBook } = await httpClient.put<IBookAPI>(
       `/books/${id}`,
       form
     );
