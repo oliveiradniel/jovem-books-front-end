@@ -1,6 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import AuthorsMapper from '../app/services/mappers/AuthorsMapper';
+
+import { emitToast } from '../utils/emitToast';
 
 import { ZodSchema } from 'zod';
 import { handleBookErrors } from '../pages/privateRoutes/EditBook/errors/handleBookErrors';
@@ -10,8 +13,12 @@ import Input from './Input';
 import Button from './Button';
 
 import { ErrorData } from '../@types/ErrorData';
-import { useParams } from 'react-router-dom';
-import { emitToast } from '../utils/emitToast';
+import { IBook } from '../@types/Book';
+
+export interface BookFormHandle {
+  setFieldValues: (book: IBook) => void;
+  resetFields: () => void;
+}
 
 interface BookFormProps<T> {
   buttonLabel: 'Criar' | 'Salvar alterações';
@@ -19,11 +26,10 @@ interface BookFormProps<T> {
   validationSchema: ZodSchema<T>;
 }
 
-export default function BookForm<T>({
-  buttonLabel,
-  onSubmit,
-  validationSchema,
-}: BookFormProps<T>) {
+function BookFormInner<T>(
+  { buttonLabel, onSubmit, validationSchema }: BookFormProps<T>,
+  ref: React.Ref<BookFormHandle>
+) {
   const { id } = useParams();
 
   const [title, setTitle] = useState('');
@@ -33,6 +39,19 @@ export default function BookForm<T>({
   const [isLoading, setIsLoading] = useState(false);
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
+
+  useImperativeHandle(ref, () => ({
+    setFieldValues(book) {
+      setTitle(book.title);
+      setAuthors(book.authors);
+      setSinopse(book.sinopse ?? '');
+    },
+    resetFields() {
+      setTitle('');
+      setAuthors('');
+      setSinopse('');
+    },
+  }));
 
   const isFormValid =
     title.length > 0 && authors.length > 0 && errorsData.length === 0;
@@ -183,3 +202,9 @@ export default function BookForm<T>({
     </form>
   );
 }
+
+const BookForm = forwardRef(BookFormInner) as <T>(
+  props: BookFormProps<T> & { ref?: React.Ref<BookFormHandle> }
+) => ReturnType<typeof BookFormInner>;
+
+export default BookForm;

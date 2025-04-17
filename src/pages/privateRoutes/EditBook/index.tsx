@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
@@ -7,7 +7,7 @@ import { emitToast } from '../../../utils/emitToast';
 
 import { GoArrowLeft } from 'react-icons/go';
 
-import BookForm from '../../../components/BookForm';
+import BookForm, { BookFormHandle } from '../../../components/BookForm';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
 
 import { IBook, TUpdateBookData } from '../../../@types/Book';
@@ -16,6 +16,8 @@ import { UpdateDataBookSchema } from '../../../assets/schemas/BookSchemas';
 export default function EditBook() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const bookFormRef = useRef<BookFormHandle>(null);
 
   const [book, setBook] = useState({} as IBook);
 
@@ -36,12 +38,13 @@ export default function EditBook() {
       try {
         setIsLoading(true);
 
-        const updatedBook = await BooksService.getBookById({
+        const bookData = await BooksService.getBookById({
           id: id!,
           onlyCommas: true,
         });
 
-        setBook(updatedBook);
+        setBook(bookData);
+        bookFormRef.current?.setFieldValues(bookData);
       } catch {
         emitToast({
           type: 'success',
@@ -79,6 +82,7 @@ export default function EditBook() {
         <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
 
         <BookForm
+          ref={bookFormRef}
           buttonLabel="Salvar alterações"
           onSubmit={handleSubmit}
           validationSchema={UpdateDataBookSchema}
