@@ -12,7 +12,7 @@ export default function Dashboard() {
         melhor seus livros.
       </p>
 
-      <div className="mt-10 flex flex-col items-center gap-4 overflow-y-auto p-4 sm:flex-row">
+      <div className="mt-10 flex flex-col items-center gap-4 p-4 sm:flex-row">
         <Card to="/new-book" Icon={AddBookIcon} buttonLabel="Novo livro" />
         <Card
           to="/new-collection"

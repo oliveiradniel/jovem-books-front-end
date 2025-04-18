@@ -5,10 +5,12 @@ import BooksService from '../../app/services/BooksService';
 
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
 
-import { emitToast } from '../../utils/emitToast';
-
 import { ZodSchema } from 'zod';
 import { handleBookErrors } from '../../pages/privateRoutes/EditBook/errors/handleBookErrors';
+
+import { emitToast } from '../../utils/emitToast';
+
+import { LITERARY_GENRE_OPTIONS } from '../../constants/books';
 
 import { FiTrash2 } from 'react-icons/fi';
 
@@ -17,6 +19,7 @@ import DeleteButton from './DeleteButton';
 import FormGroup from '../FormGroup';
 import Input from './Input';
 import Button from './Button';
+import Select from './Select';
 
 import { ErrorData } from '../../@types/ErrorData';
 import { IBook } from '../../@types/Book';
@@ -186,7 +189,7 @@ function BookFormInner<T>(
         onConfirm={handleDeleteBook}
       />
 
-      <form className="mt-10 flex flex-col gap-4">
+      <form className="mt-10 flex flex-col gap-4 overflow-y-auto">
         <FormGroup fieldName={['title']} errorsData={errorsData}>
           <Input
             label="Título"
@@ -231,6 +234,16 @@ function BookFormInner<T>(
               className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
             />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <label htmlFor="sinopse" className="text-snow-white font-quicksand">
+            Gênero Literário
+          </label>
+          <Select
+            options={LITERARY_GENRE_OPTIONS}
+            disabled={isLoading || isLoadingBook}
+          />
         </div>
 
         <div className="flex gap-2">

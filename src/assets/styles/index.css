@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import 'tailwindcss';
 
-input[type='number'] {
-  -webkit-appearance: none; /* Para navegadores WebKit (Chrome, Safari) */
-  -moz-appearance: textfield; /* Para navegadores Firefox */
-  appearance: none; /* Para navegadores modernos */
-}
+@import 'tailwindcss';
 
 @theme {
   --color-sky-blue: #03a9f4;

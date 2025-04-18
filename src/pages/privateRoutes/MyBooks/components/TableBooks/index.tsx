@@ -3,14 +3,14 @@ import { RingLoader } from 'react-spinners';
 import TableHeader from './TableHeader';
 import TableBody from './TableBoby';
 
-import { IBookAPIResponse } from '../../../../../@types/Book';
-import { Page } from '../../@types/Page';
+import { IBookAPI } from '../../../../../@types/Book';
+import { TPageStatus } from '../../../../../@types/Read';
 
 interface TabelBooksProps {
-  books: IBookAPIResponse[];
+  books: IBookAPI[];
   onLoadBooks: () => void;
-  filteredBooks: IBookAPIResponse[];
-  page: Page;
+  filteredBooks: IBookAPI[];
+  page: TPageStatus;
   isLoading: boolean;
   isError: boolean;
 }

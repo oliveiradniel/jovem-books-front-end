@@ -62,33 +62,31 @@ export default function EditBook() {
   }, [id, navigate]);
 
   return (
-    <>
-      <div className="animate-fade-in h-full overflow-y-auto">
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          className="text-snow-white hover:text-snow-white-op-70 mb-10 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
-        >
-          <GoArrowLeft size={20} />
-        </button>
+    <div className="animate-fade-in h-full overflow-y-auto">
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="text-snow-white hover:text-snow-white-op-70 mb-10 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+      >
+        <GoArrowLeft size={20} />
+      </button>
 
-        <SectionToEditBookCover
-          imagePath={book.imagePath}
-          isLoadingBook={isLoading}
-          isUpdatingBook={false}
-          isUpdatingBookCover={isUpdatingBookCover}
-          setIsUpdatingBookCover={setIsUpdatingBookCover}
-        />
+      <SectionToEditBookCover
+        imagePath={book.imagePath}
+        isLoadingBook={isLoading}
+        isUpdatingBook={false}
+        isUpdatingBookCover={isUpdatingBookCover}
+        setIsUpdatingBookCover={setIsUpdatingBookCover}
+      />
 
-        <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
+      <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
 
-        <BookForm
-          ref={bookFormRef}
-          buttonLabel="Salvar alterações"
-          onSubmit={handleSubmit}
-          validationSchema={UpdateDataBookSchema}
-        />
-      </div>
-    </>
+      <BookForm
+        ref={bookFormRef}
+        buttonLabel="Salvar alterações"
+        onSubmit={handleSubmit}
+        validationSchema={UpdateDataBookSchema}
+      />
+    </div>
   );
 }

@@ -1,3 +1,5 @@
+import { TLiteraryGenre } from '../@types/Book';
+
 export const READING_STATUS = {
   READING: 'Em leitura',
   ON_HOLD: 'Pausado',
@@ -38,3 +40,38 @@ export const LITERARY_GENRE_LABELS = {
   FAIRYTALE: 'Conto de Fadas',
   OTHER: 'Outro',
 };
+
+export const LITERARY_GENRE_OPTIONS: TLiteraryGenre[] = [
+  'ROMANCE',
+  'SCIENCE_FICTION',
+  'ADVENTURE',
+  'PHILOSOPHY',
+  'DRAMA',
+  'RELIGIOUS',
+  'MYSTERY',
+  'HORROR',
+  'BIOGRAPHY',
+  'HISTORICAL',
+  'FANTASY',
+  'THRILLER',
+  'HUMOR',
+  'CHILDRENS',
+  'YOUNG_ADULT',
+  'ART_AND_DESIGN',
+  'POETRY',
+  'POLITICS',
+  'ECONOMICS',
+  'SELF_HELP',
+  'CRIME',
+  'DYSTOPIAN',
+  'WESTERN',
+  'GOTHIC',
+  'EROTIC',
+  'CYBERPUNK',
+  'STEAMPUNK',
+  'COOKING',
+  'TRAVEL',
+  'SPORTS',
+  'FAIRYTALE',
+  'OTHER',
+];
