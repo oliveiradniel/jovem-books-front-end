@@ -1,13 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { useAuth } from '../../../../../app/hooks/useAuth.ts';
-
-import Input from '../../../components/InputModal.tsx';
-import Modal from '../../../components/Modal.tsx';
+import { useAuth } from '../../app/hooks/useAuth.ts';
 
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
-interface EditModal {
+import Input from './Input.tsx';
+import Modal from './ModalBase.tsx';
+
+interface EditCurrentPageModalProps {
   currentPage: number | null;
   pagesTotalNumber: number;
   isVisible: boolean;
@@ -15,13 +15,13 @@ interface EditModal {
   onConfirm: (number: number) => void;
 }
 
-export default function EditModal({
+export default function EditCurrentPageModal({
   currentPage,
   pagesTotalNumber,
   isVisible,
   onClose,
   onConfirm,
-}: EditModal) {
+}: EditCurrentPageModalProps) {
   const { user } = useAuth();
 
   const [numberOfPage, setNumberOfPage] = useState<number | null>(null);

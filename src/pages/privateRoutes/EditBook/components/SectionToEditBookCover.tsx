@@ -11,8 +11,8 @@ import { FiTrash2 } from 'react-icons/fi';
 import { MdOutlinePermMedia } from 'react-icons/md';
 
 import SaveButton from './SaveButton';
-import DeleteButton from './DeleteButton';
 import SkeletonLoading from '../../../../components/SkeletonLoading';
+import DeleteButton from '../../../../components/BookForm/DeleteButton';
 
 interface EditBookCoverProps {
   imagePath: string | null;

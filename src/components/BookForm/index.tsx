@@ -1,19 +1,25 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import AuthorsMapper from '../app/services/mappers/AuthorsMapper';
+import BooksService from '../../app/services/BooksService';
 
-import { emitToast } from '../utils/emitToast';
+import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
+
+import { emitToast } from '../../utils/emitToast';
 
 import { ZodSchema } from 'zod';
-import { handleBookErrors } from '../pages/privateRoutes/EditBook/errors/handleBookErrors';
+import { handleBookErrors } from '../../pages/privateRoutes/EditBook/errors/handleBookErrors';
 
-import FormGroup from './FormGroup';
+import { FiTrash2 } from 'react-icons/fi';
+
+import DeleteBookModal from '../Modals/DeleteBookModal';
+import DeleteButton from './DeleteButton';
+import FormGroup from '../FormGroup';
 import Input from './Input';
 import Button from './Button';
 
-import { ErrorData } from '../@types/ErrorData';
-import { IBook } from '../@types/Book';
+import { ErrorData } from '../../@types/ErrorData';
+import { IBook } from '../../@types/Book';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -22,21 +28,29 @@ export interface BookFormHandle {
 
 interface BookFormProps<T> {
   buttonLabel: 'Criar' | 'Salvar alterações';
-  onSubmit: (book: T) => Promise<void>;
   validationSchema: ZodSchema<T>;
+  isLoadingBook?: boolean;
+  onSubmit: (book: T) => Promise<void>;
 }
 
 function BookFormInner<T>(
-  { buttonLabel, onSubmit, validationSchema }: BookFormProps<T>,
+  {
+    buttonLabel,
+    validationSchema,
+    isLoadingBook = false,
+    onSubmit,
+  }: BookFormProps<T>,
   ref: React.Ref<BookFormHandle>
 ) {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
@@ -111,6 +125,24 @@ function BookFormInner<T>(
     setSinopse(value);
   }
 
+  async function handleDeleteBook() {
+    try {
+      await BooksService.deleteBook(id!);
+
+      emitToast({
+        type: 'success',
+        message: `O livro ${title} foi excluído com sucesso.`,
+      });
+
+      navigate('/my-books');
+    } catch {
+      emitToast({
+        type: 'error',
+        message: `Não foi possível excluir o livro ${title}.`,
+      });
+    }
+  }
+
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
@@ -146,60 +178,78 @@ function BookFormInner<T>(
   }
 
   return (
-    <form className="mt-10 flex flex-col gap-4">
-      <FormGroup fieldName={['title']} errorsData={errorsData}>
-        <Input
-          label="Título"
-          errorsData={errorsData}
-          fieldName="title"
-          name="title"
-          placeholder="Dom Quixote"
-          value={title}
-          onChange={handleTitleChange}
-        />
-      </FormGroup>
-
-      <FormGroup
-        fieldName={['authors']}
-        errorsData={errorsData}
-        wariningText="Separe os autores(as) por vírgula."
-      >
-        <Input
-          label="Autor(es)"
-          errorsData={errorsData}
-          fieldName="authors"
-          name="authors"
-          placeholder="Miguel de Cervantes"
-          value={authors}
-          onChange={handleAuthorsChange}
-        />
-      </FormGroup>
-
-      <div className="flex gap-2">
-        <label
-          htmlFor="sinopse"
-          className="text-snow-white font-quicksand w-26"
-        >
-          Sinopse
-        </label>
-        <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
-          <textarea
-            name="sinopse"
-            placeholder="Sinopse do livro"
-            value={sinopse ?? ''}
-            onChange={handleSinopseChange}
-            className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
-          />
-        </div>
-      </div>
-
-      <Button
-        buttonLabel={buttonLabel}
-        disabled={!isFormValid}
-        isLoading={isLoading}
-        onClick={handleSubmit}
+    <>
+      <DeleteBookModal
+        bookTitle={title}
+        isVisible={isDeleteModalVisible}
+        onClose={() => setIsDeleteModalVisible(false)}
+        onConfirm={handleDeleteBook}
       />
-    </form>
+
+      <form className="mt-10 flex flex-col gap-4">
+        <FormGroup fieldName={['title']} errorsData={errorsData}>
+          <Input
+            label="Título"
+            errorsData={errorsData}
+            fieldName="title"
+            name="title"
+            placeholder="Dom Quixote"
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </FormGroup>
+
+        <FormGroup
+          fieldName={['authors']}
+          errorsData={errorsData}
+          wariningText="Separe os autores(as) por vírgula."
+        >
+          <Input
+            label="Autor(es)"
+            errorsData={errorsData}
+            fieldName="authors"
+            name="authors"
+            placeholder="Miguel de Cervantes"
+            value={authors}
+            onChange={handleAuthorsChange}
+          />
+        </FormGroup>
+
+        <div className="flex gap-2">
+          <label
+            htmlFor="sinopse"
+            className="text-snow-white font-quicksand w-26"
+          >
+            Sinopse
+          </label>
+          <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
+            <textarea
+              name="sinopse"
+              placeholder="Sinopse do livro"
+              value={sinopse ?? ''}
+              onChange={handleSinopseChange}
+              className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <Button
+            buttonLabel={buttonLabel}
+            disabled={!isFormValid}
+            isLoading={isLoading}
+            onClick={handleSubmit}
+          />
+          {buttonLabel === 'Salvar alterações' && (
+            <DeleteButton
+              buttonLabel={<FiTrash2 />}
+              disabled={isLoading || isLoadingBook}
+              onClick={() => setIsDeleteModalVisible(true)}
+            />
+          )}
+        </div>
+      </form>
+    </>
   );
 }
 

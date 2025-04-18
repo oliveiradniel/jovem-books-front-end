@@ -10,9 +10,6 @@ import ReadsService from '../../../app/services/ReadsService';
 
 import { emitToast } from '../../../utils/emitToast';
 
-import ConfirmationModal from './components/Modal/ConfirmationModal';
-import EditReadModal from './components/Modal/EditReadModal';
-
 import Actions from './components/Actions';
 import Title from './components/Title';
 import Authors from './components/Authors';
@@ -22,6 +19,9 @@ import PauseOrPlayButton from './components/PauseOrPlayButton';
 import FinishButton from './components/FinishButton';
 import BookCover from './components/BookCover';
 import ReadingInformation from './components/ReadingInformation';
+
+import FinishBookModal from '../../../components/Modals/FinishBookModal';
+import EditCurrentPageModal from '../../../components/Modals/EditCurrentPageModal';
 
 import { IBook } from '../../../@types/Book';
 
@@ -165,7 +165,7 @@ export default function Book() {
 
   return (
     <>
-      <ConfirmationModal
+      <FinishBookModal
         bookTitle={book.title}
         remainingPages={book.numberOfPages! - book.read?.currentPage!}
         isVisible={isConfirmationModalVisible}
@@ -173,7 +173,7 @@ export default function Book() {
         onConfirm={handleFinishReading}
       />
 
-      <EditReadModal
+      <EditCurrentPageModal
         currentPage={book.read?.currentPage ?? null}
         pagesTotalNumber={book.numberOfPages!}
         isVisible={isEditReadModalVisible}

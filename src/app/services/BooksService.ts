@@ -76,7 +76,7 @@ class BooksService {
     return updatedBook;
   }
 
-  async delete(id: string) {
+  async deleteBook(id: string) {
     await httpClient.delete(`/books/${id}`);
   }
 }

@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
 
+import { UpdateDataBookSchema } from '../../../assets/schemas/BookSchemas';
+
 import { emitToast } from '../../../utils/emitToast';
 
 import { GoArrowLeft } from 'react-icons/go';
@@ -11,7 +13,6 @@ import BookForm, { BookFormHandle } from '../../../components/BookForm';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
 
 import { IBook, TUpdateBookData } from '../../../@types/Book';
-import { UpdateDataBookSchema } from '../../../assets/schemas/BookSchemas';
 
 export default function EditBook() {
   const { id } = useParams();

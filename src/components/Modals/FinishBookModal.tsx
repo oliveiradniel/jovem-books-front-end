@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react';
 
-import Modal from '../../../components/Modal.tsx';
-import Input from '../../../components/InputModal.tsx';
+import Modal from './ModalBase.tsx';
+import Input from './Input.tsx';
 
-interface ConfirmationModalProps {
+interface FinishBookModalProps {
   bookTitle: string;
   remainingPages: number;
   isVisible: boolean;
@@ -11,13 +11,13 @@ interface ConfirmationModalProps {
   onConfirm: () => void;
 }
 
-export default function ConfirmationModal({
+export default function FinishBookModal({
   remainingPages,
   bookTitle,
   isVisible,
   onClose,
   onConfirm,
-}: ConfirmationModalProps) {
+}: FinishBookModalProps) {
   const [title, setTitle] = useState('');
 
   const subTitle =

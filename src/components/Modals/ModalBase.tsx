@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom';
-import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
 
-interface ModalProps {
+import useAnimatedUnmount from '../../app/hooks/useAnimatedUnmount.ts';
+
+interface ModalBaseProps {
   danger?: boolean;
   title?: string;
   subTitle?: string | null;
@@ -13,7 +14,7 @@ interface ModalProps {
   onConfirm: () => void;
 }
 
-export default function Modal({
+export default function ModalBase({
   danger,
   title,
   buttonLabelConfirm,
@@ -23,7 +24,7 @@ export default function Modal({
   onConfirm,
   children,
   subTitle = null,
-}: ModalProps) {
+}: ModalBaseProps) {
   const { shouldRender, animatedElementRef } =
     useAnimatedUnmount<HTMLDivElement>(isVisible);
 

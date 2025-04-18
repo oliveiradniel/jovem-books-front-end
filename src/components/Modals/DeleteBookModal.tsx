@@ -1,21 +1,21 @@
 import { ChangeEvent, useState } from 'react';
 
-import Modal from '../../components/Modal';
-import Input from '../../components/InputModal';
+import ModalBase from './ModalBase';
+import Input from './Input';
 
-interface ConfirmationModalProps {
+interface DeleteBookModalProps {
   bookTitle: string;
   isVisible: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-export default function ConfirmationModal({
+export default function DeleteBookModal({
   bookTitle,
   isVisible,
   onClose,
   onConfirm,
-}: ConfirmationModalProps) {
+}: DeleteBookModalProps) {
   const [title, setTitle] = useState('');
 
   function handleBookTitleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -36,14 +36,14 @@ export default function ConfirmationModal({
   }
 
   return (
-    <Modal
+    <ModalBase
       danger
       title="A exclusão do livro não poderá ser desfeita. Digite o título do livro para continuar."
+      buttonLabelConfirm="Excluir"
       buttonDisabled={title !== bookTitle}
       isVisible={isVisible}
       onClose={handleClose}
       onConfirm={handleConfirm}
-      buttonLabelConfirm="Excluir"
     >
       <Input
         danger
@@ -53,6 +53,6 @@ export default function ConfirmationModal({
         value={title}
         onChange={handleBookTitleChange}
       />
-    </Modal>
+    </ModalBase>
   );
 }
