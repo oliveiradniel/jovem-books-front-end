@@ -67,6 +67,7 @@ function BookFormInner<T>(
       setTitle('');
       setAuthors('');
       setSinopse('');
+      setLiteraryGenre([]);
     },
   }));
 
@@ -174,7 +175,7 @@ function BookFormInner<T>(
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
         imagePath: null,
-        genreLiterary: ['ADVENTURE'],
+        genreLiterary: literaryGenre,
         numberOfPages: 100,
       };
 

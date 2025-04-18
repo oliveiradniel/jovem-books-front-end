@@ -27,9 +27,7 @@ export default function EditBook() {
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
 
   async function handleSubmit(book: TUpdateBookData) {
-    const updatedBook = await BooksService.updateBook(book);
-
-    console.log(updatedBook);
+    await BooksService.updateBook(book);
 
     emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
   }
