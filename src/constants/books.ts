@@ -26,7 +26,7 @@ export const LITERARY_GENRE_LABELS = {
   ART_AND_DESIGN: 'Arte e Design',
   POLITICS: 'Política',
   ECONOMICS: 'Economia',
-  SELF_HELP: 'Autoajuda',
+  SELF_HELP: 'Auto Ajuda',
   CRIME: 'Crime',
   DYSTOPIAN: 'Distopia',
   WESTERN: 'Faroeste',

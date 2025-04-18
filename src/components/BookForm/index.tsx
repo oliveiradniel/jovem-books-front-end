@@ -10,8 +10,6 @@ import { handleBookErrors } from '../../pages/privateRoutes/EditBook/errors/hand
 
 import { emitToast } from '../../utils/emitToast';
 
-import { LITERARY_GENRE_OPTIONS } from '../../constants/books';
-
 import { FiTrash2 } from 'react-icons/fi';
 
 import DeleteBookModal from '../Modals/DeleteBookModal';
@@ -22,7 +20,7 @@ import Button from './Button';
 import Select from './Select';
 
 import { ErrorData } from '../../@types/ErrorData';
-import { IBook } from '../../@types/Book';
+import { IBook, TLiteraryGenre } from '../../@types/Book';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -51,6 +49,7 @@ function BookFormInner<T>(
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
+  const [literaryGenre, setLiteraryGenre] = useState([] as TLiteraryGenre[]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -71,7 +70,10 @@ function BookFormInner<T>(
   }));
 
   const isFormValid =
-    title.length > 0 && authors.length > 0 && errorsData.length === 0;
+    title.length > 0 &&
+    authors.length > 0 &&
+    literaryGenre.length > 0 &&
+    errorsData.length === 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
     let { value } = event.target;
@@ -126,6 +128,19 @@ function BookFormInner<T>(
     value = value.replace(/\s+/g, ' ');
 
     setSinopse(value);
+  }
+
+  function handleLiteraryGenreChange(value: TLiteraryGenre) {
+    const hasSixLiteraryGenre = literaryGenre.length === 6;
+    if (literaryGenre.includes(value)) {
+      const newLiteraryGenre = literaryGenre.filter(
+        (literaryGenreValue) => literaryGenreValue !== value
+      );
+
+      setLiteraryGenre(newLiteraryGenre);
+    } else if (!hasSixLiteraryGenre) {
+      setLiteraryGenre((prevState) => [...prevState, value]);
+    }
   }
 
   async function handleDeleteBook() {
@@ -189,7 +204,7 @@ function BookFormInner<T>(
         onConfirm={handleDeleteBook}
       />
 
-      <form className="mt-10 flex flex-col gap-4 overflow-y-auto">
+      <form className="mt-10 flex flex-col gap-4">
         <FormGroup fieldName={['title']} errorsData={errorsData}>
           <Input
             label="Título"
@@ -241,8 +256,9 @@ function BookFormInner<T>(
             Gênero Literário
           </label>
           <Select
-            options={LITERARY_GENRE_OPTIONS}
+            selectedOptions={literaryGenre}
             disabled={isLoading || isLoadingBook}
+            onChange={handleLiteraryGenreChange}
           />
         </div>
 
