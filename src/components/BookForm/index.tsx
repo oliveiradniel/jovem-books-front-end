@@ -61,6 +61,7 @@ function BookFormInner<T>(
       setTitle(book.title);
       setAuthors(book.authors);
       setSinopse(book.sinopse ?? '');
+      setLiteraryGenre(book.genreLiterary);
     },
     resetFields() {
       setTitle('');
