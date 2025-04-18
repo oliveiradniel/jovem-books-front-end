@@ -2,7 +2,7 @@ import { ZodError } from 'zod';
 
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { ErrorData } from '../../../@types/ErrorData';
+import { IFormError } from '../../../@types/FormError';
 
 type Error = ZodError | AxiosError | unknown;
 
@@ -10,18 +10,18 @@ interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleSignInErrors(error: Error): ErrorData | null {
+export function handleSignInErrors(error: Error): IFormError | null {
   if (error instanceof ZodError) {
     if (error.message.includes('The username must be at least 5 characters')) {
       const message = 'O nome de usuário deve ter no mínimo 5 caracteres';
 
-      return { fieldName: 'username', message };
+      return { field: 'username', message };
     }
 
     if (error.message.includes('The password must be at least 8 characters')) {
       const message = 'A senha do usuário deve ter no mínimo 8 caracteres';
 
-      return { fieldName: 'password', message };
+      return { field: 'password', message };
     }
   }
 
@@ -39,7 +39,7 @@ export function handleSignInErrors(error: Error): ErrorData | null {
       const message =
         'Suas credenciais não coincidem com uma conta em nosso sistema';
 
-      return { fieldName: 'credentials', message };
+      return { field: 'credentials', message };
     }
   }
 

@@ -5,15 +5,13 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 
 import Input from './Input';
 import FormGroup from '../../../components/FormGroup';
-
-import { ErrorData } from '../../../@types/ErrorData';
+import { useErrors } from '../../../app/hooks/useErrors';
 
 interface SignInFieldsProps {
   username: string;
   password: string;
   focusOn?: 'password' | null;
   isSubmitting: boolean;
-  errorsData: ErrorData[];
   onUsernameChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onPasswordChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -23,19 +21,19 @@ export default function SignInFields({
   password,
   focusOn = null,
   isSubmitting,
-  errorsData,
   onUsernameChange,
   onPasswordChange,
 }: SignInFieldsProps) {
+  const { getErrorMessageByFieldName } = useErrors();
+
   return (
-    <FormGroup fieldName={['credentials']} errorsData={errorsData}>
+    <FormGroup error={getErrorMessageByFieldName(['credentials'])}>
       <div className="flex flex-col gap-4">
-        <FormGroup fieldName={['username']} errorsData={errorsData}>
+        <FormGroup error={getErrorMessageByFieldName(['username'])}>
           <Input
+            error={getErrorMessageByFieldName(['username'])}
             theFieldIsEmpty={username.length > 0}
             Icon={FaUser}
-            errorsData={errorsData}
-            fieldName="username"
             isDisabled={isSubmitting}
             disabled={isSubmitting}
             type="text"
@@ -46,13 +44,12 @@ export default function SignInFields({
           />
         </FormGroup>
 
-        <FormGroup fieldName={['password']} errorsData={errorsData}>
+        <FormGroup error={getErrorMessageByFieldName(['password'])}>
           <Input
+            error={getErrorMessageByFieldName(['password'])}
             theFieldIsEmpty={password.length > 0}
             isAPasswordInput
             Icon={RiLockPasswordFill}
-            errorsData={errorsData}
-            fieldName="password"
             isDisabled={isSubmitting}
             disabled={isSubmitting}
             placeholder="Senha"

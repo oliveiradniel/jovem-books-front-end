@@ -16,8 +16,7 @@ import { FaArrowLeftLong } from 'react-icons/fa6';
 import { ClipLoader } from 'react-spinners';
 
 import SignInFields from './SignInFields.tsx';
-
-import { ErrorData } from '../../../@types/ErrorData.ts';
+import { useErrors } from '../../../app/hooks/useErrors.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
@@ -36,14 +35,12 @@ export default function RegistrationCompleted({
   onClose,
 }: RegistrationCompletedProps) {
   const { signIn } = useAuth();
+  const { setError, removeError } = useErrors();
 
   const [username, setUsername] = useState(data.username);
-
   const [password, setPassword] = useState('');
 
   const [isError, setIsError] = useState(false);
-  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -71,21 +68,14 @@ export default function RegistrationCompleted({
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter(
-        (error) =>
-          error.fieldName !== 'credentials' && error.fieldName !== 'username'
-      )
-    );
+    removeError('username');
+    removeError('credentials');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'username',
-          message: 'O nome de usuário é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'username',
+        message: 'O nome de usuário é obrigatório!',
+      });
     }
 
     setUsername(value);
@@ -94,21 +84,11 @@ export default function RegistrationCompleted({
   function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter(
-        (error) =>
-          error.fieldName !== 'credentials' && error.fieldName !== 'password'
-      )
-    );
+    removeError('password');
+    removeError('credentials');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'password',
-          message: 'A senha é obrigatória',
-        },
-      ]);
+      setError({ field: 'password', message: 'A senha é obrigatória!' });
     }
 
     setPassword(value);
@@ -129,13 +109,10 @@ export default function RegistrationCompleted({
 
       setUsername('');
       setPassword('');
-
-      setErrorsData([]);
     } catch (error) {
       const result = handleSignInErrors(error);
       if (result) {
-        setErrorsData((prevState) => [...prevState, result]);
-
+        setError(result);
         return;
       }
 
@@ -186,7 +163,6 @@ export default function RegistrationCompleted({
           password={password}
           focusOn="password"
           isSubmitting={isSubmitting}
-          errorsData={errorsData}
           onUsernameChange={handleUsernameChange}
           onPasswordChange={handlePasswordChange}
         />

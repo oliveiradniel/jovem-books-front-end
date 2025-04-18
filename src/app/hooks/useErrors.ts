@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react';
-import { Field, FormError } from '../../@types/FormError';
+
+import { TField, IFormError } from '../../@types/FormError';
 
 export function useErrors() {
-  const [errors, setErrors] = useState([] as FormError[]);
+  const [errors, setErrors] = useState([] as IFormError[]);
 
   const setError = useCallback(
-    ({ field, message }: FormError) => {
+    ({ field, message }: IFormError) => {
       const errorAlreadyExists = errors.find((error) => error.field === field);
 
       if (errorAlreadyExists) {
@@ -17,15 +18,20 @@ export function useErrors() {
     [errors]
   );
 
-  const removeError = useCallback((field: Field) => {
+  const removeError = useCallback((field: TField) => {
     setErrors((prevState) =>
       prevState.filter((error) => error.field !== field)
     );
   }, []);
 
   const getErrorMessageByFieldName = useCallback(
-    (field: Field) => {
-      return errors.find((error) => error.field === field)?.message;
+    (field: TField[]) => {
+      const error = errors
+        .filter((error) => field.includes(error.field))
+        .map((error) => error.message);
+
+      if (error) return error;
+      return null;
     },
     [errors]
   );

@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 
+import { useErrors } from '../../app/hooks/useErrors';
+
 import AuthService from '../../app/services/AuthService';
 
 import { emitToast } from '../../utils/emitToast';
@@ -19,9 +21,10 @@ import SessionTemplate from './components/SessionTemplate';
 import RegistrationCompleted from './components/RegistrationCompleted';
 import FormGroup from '../../components/FormGroup';
 
-import { ErrorData } from '../../@types/ErrorData';
-
 export default function SignUp() {
+  const { errors, setError, removeError, getErrorMessageByFieldName } =
+    useErrors();
+
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -30,7 +33,6 @@ export default function SignUp() {
   const [fullName, setFullName] = useState('');
 
   const [isError, setIsError] = useState(false);
-  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTheRegistrationComplete, setIsTheRegistrationComplete] =
@@ -42,23 +44,18 @@ export default function SignUp() {
     lastName.length > 0 &&
     email.length > 0 &&
     password.length > 0 &&
-    errorsData.length === 0;
+    errors.length === 0;
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'username')
-    );
+    removeError('username');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'username',
-          message: 'O nome de usuário é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'username',
+        message: 'O nome de usuário é obrigatório!',
+      });
     }
 
     setUsername(value);
@@ -67,18 +64,13 @@ export default function SignUp() {
   function handleFirstNameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'firstName')
-    );
+    removeError('firstName');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'firstName',
-          message: 'O primeiro nome do usuário é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'firstName',
+        message: 'O primeiro nome do usuário é obrigatório!',
+      });
     }
 
     setFirstName(sanitizeAndCapitalize(value));
@@ -87,18 +79,13 @@ export default function SignUp() {
   function handleLastNameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'lastName')
-    );
+    removeError('lastName');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'lastName',
-          message: 'O sobrenome do usuário é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'lastName',
+        message: 'O sobrenome do usuário é obrigatório!',
+      });
     }
 
     setLastName(sanitizeAndCapitalize(value));
@@ -107,18 +94,13 @@ export default function SignUp() {
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'email')
-    );
+    removeError('email');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'email',
-          message: 'O e-mail é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'email',
+        message: 'O e-mail é obrigatório!',
+      });
     }
 
     setEmail(value);
@@ -127,18 +109,13 @@ export default function SignUp() {
   function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'password')
-    );
+    removeError('password');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'password',
-          message: 'A senha é obrigatória',
-        },
-      ]);
+      setError({
+        field: 'password',
+        message: 'A senha é obrigatória!',
+      });
     }
 
     setPassword(value);
@@ -167,12 +144,10 @@ export default function SignUp() {
       setPassword('');
 
       setIsTheRegistrationComplete(true);
-
-      setErrorsData([]);
     } catch (error) {
       const result = handleSignUpErrors(error);
       if (result) {
-        setErrorsData((prevState) => [...prevState, result]);
+        setError(result);
 
         return;
       }
@@ -204,17 +179,15 @@ export default function SignUp() {
         onClose={() => {
           setUsername('');
           setIsTheRegistrationComplete(false);
-          setErrorsData([]);
         }}
       />
 
-      <FormGroup fieldName={['username']} errorsData={errorsData}>
+      <FormGroup error={getErrorMessageByFieldName(['username'])}>
         <Input
+          error={getErrorMessageByFieldName(['username'])}
           autoFocus
           theFieldIsEmpty={username.length > 0}
           Icon={FaUserSecret}
-          errorsData={errorsData}
-          fieldName="username"
           isDisabled={isSubmitting}
           disabled={isSubmitting}
           type="text"
@@ -224,13 +197,12 @@ export default function SignUp() {
         />
       </FormGroup>
 
-      <FormGroup fieldName={['firstName', 'lastName']} errorsData={errorsData}>
+      <FormGroup error={getErrorMessageByFieldName(['firstName', 'lastName'])}>
         <div className="flex gap-4">
           <Input
+            error={getErrorMessageByFieldName(['firstName'])}
             theFieldIsEmpty={firstName.length > 0}
             Icon={FaUser}
-            errorsData={errorsData}
-            fieldName={'firstName'}
             isDisabled={isSubmitting}
             disabled={isSubmitting}
             type="text"
@@ -240,10 +212,9 @@ export default function SignUp() {
           />
 
           <Input
+            error={getErrorMessageByFieldName(['lastName'])}
             theFieldIsEmpty={lastName.length > 0}
             Icon={FaUser}
-            errorsData={errorsData}
-            fieldName={'lastName'}
             isDisabled={isSubmitting}
             disabled={isSubmitting}
             type="text"
@@ -255,12 +226,11 @@ export default function SignUp() {
         </div>
       </FormGroup>
 
-      <FormGroup fieldName={['email']} errorsData={errorsData}>
+      <FormGroup error={getErrorMessageByFieldName(['email'])}>
         <Input
+          error={getErrorMessageByFieldName(['email'])}
           theFieldIsEmpty={email.length > 0}
           Icon={MdEmail}
-          errorsData={errorsData}
-          fieldName={'email'}
           isDisabled={isSubmitting}
           disabled={isSubmitting}
           type="email"
@@ -270,13 +240,12 @@ export default function SignUp() {
         />
       </FormGroup>
 
-      <FormGroup fieldName={['password']} errorsData={errorsData}>
+      <FormGroup error={getErrorMessageByFieldName(['password'])}>
         <Input
+          error={getErrorMessageByFieldName(['password'])}
           theFieldIsEmpty={password.length > 0}
           isAPasswordInput
           Icon={RiLockPasswordFill}
-          errorsData={errorsData}
-          fieldName={'password'}
           isDisabled={isSubmitting}
           disabled={isSubmitting}
           placeholder="Senha"

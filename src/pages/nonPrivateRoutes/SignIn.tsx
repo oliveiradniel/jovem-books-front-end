@@ -1,52 +1,41 @@
 import { ChangeEvent, useState } from 'react';
 
 import { useAuth } from '../../app/hooks/useAuth';
+import { useErrors } from '../../app/hooks/useErrors';
 
 import AuthService from '../../app/services/AuthService';
 
-import { emitToast } from '../../utils/emitToast';
-
 import { SignInSchema } from './schemas/SignInSchema';
-
 import { handleSignInErrors } from './errors/handleSignInErrors';
+
+import { emitToast } from '../../utils/emitToast';
 
 import SessionTemplate from './components/SessionTemplate';
 import SignInFields from './components/SignInFields';
 
-import { ErrorData } from '../../@types/ErrorData';
-
 export default function SignIn() {
   const { signIn } = useAuth();
+
+  const { errors, setError, removeError } = useErrors();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [isError, setIsError] = useState(false);
-  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isFormValid =
-    username.length > 0 && password.length > 0 && errorsData.length === 0;
+    username.length > 0 && password.length > 0 && errors.length === 0;
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter(
-        (error) =>
-          error.fieldName !== 'credentials' && error.fieldName !== 'username'
-      )
-    );
-
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'username',
-          message: 'O nome de usuário é obrigatório',
-        },
-      ]);
+      setError({
+        field: 'username',
+        message: 'O nome de usuário é obrigatório!',
+      });
     }
 
     setUsername(value);
@@ -55,21 +44,11 @@ export default function SignIn() {
   function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
 
-    setErrorsData((prevState) =>
-      prevState.filter(
-        (error) =>
-          error.fieldName !== 'credentials' && error.fieldName !== 'password'
-      )
-    );
+    removeError('credentials');
+    removeError('password');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'password',
-          message: 'A senha é obrigatória',
-        },
-      ]);
+      setError({ field: 'password', message: 'A senha é obrigatória!' });
     }
 
     setPassword(value);
@@ -88,12 +67,10 @@ export default function SignIn() {
 
       setUsername('');
       setPassword('');
-
-      setErrorsData([]);
     } catch (error) {
       const result = handleSignInErrors(error);
       if (result) {
-        setErrorsData((prevState) => [...prevState, result]);
+        setError(result);
 
         return;
       }
@@ -122,7 +99,6 @@ export default function SignIn() {
         username={username}
         password={password}
         isSubmitting={isSubmitting}
-        errorsData={errorsData}
         onUsernameChange={handleUsernameChange}
         onPasswordChange={handlePasswordChange}
       />
