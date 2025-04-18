@@ -1,4 +1,4 @@
-export type FieldName =
+export type Field =
   | 'title'
   | 'authors'
   | 'username'
@@ -8,7 +8,7 @@ export type FieldName =
   | 'password'
   | 'credentials';
 
-export type ErrorData = {
-  fieldName: FieldName;
+export type FormError = {
+  field: Field;
   message: string;
 };
