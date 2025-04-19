@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const SignUpSchema = z.object({
+const BaseUserSchema = z.object({
   username: z
     .string({ message: 'The username must be a string' })
     .min(5, 'The username must be at least 5 characters'),
@@ -17,3 +17,11 @@ export const SignUpSchema = z.object({
     .string({ message: 'The password must be a string' })
     .min(8, 'The password must be at least 8 characters'),
 });
+
+export const SignInSchema = BaseUserSchema.omit({
+  firstName: true,
+  lastName: true,
+  email: true,
+});
+
+export const SignUpSchema = BaseUserSchema;

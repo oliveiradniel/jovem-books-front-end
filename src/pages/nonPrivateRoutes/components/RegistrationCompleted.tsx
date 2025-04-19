@@ -1,54 +1,35 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
 import reactDOM from 'react-dom';
 
 import { useAuth } from '../../../app/hooks/useAuth.ts';
 
-import AuthService from '../../../app/services/AuthService.ts';
-
 import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
 
-import { emitToast } from '../../../utils/emitToast.tsx';
+import AuthService from '../../../app/services/AuthService.ts';
 
-import { SignInSchema } from '../schemas/SignInSchema';
+import { SignInSchema } from '../../../assets/schemas/UserSchema.ts';
 import { handleSignInErrors } from '../errors/handleSignInErrors';
 
 import { FaArrowLeftLong } from 'react-icons/fa6';
-import { ClipLoader } from 'react-spinners';
 
-import SignInFields from './SignInFields.tsx';
-import { useErrors } from '../../../app/hooks/useErrors.ts';
+import SessionForm from './SessionForm.tsx';
+
+import { TSignIn } from '../../../@types/User.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;
   fullName: string;
-  data: {
-    username: string;
-    fullName: string;
-  };
   onClose: () => void;
 }
 
 export default function RegistrationCompleted({
   isVisible,
   fullName,
-  data,
   onClose,
 }: RegistrationCompletedProps) {
   const { signIn } = useAuth();
-  const { setError, removeError } = useErrors();
-
-  const [username, setUsername] = useState(data.username);
-  const [password, setPassword] = useState('');
-
-  const [isError, setIsError] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  useEffect(() => {
-    setUsername(data.username);
-  }, [data.username]);
 
   const { shouldRender, animatedElementRef } =
-    useAnimatedUnmount<HTMLFormElement>(isVisible);
+    useAnimatedUnmount<HTMLDivElement>(isVisible);
 
   if (!shouldRender) {
     return null;
@@ -56,74 +37,14 @@ export default function RegistrationCompleted({
 
   const container = document.getElementById('success-root')!;
 
-  const isFormValid = username.length > 0 && password.length > 0;
-
   function handleClose() {
-    setUsername('');
-    setPassword('');
-
     onClose();
   }
 
-  function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
+  async function handleSubmit(credentials: TSignIn) {
+    const { accessToken } = await AuthService.signIn(credentials);
 
-    removeError('username');
-    removeError('credentials');
-
-    if (value.length === 0) {
-      setError({
-        field: 'username',
-        message: 'O nome de usuário é obrigatório!',
-      });
-    }
-
-    setUsername(value);
-  }
-
-  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.target;
-
-    removeError('password');
-    removeError('credentials');
-
-    if (value.length === 0) {
-      setError({ field: 'password', message: 'A senha é obrigatória!' });
-    }
-
-    setPassword(value);
-  }
-
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    try {
-      setIsError(false);
-      setIsSubmitting(true);
-
-      const credentials = SignInSchema.parse({ username, password });
-
-      const { accessToken } = await AuthService.signIn(credentials);
-
-      signIn(accessToken);
-
-      setUsername('');
-      setPassword('');
-    } catch (error) {
-      const result = handleSignInErrors(error);
-      if (result) {
-        setError(result);
-        return;
-      }
-
-      setIsError(true);
-      emitToast({
-        type: 'error',
-        message: 'Não foi possível fazer login no momento.',
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    signIn(accessToken);
   }
 
   return reactDOM.createPortal(
@@ -146,36 +67,24 @@ export default function RegistrationCompleted({
       </h1>
 
       <p
-        className={`font-quicksand text-light-gray animate-move-in-bottom-700 max-w-xl text-center text-xl ${!isVisible && 'animate-return-to-top-700'}`}
+        className={`font-quicksand text-light-gray animate-move-in-bottom-700 mx-5 max-w-xl text-center text-xl ${!isVisible && 'animate-return-to-top-700'}`}
       >
         <span className="text-sky-blue font-medium">{fullName}</span>, bem vindo
         ao <span className="text-snow-white">Jovem Books</span>. Entre agora
         usando as credenciais usadas no cadastro.
       </p>
 
-      <form
+      <div
         ref={animatedElementRef}
-        onSubmit={handleSubmit}
-        className={`animate-move-in-top-700 flex w-full max-w-md flex-col gap-4 ${!isVisible && 'animate-return-to-bottom-700'}`}
+        className={`animate-move-in-top-700 flex max-w-xl min-w-md ${!isVisible && 'animate-return-to-bottom-700'}`}
       >
-        <SignInFields
-          username={username}
-          password={password}
-          focusOn="password"
-          isSubmitting={isSubmitting}
-          onUsernameChange={handleUsernameChange}
-          onPasswordChange={handlePasswordChange}
+        <SessionForm
+          type="registrationCompleted"
+          validationSchema={SignInSchema}
+          onSubmit={handleSubmit}
+          handleErrors={handleSignInErrors}
         />
-
-        <button
-          type="submit"
-          disabled={!isFormValid}
-          className={`bg-dark-violet text-snow-white font-roboto focus:bg-dark-violet disabled:bg-snow-white-op-70 bottom-0 mt-4 flex h-10 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet hover:cursor-default' : 'hover:bg-dark-violet-op-60 hover:cursor-pointer'}`}
-        >
-          {!isSubmitting && isError ? 'Tentar novamente' : 'Entrar'}
-          <ClipLoader color="#ffffff" size={20} loading={isSubmitting} />
-        </button>
-      </form>
+      </div>
     </div>,
     container
   );
