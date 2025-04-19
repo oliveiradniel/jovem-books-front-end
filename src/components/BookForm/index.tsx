@@ -1,6 +1,8 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useErrors } from '../../app/hooks/useErrors';
+
 import BooksService from '../../app/services/BooksService';
 
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
@@ -19,8 +21,8 @@ import Input from './Input';
 import Button from './Button';
 import Select from './Select';
 
-import { ErrorData } from '../../@types/ErrorData';
 import { IBook, TLiteraryGenre } from '../../@types/Book';
+import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -46,6 +48,9 @@ function BookFormInner<T>(
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { errors, setError, removeError, getErrorMessageByFieldName } =
+    useErrors<TBookFields, TBookErrorMessages>();
+
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
@@ -53,8 +58,6 @@ function BookFormInner<T>(
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-
-  const [errorsData, setErrorsData] = useState([] as ErrorData[]);
 
   useImperativeHandle(ref, () => ({
     setFieldValues(book) {
@@ -75,26 +78,18 @@ function BookFormInner<T>(
     title.length > 0 &&
     authors.length > 0 &&
     literaryGenre.length > 0 &&
-    errorsData.length === 0;
+    errors.length === 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
     let { value } = event.target;
-
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'title')
-    );
 
     value = value.replace(/^\s+/, '');
     value = value.replace(/\s+/g, ' ');
 
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'title',
-          message: 'O título do livro é obrigatório',
-        },
-      ]);
+      setError({ field: 'title', message: 'O título do livro é obrigatório!' });
+    } else {
+      removeError('title');
     }
 
     setTitle(value);
@@ -106,18 +101,13 @@ function BookFormInner<T>(
     value = value.replace(/^\s+/, '');
     value = value.replace(/\s+/g, ' ');
 
-    setErrorsData((prevState) =>
-      prevState.filter((error) => error.fieldName !== 'authors')
-    );
-
     if (value.length === 0) {
-      setErrorsData((prevState) => [
-        ...prevState,
-        {
-          fieldName: 'authors',
-          message: 'O livro deve ter pelo menos um autor(a)',
-        },
-      ]);
+      setError({
+        field: 'authors',
+        message: 'O livro deve conter ao menos um autor(a)!',
+      });
+    } else {
+      removeError('authors');
     }
 
     setAuthors(value);
@@ -140,8 +130,17 @@ function BookFormInner<T>(
       );
 
       setLiteraryGenre(newLiteraryGenre);
+
+      if (newLiteraryGenre.length === 0) {
+        setError({
+          field: 'literaryGenre',
+          message: 'O livro deve conter ao menos um gênero literário!',
+        });
+      }
     } else if (!hasSixLiteraryGenre) {
       setLiteraryGenre((prevState) => [...prevState, value]);
+
+      removeError('literaryGenre');
     }
   }
 
@@ -185,7 +184,7 @@ function BookFormInner<T>(
     } catch (error) {
       const result = handleBookErrors(error);
       if (result) {
-        setErrorsData((prevState) => [...prevState, { ...result }]);
+        setError(result);
         return;
       }
 
@@ -207,11 +206,10 @@ function BookFormInner<T>(
       />
 
       <form className="mt-10 flex flex-col gap-4">
-        <FormGroup fieldName={['title']} errorsData={errorsData}>
+        <FormGroup error={getErrorMessageByFieldName(['title'])}>
           <Input
             label="Título"
-            errorsData={errorsData}
-            fieldName="title"
+            error={getErrorMessageByFieldName(['title'])}
             name="title"
             placeholder="Dom Quixote"
             value={title}
@@ -220,14 +218,12 @@ function BookFormInner<T>(
         </FormGroup>
 
         <FormGroup
-          fieldName={['authors']}
-          errorsData={errorsData}
-          wariningText="Separe os autores(as) por vírgula."
+          error={getErrorMessageByFieldName(['authors'])}
+          warningText="Separe os autores(as) por vírgula."
         >
           <Input
             label="Autor(es)"
-            errorsData={errorsData}
-            fieldName="authors"
+            error={getErrorMessageByFieldName(['authors'])}
             name="authors"
             placeholder="Miguel de Cervantes"
             value={authors}
@@ -253,16 +249,18 @@ function BookFormInner<T>(
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="sinopse" className="text-snow-white font-quicksand">
-            Gênero Literário
-          </label>
-          <Select
-            selectedOptions={literaryGenre}
-            disabled={isLoading || isLoadingBook}
-            onChange={handleLiteraryGenreChange}
-          />
-        </div>
+        <FormGroup error={getErrorMessageByFieldName(['literaryGenre'])}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="sinopse" className="text-snow-white font-quicksand">
+              Gênero Literário
+            </label>
+            <Select
+              selectedOptions={literaryGenre}
+              disabled={isLoading || isLoadingBook}
+              onChange={handleLiteraryGenreChange}
+            />
+          </div>
+        </FormGroup>
 
         <div className="flex gap-2">
           <Button

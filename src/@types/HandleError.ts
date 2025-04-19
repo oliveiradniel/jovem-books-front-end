@@ -1,4 +1,4 @@
 import { AxiosError } from 'axios';
 import { ZodError } from 'zod';
 
-export type HandleError = ZodError | AxiosError | unknown;
+export type THandleError = ZodError | AxiosError | unknown;

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error: string | string[] | null;
+  error: string[] | null;
   theFieldIsEmpty: boolean;
   Icon: React.ElementType;
   isDisabled: boolean;

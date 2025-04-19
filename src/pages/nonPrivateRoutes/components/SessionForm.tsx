@@ -16,14 +16,20 @@ import Input from '../components/Input';
 import FormGroup from '../../../components/FormGroup';
 import Button from './Button';
 
-import { IFormError } from '../../../@types/FormError';
-import { HandleError } from '../../../@types/HandleError';
+import {
+  IFormError,
+  TSessionErrorMessages,
+  TSessionFields,
+} from '../../../@types/FormError';
+import { THandleError } from '../../../@types/HandleError';
 
 interface SessionFormProps<T> {
   type?: 'signIn' | 'signUp' | 'registrationCompleted';
   validationSchema: ZodSchema<T>;
   onSubmit: (credentials: T) => Promise<void>;
-  handleErrors: (error: HandleError) => IFormError | null;
+  handleErrors: (
+    error: THandleError
+  ) => IFormError<TSessionFields, TSessionErrorMessages> | null;
 }
 
 export default function SessionForm<T>({
@@ -33,7 +39,7 @@ export default function SessionForm<T>({
   handleErrors,
 }: SessionFormProps<T>) {
   const { errors, setError, removeError, getErrorMessageByFieldName } =
-    useErrors();
+    useErrors<TSessionFields, TSessionErrorMessages>();
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');

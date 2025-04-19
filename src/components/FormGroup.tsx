@@ -1,19 +1,19 @@
 interface FormGroupProps {
   error: string[] | null;
   children: React.ReactNode;
-  wariningText?: string | null;
+  warningText?: string | null;
 }
 
 export default function FormGroup({
   error,
   children,
-  wariningText = null,
+  warningText = null,
 }: FormGroupProps) {
   return (
     <div className="flex flex-col gap-2">
-      {wariningText && (
+      {warningText && (
         <span className="font-quicksand text-light-gray text-xs">
-          {wariningText}
+          {warningText}
         </span>
       )}
       {children}

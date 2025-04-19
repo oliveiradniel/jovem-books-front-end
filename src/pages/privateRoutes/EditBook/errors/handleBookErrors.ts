@@ -2,7 +2,11 @@ import { ZodError } from 'zod';
 
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { ErrorData } from '../../../../@types/ErrorData';
+import {
+  IFormError,
+  TBookErrorMessages,
+  TBookFields,
+} from '../../../../@types/FormError';
 
 type Error = ZodError | AxiosError | unknown;
 
@@ -10,18 +14,20 @@ interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleBookErrors(error: Error): ErrorData | null {
+export function handleBookErrors(
+  error: Error
+): IFormError<TBookFields, TBookErrorMessages> | null {
   if (error instanceof ZodError) {
     if (error.message.includes('Title must be at least 3 characters')) {
-      const message = 'O título do livro deve ter no mínimo 3 caracteres';
+      const message = 'O título do livro deve ter no mínimo 3 caracteres!';
 
-      return { fieldName: 'title', message };
+      return { field: 'title', message };
     }
 
     if (error.message.includes('Author must be at least 3 characters')) {
-      const message = 'O nome do autor deve ter no mínimo 3 caracteres';
+      const message = 'O nome do autor deve ter no mínimo 3 caracteres!';
 
-      return { fieldName: 'authors', message };
+      return { field: 'authors', message };
     }
   }
 
@@ -36,15 +42,9 @@ export function handleBookErrors(error: Error): ErrorData | null {
     const errorMessage = apiError.response.data.message;
 
     if (errorMessage === 'Title already in use') {
-      const message = 'O título do livro já está em uso';
+      const message = 'O título do livro já está em uso!';
 
-      return { fieldName: 'title', message };
-    }
-
-    if (errorMessage === 'Title already in use') {
-      const message = 'O título do livro já está em uso';
-
-      return { fieldName: 'title', message };
+      return { field: 'title', message };
     }
   }
 
