@@ -85,4 +85,6 @@ export const CreateDataBookSchema = BaseBookSchema.omit({
   removeImage: true,
 });
 
-export const UpdateDataBookSchema = BaseBookSchema;
+export const UpdateDataBookSchema = BaseBookSchema.omit({
+  numberOfPages: true,
+});

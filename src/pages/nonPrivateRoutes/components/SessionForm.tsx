@@ -64,7 +64,9 @@ export default function SessionForm<T>({
 
   const isFormValid =
     errors.length === 0 &&
-    (type === 'signIn' ? validSignInForm : validSignUpForm);
+    (type === 'signIn' || type === 'registrationCompleted'
+      ? validSignInForm
+      : validSignUpForm);
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;

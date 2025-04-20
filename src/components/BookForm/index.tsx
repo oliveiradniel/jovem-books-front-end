@@ -204,29 +204,24 @@ function BookFormInner<T>(
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
+    const formattedNumberOfPages = Number(numberOfPages);
+
     try {
       setIsLoading(true);
-
-      const book = await BooksService.getBookById({
-        id: id!,
-        onlyCommas: false,
-      });
 
       const formData = {
         id: id,
         title,
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
-        numberOfPages:
-          (numberOfPages === null || Number(numberOfPages) === 0) ??
-          book.numberOfPages,
+        numberOfPages: formattedNumberOfPages,
         genreLiterary: literaryGenre,
       };
 
       const data = validationSchema.parse(formData);
-
       await onSubmit(data);
     } catch (error) {
+      console.log(error);
       const result = handleBookErrors(error);
       if (result) {
         setError(result);
