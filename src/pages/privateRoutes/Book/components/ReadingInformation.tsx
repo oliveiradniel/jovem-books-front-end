@@ -29,7 +29,7 @@ export default function ReadingInformation({
     book.read?.currentPage && book.numberOfPages
       ? (book.read?.currentPage! / book.numberOfPages) * 100
       : '0'
-  ).toFixed(0);
+  ).toFixed(2);
 
   const totalDaysToFinish = getDaysBetween({
     startDate: book.read?.createdAt as string,

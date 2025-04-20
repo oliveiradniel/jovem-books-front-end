@@ -6,7 +6,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({ error, Icon, ...props }: ButtonProps) {
-  console.log(error);
   return (
     <button
       type="button"

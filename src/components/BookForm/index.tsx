@@ -57,7 +57,9 @@ function BookFormInner<T>(
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
   const [literaryGenre, setLiteraryGenre] = useState([] as TLiteraryGenre[]);
-  const [numberOfPages, setNumberOfPages] = useState<number | string>(1);
+  const [numberOfPages, setNumberOfPages] = useState<number | string | null>(
+    null
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -83,6 +85,8 @@ function BookFormInner<T>(
     title.length > 0 &&
     authors.length > 0 &&
     literaryGenre.length > 0 &&
+    Number(numberOfPages) > 0 &&
+    String(numberOfPages).length > 0 &&
     errors.length === 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -203,13 +207,20 @@ function BookFormInner<T>(
     try {
       setIsLoading(true);
 
+      const book = await BooksService.getBookById({
+        id: id!,
+        onlyCommas: false,
+      });
+
       const formData = {
         id: id,
         title,
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
         imagePath: null,
-        numberOfPages: Number(numberOfPages),
+        numberOfPages:
+          (numberOfPages === null || Number(numberOfPages) === 0) ??
+          book.numberOfPages,
         genreLiterary: literaryGenre,
       };
 
@@ -290,16 +301,18 @@ function BookFormInner<T>(
           </div>
         </FormGroup>
 
-        <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
-          <NumberInput
-            error={getErrorMessageByFieldName(['numberOfPages'])}
-            value={numberOfPages}
-            placeholder="332"
-            onChange={handleNumberOfPagesChange}
-            onIncrement={handlePageIncrement}
-            onDecrement={handlePageDecrement}
-          />
-        </FormGroup>
+        {buttonLabel === 'Criar' && (
+          <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
+            <NumberInput
+              error={getErrorMessageByFieldName(['numberOfPages'])}
+              value={numberOfPages ?? ''}
+              placeholder="332"
+              onChange={handleNumberOfPagesChange}
+              onIncrement={handlePageIncrement}
+              onDecrement={handlePageDecrement}
+            />
+          </FormGroup>
+        )}
 
         <div className="flex gap-2">
           <Button
