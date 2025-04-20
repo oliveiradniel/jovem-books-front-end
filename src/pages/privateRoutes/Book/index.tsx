@@ -24,6 +24,7 @@ import FinishBookModal from '../../../components/Modals/FinishBookModal';
 import EditCurrentPageModal from '../../../components/Modals/EditCurrentPageModal';
 
 import { IBook } from '../../../@types/Book';
+import { LITERARY_GENRE_LABELS } from '../../../constants/books';
 
 export default function Book() {
   const { user } = useAuth();
@@ -181,7 +182,7 @@ export default function Book() {
         onConfirm={handlePagesNumberChange}
       />
 
-      <div>
+      <div className="animate-fade-in h-full overflow-y-auto">
         <Actions isLoadingBook={isLoading} />
 
         <div className="mt-8 flex justify-between gap-4">
@@ -191,6 +192,17 @@ export default function Book() {
             <Authors authors={book.authors} isLoadingBook={isLoading} />
 
             <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {book.genreLiterary?.map((genreLiterary, index) => (
+                <p
+                  key={index}
+                  className="text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase"
+                >
+                  {LITERARY_GENRE_LABELS[genreLiterary]}
+                </p>
+              ))}
+            </div>
 
             <div className="mt-8 flex flex-col gap-2 sm:flex-row">
               <InformationButton

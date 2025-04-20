@@ -37,7 +37,7 @@ export default function ReadingInformation({
   });
 
   return (
-    <div className="bg-navy-blue-op-80 text-snow-white-op-70 font-quicksand animate-fade-in-500 relative mt-3 flex h-26 justify-between rounded-lg px-4 py-2 text-sm sm:mt-5">
+    <div className="bg-navy-blue text-snow-white-op-70 font-quicksand animate-fade-in-500 relative mt-3 flex justify-between rounded-lg px-4 py-2 text-sm sm:mt-5">
       {isLoadingBook ? (
         <SkeletonLoading rounded="lg" />
       ) : (
@@ -74,7 +74,7 @@ export default function ReadingInformation({
             </p>
           )}
 
-          {book.read?.status !== 'FINISHED' && book.numberOfPages && (
+          {isReading && (
             <p className="flex gap-2">
               Progresso:
               <span className="text-sky-blue font-semibold">

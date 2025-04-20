@@ -7,10 +7,10 @@ import {
   READING_STATUS,
 } from '../../../../../constants/books';
 
-import { IBookAPIResponse } from '../../../../../@types/Book';
+import { IBookAPI } from '../../../../../@types/Book';
 
 interface TableBodyProps {
-  books: IBookAPIResponse[];
+  books: IBookAPI[];
 }
 
 export default function TableBody({ books }: TableBodyProps) {

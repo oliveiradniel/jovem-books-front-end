@@ -43,11 +43,12 @@ export default function Options({
       ref={animatedElementRef}
       className={`font-roboto bg-navy-blue animate-move-in-bottom-d300-y30 absolute mt-12 flex w-full flex-wrap justify-between gap-2 rounded-lg p-1 ${!isVisible && 'animate-return-to-top-d200-y50'}`}
     >
-      {LITERARY_GENRE_OPTIONS.map((option) => {
+      {LITERARY_GENRE_OPTIONS.map((option, index) => {
         const isSelected = selectedOptions.includes(option);
 
         return (
           <button
+            key={index}
             type="button"
             disabled={selectedOptions.length === 6 && !isSelected}
             onClick={() => onChange(option)}
