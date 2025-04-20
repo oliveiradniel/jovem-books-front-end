@@ -27,9 +27,15 @@ export type TBookErrorMessages =
   | 'O título do livro já está em uso!'
   | 'O título do livro é obrigatório!'
   | 'O livro deve conter ao menos um autor(a)!'
-  | 'O livro deve conter ao menos um gênero literário!';
+  | 'O livro deve conter ao menos um gênero literário!'
+  | 'O número de páginas é obrigatório!';
 
-export type TBookFields = 'title' | 'authors' | 'sinopse' | 'literaryGenre';
+export type TBookFields =
+  | 'title'
+  | 'authors'
+  | 'sinopse'
+  | 'literaryGenre'
+  | 'numberOfPages';
 
 export type TSessionFields =
   | 'username'

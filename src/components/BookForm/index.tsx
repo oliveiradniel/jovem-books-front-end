@@ -20,9 +20,11 @@ import FormGroup from '../FormGroup';
 import Input from './Input';
 import Button from './Button';
 import Select from './Select';
+import Label from './Label';
 
 import { IBook, TLiteraryGenre } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
+import NumberInput from './NumberInput';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -55,6 +57,7 @@ function BookFormInner<T>(
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
   const [literaryGenre, setLiteraryGenre] = useState([] as TLiteraryGenre[]);
+  const [numberOfPages, setNumberOfPages] = useState<number | string>(1);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -65,12 +68,14 @@ function BookFormInner<T>(
       setAuthors(book.authors);
       setSinopse(book.sinopse ?? '');
       setLiteraryGenre(book.genreLiterary);
+      setNumberOfPages(book.numberOfPages);
     },
     resetFields() {
       setTitle('');
       setAuthors('');
       setSinopse('');
       setLiteraryGenre([]);
+      setNumberOfPages(1);
     },
   }));
 
@@ -144,6 +149,36 @@ function BookFormInner<T>(
     }
   }
 
+  function handleNumberOfPagesChange(event: ChangeEvent<HTMLInputElement>) {
+    const { value } = event.target;
+
+    const matchPositiveInteger = /^[1-9]\d*$/;
+
+    const validNumber = matchPositiveInteger.test(value) || value === '';
+
+    if (!validNumber) return;
+
+    if (value.length === 0) {
+      setError({
+        field: 'numberOfPages',
+        message: 'O número de páginas é obrigatório!',
+      });
+    } else {
+      removeError('numberOfPages');
+    }
+
+    setNumberOfPages(value);
+  }
+
+  function handlePageIncrement() {
+    setNumberOfPages((prevState) => Number(prevState) + 1);
+  }
+
+  function handlePageDecrement() {
+    if (Number(numberOfPages) === 0) return;
+    setNumberOfPages((prevState) => Number(prevState) - 1);
+  }
+
   async function handleDeleteBook() {
     try {
       await BooksService.deleteBook(id!);
@@ -174,8 +209,8 @@ function BookFormInner<T>(
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
         imagePath: null,
+        numberOfPages: Number(numberOfPages),
         genreLiterary: literaryGenre,
-        numberOfPages: 100,
       };
 
       const data = validationSchema.parse(formData);
@@ -232,16 +267,11 @@ function BookFormInner<T>(
         </FormGroup>
 
         <div className="flex gap-2">
-          <label
-            htmlFor="sinopse"
-            className="text-snow-white font-quicksand w-26"
-          >
-            Sinopse
-          </label>
+          <Label label="Sinopse" />
           <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
             <textarea
               name="sinopse"
-              placeholder="Sinopse do livro"
+              placeholder="A história gira em torno de Alonso Quixano, um fidalgo pobre que enlouquece após ler muitos romances de cavalaria. Ele decide tornar-se um cavaleiro andante sob o nome de Dom Quixote..."
               value={sinopse ?? ''}
               onChange={handleSinopseChange}
               className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
@@ -251,15 +281,24 @@ function BookFormInner<T>(
 
         <FormGroup error={getErrorMessageByFieldName(['literaryGenre'])}>
           <div className="flex flex-col gap-2">
-            <label htmlFor="sinopse" className="text-snow-white font-quicksand">
-              Gênero Literário
-            </label>
+            <Label label="Gênero Literário" />
             <Select
               selectedOptions={literaryGenre}
               disabled={isLoading || isLoadingBook}
               onChange={handleLiteraryGenreChange}
             />
           </div>
+        </FormGroup>
+
+        <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
+          <NumberInput
+            error={getErrorMessageByFieldName(['numberOfPages'])}
+            value={numberOfPages}
+            placeholder="332"
+            onChange={handleNumberOfPagesChange}
+            onIncrement={handlePageIncrement}
+            onDecrement={handlePageDecrement}
+          />
         </FormGroup>
 
         <div className="flex gap-2">
