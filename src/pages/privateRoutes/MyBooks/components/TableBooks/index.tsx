@@ -43,7 +43,7 @@ export default function TableBooks({
 
   return (
     <div
-      className={`relative h-[500px] ${books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
+      className={`relative ${books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
     >
       {isLoading && (
         <div className="animate-fade-in absolute flex h-full w-full items-center justify-center">

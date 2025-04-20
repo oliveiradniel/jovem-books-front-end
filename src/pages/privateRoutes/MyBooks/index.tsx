@@ -5,12 +5,12 @@ import BooksService from '../../../app/services/BooksService';
 import TableBooks from './components/TableBooks';
 import Header from './components/Header';
 
-import { IBookAPIResponse } from '../../../@types/Book';
-import { Page } from './@types/Page';
+import { IBookAPI } from '../../../@types/Book';
+import { TPageStatus } from '../../../@types/Read';
 
 export default function MyBooks() {
-  const [books, setBooks] = useState<IBookAPIResponse[]>([]);
-  const [page, setPage] = useState<Page>('ALL');
+  const [books, setBooks] = useState<IBookAPI[]>([]);
+  const [page, setPage] = useState<TPageStatus>('ALL');
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -51,28 +51,26 @@ export default function MyBooks() {
   }, []);
 
   return (
-    <div className="h-full">
-      <div className="bg-blue-black-op-80 min-h-[600px] rounded-lg p-5">
-        <Header
-          page={page}
-          numberOfBooks={books.length}
-          numberOfFilteredBooks={filteredBooksByStatus.length}
-          isLoading={isLoading}
-          isError={isError}
-          onChangePage={setPage}
-        />
+    <div className="bg-blue-black/80 rounded-lg p-5">
+      <Header
+        page={page}
+        numberOfBooks={books.length}
+        numberOfFilteredBooks={filteredBooksByStatus.length}
+        isLoading={isLoading}
+        isError={isError}
+        onChangePage={setPage}
+      />
 
-        <div className="bg-navy-blue my-4 h-[0.1px] w-full" />
+      <div className="bg-navy-blue my-4 h-[0.1px] w-full" />
 
-        <TableBooks
-          books={books}
-          onLoadBooks={loadBooks}
-          filteredBooks={filteredBooksByStatus}
-          page={page}
-          isLoading={isLoading}
-          isError={isError}
-        />
-      </div>
+      <TableBooks
+        books={books}
+        onLoadBooks={loadBooks}
+        filteredBooks={filteredBooksByStatus}
+        page={page}
+        isLoading={isLoading}
+        isError={isError}
+      />
     </div>
   );
 }
