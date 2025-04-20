@@ -61,11 +61,10 @@ class BooksService {
 
   async updateImage({ id, image }: UpdateBookCoverProps) {
     const form = new FormData();
-
     if (image) {
       form.append('image', image);
     } else {
-      form.append('removeImage', 'true');
+      form.append('removeImage', JSON.stringify(true));
     }
 
     const { data: updatedBook } = await httpClient.put<IBookAPI>(

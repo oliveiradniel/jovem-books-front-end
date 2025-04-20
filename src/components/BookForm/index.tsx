@@ -21,10 +21,10 @@ import Input from './Input';
 import Button from './Button';
 import Select from './Select';
 import Label from './Label';
+import NumberInput from './NumberInput';
 
 import { IBook, TLiteraryGenre } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
-import NumberInput from './NumberInput';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -77,7 +77,7 @@ function BookFormInner<T>(
       setAuthors('');
       setSinopse('');
       setLiteraryGenre([]);
-      setNumberOfPages(1);
+      setNumberOfPages(null);
     },
   }));
 
@@ -217,7 +217,6 @@ function BookFormInner<T>(
         title,
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
-        imagePath: null,
         numberOfPages:
           (numberOfPages === null || Number(numberOfPages) === 0) ??
           book.numberOfPages,
