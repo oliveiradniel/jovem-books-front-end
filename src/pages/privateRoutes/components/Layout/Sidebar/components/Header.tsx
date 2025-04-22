@@ -14,7 +14,7 @@ export default function Header() {
       ? 'Dashboard'
       : pathname === '/my-books'
         ? 'Meus livros'
-        : pathname === '/google-books' && 'Livros da Google Books';
+        : pathname === '/google-books' && 'Google Books';
 
   return (
     <>

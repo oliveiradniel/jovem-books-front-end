@@ -8,8 +8,8 @@ import { TPageStatus } from '../../../../../@types/Read';
 
 interface TabelBooksProps {
   books: IBookAPI[];
-  onLoadBooks: () => void;
   filteredBooks: IBookAPI[];
+  onLoadBooks: () => void;
   page: TPageStatus;
   isLoading: boolean;
   isError: boolean;
@@ -43,7 +43,7 @@ export default function TableBooks({
 
   return (
     <div
-      className={`relative ${books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
+      className={`relative ${books && books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
     >
       {isLoading && (
         <div className="animate-fade-in absolute flex h-full w-full items-center justify-center">
@@ -51,7 +51,7 @@ export default function TableBooks({
         </div>
       )}
 
-      {!isLoading && filteredBooks.length === 0 && (
+      {!isLoading && filteredBooks && filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute top-20 flex w-full justify-center">
           {isError ? (
             <div className="flex flex-col gap-6">
@@ -78,7 +78,7 @@ export default function TableBooks({
       <table className="w-full">
         <TableHeader />
 
-        {!isLoading && <TableBody books={filteredBooks} />}
+        {!isLoading && books && <TableBody books={filteredBooks} />}
       </table>
     </div>
   );

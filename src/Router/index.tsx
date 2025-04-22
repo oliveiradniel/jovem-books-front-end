@@ -1,5 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
+import { useAuth } from '../app/hooks/useAuth';
+
 import { AuthGuard } from './AuthGuard';
 
 import Home from '../pages/nonPrivateRoutes/Home';
@@ -14,7 +16,6 @@ import Book from '../pages/privateRoutes/Book';
 import EditBook from '../pages/privateRoutes/EditBook';
 import NewBook from '../pages/privateRoutes/NewBook';
 import NotFound from '../pages/NotFound';
-import { useAuth } from '../app/hooks/useAuth';
 
 export default function Router() {
   const { signedIn } = useAuth();

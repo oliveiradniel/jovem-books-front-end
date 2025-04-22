@@ -14,7 +14,7 @@ class GoogleBooksService {
       params: data,
     });
 
-    console.log(book);
+    return book;
   }
 
   async getGoogleBookByAuthor(data: GetGoogleBookByAuthorProps) {
@@ -22,7 +22,7 @@ class GoogleBooksService {
       params: data,
     });
 
-    console.log(book);
+    return book;
   }
 }
 
