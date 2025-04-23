@@ -16,6 +16,7 @@ export default function GoogleBooks() {
   const [selected, setSelected] = useState<TSelected>('title');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   function handleSelectedChange(selected: TSelected) {
     setSelected(selected);
@@ -30,6 +31,7 @@ export default function GoogleBooks() {
   async function handleSearchBooks() {
     try {
       setIsLoading(true);
+      setIsError(false);
 
       if (selected === 'title') {
         const books = await GoogleBooksService.getGoogleBookByTitle({
@@ -44,8 +46,9 @@ export default function GoogleBooks() {
 
         setBooks(books);
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      setBooks([]);
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +65,13 @@ export default function GoogleBooks() {
         isLoadingBooks={isLoading}
       />
 
-      <CardsContainer books={books} isLoadingBooks={isLoading}>
+      <CardsContainer
+        books={books}
+        searchTerm={searchTerm}
+        selected={selected}
+        isLoadingBooks={isLoading}
+        isError={isError}
+      >
         {books.map((book) => (
           <Card key={book.id} book={book} />
         ))}
