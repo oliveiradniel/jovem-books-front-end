@@ -1,15 +1,21 @@
 import { useState } from 'react';
 
-import Header from './components/Header';
-
-import { Selected } from './components/RadioButtons';
 import GoogleBooksService from '../../../app/services/GoogleBooksService';
 
-export default function GoogleBooks() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selected, setSelected] = useState<Selected>('title');
+import { TSelected } from './components/RadioButtons';
+import Header from './components/Header';
+import CardsContainer from './components/CardsContainer';
+import Card from './components/Card';
 
-  function handleSelectedChange(selected: Selected) {
+import { IBookAPI } from '../../../@types/Book';
+
+export default function GoogleBooks() {
+  const [books, setBooks] = useState([] as IBookAPI[]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selected, setSelected] = useState<TSelected>('title');
+
+  function handleSelectedChange(selected: TSelected) {
     setSelected(selected);
   }
 
@@ -25,13 +31,13 @@ export default function GoogleBooks() {
         title: searchTerm,
       });
 
-      console.log(books);
+      setBooks(books);
     } else {
       const books = await GoogleBooksService.getGoogleBookByAuthor({
         author: searchTerm,
       });
 
-      console.log(books);
+      setBooks(books);
     }
   }
 
@@ -44,6 +50,12 @@ export default function GoogleBooks() {
         onSelected={handleSelectedChange}
         onSearchBooks={handleSearchBooks}
       />
+
+      <CardsContainer>
+        {books.map((book) => (
+          <Card key={book.id} book={book} />
+        ))}
+      </CardsContainer>
     </div>
   );
 }

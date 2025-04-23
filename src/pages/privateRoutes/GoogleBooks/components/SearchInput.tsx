@@ -1,9 +1,9 @@
 import { InputHTMLAttributes } from 'react';
 
-import { Selected } from './RadioButtons';
+import { TSelected } from './RadioButtons';
 
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  selected: Selected;
+  selected: TSelected;
   onSearchBooks: () => void;
 }
 
