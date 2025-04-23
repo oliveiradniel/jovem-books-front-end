@@ -9,11 +9,16 @@ interface CardProps {
 }
 
 export default function Card({ book }: CardProps) {
-  const hasAuthors = book.authors?.length > 0;
+  const numberOfAuthors = book.authors?.length;
+  const hasAuthors = numberOfAuthors > 0;
+  const moreThanOneAuthor = numberOfAuthors - 1 > 0;
   const author = hasAuthors && truncateString(book.authors[0], 14);
+  const displayAuthor = author
+    ? `${author} ${moreThanOneAuthor ? `+${numberOfAuthors}` : ''}`
+    : 'Sem informações';
 
   return (
-    <div className="bg-navy-blue/70 flex h-[250px] w-[180px] flex-col items-center gap-6 px-4 py-2 shadow-lg">
+    <div className="bg-navy-blue/70 animate-fade-in flex h-[250px] w-[180px] flex-col items-center gap-6 px-4 py-2 shadow-lg">
       <p className="text-snow-white/70 font-quicksand flex h-12 items-center text-center">
         {truncateString(book.title, 28)}
       </p>
@@ -32,8 +37,8 @@ export default function Card({ book }: CardProps) {
         </div>
       )}
 
-      <p className="text-snow-white/70 font-quicksand flex h-12 items-center text-center text-sm">
-        {author ? author : 'Sem informações'}
+      <p className="text-sky-blue/70 font-quicksand flex h-12 items-center text-center text-sm">
+        {displayAuthor}
       </p>
     </div>
   );
