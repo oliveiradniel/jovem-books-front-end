@@ -62,7 +62,7 @@ export default function GoogleBooks() {
         isLoadingBooks={isLoading}
       />
 
-      <CardsContainer isLoadingBooks={isLoading}>
+      <CardsContainer books={books} isLoadingBooks={isLoading}>
         {books.map((book) => (
           <Card key={book.id} book={book} />
         ))}
