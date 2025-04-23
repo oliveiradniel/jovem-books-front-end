@@ -4,11 +4,13 @@ import { TSelected } from './RadioButtons';
 
 interface SearchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   selected: TSelected;
+  isLoadingBooks: boolean;
   onSearchBooks: () => void;
 }
 
 export default function SearchInput({
   selected,
+  isLoadingBooks,
   onSearchBooks,
   ...props
 }: SearchInputProps) {
@@ -23,8 +25,9 @@ export default function SearchInput({
 
       <button
         type="button"
+        disabled={isLoadingBooks}
         onClick={onSearchBooks}
-        className="text-snow-white bg-sky-blue/60 hover:bg-sky-blue/50 font-roboto flex h-full items-center justify-center rounded-r-lg px-2 py-1 text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer"
+        className="text-snow-white bg-sky-blue/60 hover:bg-sky-blue/50 font-roboto disabled:bg-sky-blue/60 flex h-full w-20 items-center justify-center rounded-r-lg py-1 text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
       >
         Procurar
       </button>

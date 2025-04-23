@@ -4,6 +4,7 @@ import RadioButtons, { TSelected } from './RadioButtons';
 interface HeaderProps {
   searchTerm: string;
   selected: TSelected;
+  isLoadingBooks: boolean;
   onSearchTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSelected: (selected: TSelected) => void;
   onSearchBooks: () => void;
@@ -12,6 +13,7 @@ interface HeaderProps {
 export default function Header({
   searchTerm,
   selected,
+  isLoadingBooks,
   onSearchTerm,
   onSelected,
   onSearchBooks,
@@ -22,10 +24,15 @@ export default function Header({
         <SearchInput
           selected={selected}
           value={searchTerm}
+          isLoadingBooks={isLoadingBooks}
           onChange={onSearchTerm}
           onSearchBooks={onSearchBooks}
         />
-        <RadioButtons selected={selected} onSelected={onSelected} />
+        <RadioButtons
+          selected={selected}
+          isLoadingBooks={isLoadingBooks}
+          onSelected={onSelected}
+        />
       </div>
 
       <span className="text-light-gray/80 text-[12px]">
