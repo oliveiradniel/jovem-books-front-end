@@ -69,7 +69,7 @@ function BookFormInner<T>(
       setTitle(book.title);
       setAuthors(book.authors);
       setSinopse(book.sinopse ?? '');
-      setLiteraryGenre(book.genreLiterary);
+      setLiteraryGenre(book.literaryGenre);
       setNumberOfPages(book.numberOfPages);
     },
     resetFields() {
@@ -82,11 +82,11 @@ function BookFormInner<T>(
   }));
 
   const isFormValid =
-    title.length > 0 &&
-    authors.length > 0 &&
-    literaryGenre.length > 0 &&
+    title?.length > 0 &&
+    authors?.length > 0 &&
+    literaryGenre?.length > 0 &&
     Number(numberOfPages) > 0 &&
-    String(numberOfPages).length > 0 &&
+    String(numberOfPages)?.length > 0 &&
     errors.length === 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {

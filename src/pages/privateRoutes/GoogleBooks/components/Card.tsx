@@ -1,14 +1,21 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { truncateString } from '../../../../utils/truncateString';
 
-import { IBookAPI } from '../../../../@types/Book';
-
 import { FaBookBookmark } from 'react-icons/fa6';
+
+import { IBookAPI } from '../../../../@types/Book';
 
 interface CardProps {
   book: IBookAPI;
 }
 
 export default function Card({ book }: CardProps) {
+  const navigate = useNavigate();
+
+  const [isFocused, setIsFocused] = useState(false);
+
   const numberOfAuthors = book.authors?.length;
   const hasAuthors = numberOfAuthors > 0;
   const moreThanOneAuthor = numberOfAuthors - 1 > 0;
@@ -18,7 +25,23 @@ export default function Card({ book }: CardProps) {
     : 'Sem informações';
 
   return (
-    <div className="bg-navy-blue/70 animate-fade-in flex h-[250px] w-[180px] flex-col items-center gap-6 px-4 py-2 shadow-lg">
+    <div
+      onMouseEnter={() => setIsFocused(true)}
+      onMouseLeave={() => setIsFocused(false)}
+      className="bg-navy-blue/70 animate-fade-in relative flex h-[250px] w-[180px] flex-col items-center gap-6 px-4 py-2 shadow-lg hover:cursor-pointer"
+    >
+      {isFocused && (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate('/new-book', { state: { book } })}
+          className="text-sky-blue animate-fade-in absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/40 backdrop-blur-[2px]"
+        >
+          <p className="font-roboto border-snow-white text-snow-white bg-sky-blue rounded-xl border-2 p-2 font-semibold">
+            ADICIONAR
+          </p>
+        </div>
+      )}
       <p className="text-snow-white/70 font-quicksand flex h-12 items-center text-center">
         {truncateString(book.title, 28)}
       </p>

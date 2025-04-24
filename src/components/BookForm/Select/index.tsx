@@ -38,7 +38,7 @@ export default function Select({
         onClick={handleTogglingOfOptionsVisibility}
         className={`bg-navy-blue text-mate-gray font-quicksand hover:bg-navy-blue/80 disabled:bg-navy-blue/40 disabled:border-navy-blue/80 border-navy-blue disabled:text-light-gray w-full rounded-lg border py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default!`}
       >
-        Selecione ({selectedOptions.length}/6)
+        Selecione ({selectedOptions?.length}/6)
       </button>
 
       <Options

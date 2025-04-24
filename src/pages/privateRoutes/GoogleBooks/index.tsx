@@ -19,6 +19,7 @@ export default function GoogleBooks() {
   const [isError, setIsError] = useState(false);
 
   function handleSelectedChange(selected: TSelected) {
+    setIsError(false);
     setSelected(selected);
   }
 
@@ -72,8 +73,8 @@ export default function GoogleBooks() {
         isLoadingBooks={isLoading}
         isError={isError}
       >
-        {books.map((book) => (
-          <Card key={book.id} book={book} />
+        {books.map((book, index) => (
+          <Card key={index} book={book} />
         ))}
       </CardsContainer>
     </div>

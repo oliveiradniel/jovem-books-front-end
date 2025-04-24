@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
 
@@ -11,10 +11,16 @@ import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
-import { TCreateDataBook } from '../../../@types/Book';
+import { IBookAPI, TCreateDataBook } from '../../../@types/Book';
+import AuthorsMapper from '../../../app/services/mappers/AuthorsMapper';
 
 export default function NewBook() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const book = useMemo(
+    () => (location.state.book as IBookAPI) || {},
+    [location.state.book]
+  );
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
@@ -25,6 +31,17 @@ export default function NewBook() {
 
     emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
   }
+
+  useEffect(() => {
+    if (book) {
+      const authors = AuthorsMapper.toDomain({
+        authors: book.authors,
+        onlyCommas: true,
+      });
+
+      bookFormRef.current?.setFieldValues({ ...book, authors });
+    }
+  }, [book]);
 
   return (
     <div>

@@ -12,7 +12,7 @@ type BaseBook = {
   sinopse: string | null;
   imagePath: string | null;
   numberOfPages: number;
-  genreLiterary: TLiteraryGenre[];
+  literaryGenre: TLiteraryGenre[];
   read: {
     status: ReadingStatus;
     currentPage: number;
