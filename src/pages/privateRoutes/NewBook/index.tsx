@@ -14,6 +14,7 @@ import { GoArrowLeft } from 'react-icons/go';
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
 import { IBookAPI, TCreateDataBook } from '../../../@types/Book';
+import { LITERARY_GENRE_OPTIONS } from '../../../constants/books';
 
 export default function NewBook() {
   const navigate = useNavigate();
@@ -41,6 +42,10 @@ export default function NewBook() {
 
       let literaryGenre = book.literaryGenre?.map(
         (literaryGenre) => literaryGenre.toUpperCase() as string
+      );
+
+      literaryGenre = literaryGenre?.filter((item) =>
+        LITERARY_GENRE_OPTIONS.includes(item)
       );
 
       if (authors === null) {
