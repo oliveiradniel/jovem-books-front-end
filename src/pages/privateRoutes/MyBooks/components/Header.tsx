@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { Page } from '../@types/Page';
+import { TPageStatus } from '../../../../@types/Read';
 
 import LargeOptionsMenu from '../components/LargeOptionsMenu';
 import Select from '../components/Select';
 
 interface HeaderProps {
-  page: Page;
+  page: TPageStatus;
   numberOfBooks: number;
   numberOfFilteredBooks: number;
   isLoading: boolean;
   isError: boolean;
-  onChangePage: (page: Page) => void;
+  onChangePage: (page: TPageStatus) => void;
 }
 
 export default function Header({

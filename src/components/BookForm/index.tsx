@@ -215,13 +215,13 @@ function BookFormInner<T>(
         authors: AuthorsMapper.toPersistence({ authors }),
         sinopse,
         numberOfPages: formattedNumberOfPages,
-        genreLiterary: literaryGenre,
+        literaryGenre,
       };
 
       const data = validationSchema.parse(formData);
+
       await onSubmit(data);
     } catch (error) {
-      console.log(error);
       const result = handleBookErrors(error);
       if (result) {
         setError(result);
@@ -245,7 +245,7 @@ function BookFormInner<T>(
         onConfirm={handleDeleteBook}
       />
 
-      <form className="mt-10 flex flex-col gap-4">
+      <form className="mt-10 flex min-h-[550px] flex-col gap-4 overflow-y-auto">
         <FormGroup error={getErrorMessageByFieldName(['title'])}>
           <Input
             label="Título"

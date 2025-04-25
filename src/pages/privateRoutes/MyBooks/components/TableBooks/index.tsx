@@ -1,7 +1,7 @@
 import { RingLoader } from 'react-spinners';
 
 import TableHeader from './TableHeader';
-import TableBody from './TableBoby';
+import TableBody from './TableBody';
 
 import { IBookAPI } from '../../../../../@types/Book';
 import { TPageStatus } from '../../../../../@types/Read';
@@ -32,7 +32,7 @@ export default function TableBooks({
 
   if (allBooks) {
     message =
-      'Não há nenhum livro cadastrado, vá até o Dashboard para adicionar novos livros.';
+      'Não há nenhum livro cadastrado, vá até o Dashboard ou Google Books para adicionar novos livros.';
   } else if (unreadBooks) {
     message = 'Todos os livros cadastrados estão em leitura ou finalizados.';
   } else if (booksInReading) {
@@ -46,7 +46,7 @@ export default function TableBooks({
       className={`relative ${books && books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
     >
       {isLoading && (
-        <div className="animate-fade-in absolute flex h-full w-full items-center justify-center">
+        <div className="animate-fade-in absolute top-20 flex w-full justify-center">
           <RingLoader color="#03a9f4" />
         </div>
       )}
@@ -68,14 +68,16 @@ export default function TableBooks({
               </button>
             </div>
           ) : (
-            <p className="text-ocean-blue font-quicksand font-semibold">
+            <p className="text-ocean-blue font-quicksand text-center font-semibold">
               {message!}
             </p>
           )}
         </div>
       )}
 
-      <table className="w-full">
+      <table
+        className={`w-full ${filteredBooks.length === 0 && 'min-h-[350px]'}`}
+      >
         <TableHeader />
 
         {!isLoading && books && <TableBody books={filteredBooks} />}

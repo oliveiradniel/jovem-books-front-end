@@ -51,7 +51,7 @@ export type TLiteraryGenre =
   | 'ART_AND_DESIGN'
   | 'POLITICS'
   | 'ECONOMICS'
-  | 'SELF_HELP'
+  | 'SELF-HELP'
   | 'CRIME'
   | 'DYSTOPIAN'
   | 'WESTERN'
@@ -63,7 +63,14 @@ export type TLiteraryGenre =
   | 'TRAVEL'
   | 'SPORTS'
   | 'FAIRYTALE'
-  | 'OTHER';
+  | 'OTHER'
+  | 'JUVENILE FICTION'
+  | 'FINANCE'
+  | 'PORTUGUESE LITERATURE'
+  | 'FICTION'
+  | 'PSYCHOLOGY'
+  | 'BIOGRAPHY & AUTOBIOGRAPHY'
+  | 'ART';
 
 export type TCreateDataBook = z.infer<typeof CreateDataBookSchema>;
 

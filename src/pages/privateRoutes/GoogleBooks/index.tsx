@@ -12,6 +12,8 @@ import { IBookAPI } from '../../../@types/Book';
 export default function GoogleBooks() {
   const [books, setBooks] = useState([] as IBookAPI[]);
 
+  const [noBookFound, setNoBookFound] = useState(false);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState<TSelected>('title');
 
@@ -20,11 +22,14 @@ export default function GoogleBooks() {
 
   function handleSelectedChange(selected: TSelected) {
     setIsError(false);
+    setNoBookFound(false);
     setSelected(selected);
   }
 
   function handleSearchTermChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
+
+    setNoBookFound(false);
 
     setSearchTerm(value);
   }
@@ -34,19 +39,23 @@ export default function GoogleBooks() {
       setIsLoading(true);
       setIsError(false);
 
+      let booksList = [];
+
       if (selected === 'title') {
-        const books = await GoogleBooksService.getGoogleBookByTitle({
+        booksList = await GoogleBooksService.getGoogleBookByTitle({
           title: searchTerm,
         });
-
-        setBooks(books);
       } else {
-        const books = await GoogleBooksService.getGoogleBookByAuthor({
+        booksList = await GoogleBooksService.getGoogleBookByAuthor({
           author: searchTerm,
         });
-
-        setBooks(books);
       }
+
+      if (!booksList) {
+        return setNoBookFound(true);
+      }
+
+      setBooks(booksList);
     } catch {
       setBooks([]);
       setIsError(true);
@@ -70,6 +79,7 @@ export default function GoogleBooks() {
         books={books}
         searchTerm={searchTerm}
         selected={selected}
+        noBookFound={noBookFound}
         isLoadingBooks={isLoading}
         isError={isError}
       >

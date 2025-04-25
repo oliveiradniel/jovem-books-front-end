@@ -10,7 +10,11 @@ interface ToPersistenceProps {
 }
 
 class AuthorsMapper {
-  toDomain({ authors, onlyCommas = true }: ToDomainProps): string {
+  toDomain({ authors, onlyCommas = true }: ToDomainProps): string | null {
+    if (!authors) {
+      return null;
+    }
+
     const formattedAuthors = formatAuthors({ authors: authors, onlyCommas });
 
     return formattedAuthors;

@@ -39,8 +39,9 @@ export default function EditBook() {
 
         const bookData = await BooksService.getBookById({
           id: id!,
-          onlyCommas: true,
         });
+
+        console.log(bookData);
 
         setBook(bookData);
         bookFormRef.current?.setFieldValues(bookData);

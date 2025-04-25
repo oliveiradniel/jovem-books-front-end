@@ -16,7 +16,7 @@ interface UpdateBookCoverProps {
 
 interface GetBookByIdProps {
   id: string;
-  onlyCommas: boolean;
+  onlyCommas?: boolean;
 }
 
 class BooksService {
@@ -26,7 +26,7 @@ class BooksService {
     const domainAuthors = AuthorsMapper.toDomain({
       authors: data.authors,
       onlyCommas,
-    });
+    }) as string;
 
     return { ...data, authors: domainAuthors };
   }
@@ -54,7 +54,8 @@ class BooksService {
 
     const domainAuthors = AuthorsMapper.toDomain({
       authors: updatedBook.authors,
-    });
+      onlyCommas: false,
+    }) as string;
 
     return { ...updatedBook, authors: domainAuthors };
   }

@@ -45,7 +45,6 @@ export default function Options({
     >
       {LITERARY_GENRE_OPTIONS.map((option, index) => {
         const isSelected = selectedOptions.includes(option);
-
         return (
           <button
             key={index}

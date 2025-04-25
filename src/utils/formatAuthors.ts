@@ -5,10 +5,8 @@ interface FormatAuthorsProps {
 
 export function formatAuthors({
   authors,
-  onlyCommas = false,
+  onlyCommas = true,
 }: FormatAuthorsProps) {
-  authors = authors[0].split(',').map((author) => author.trim());
-
   if (authors.length === 0 || !authors) return '';
 
   authors = authors.map((author) => author.trim().replace(/\s+/g, ' '));

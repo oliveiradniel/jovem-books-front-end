@@ -54,7 +54,7 @@ const BaseBookSchema = z.object({
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<string | null>,
   numberOfPages: z.number({ message: 'Number of pages must be a number' }),
-  genreLiterary: z
+  literaryGenre: z
     .array(ILiteraryGenreSchema, { message: 'Enter a valid literary genre' })
     .min(1, 'The genre literary array needs at least one genre literary'),
   imagePath: z

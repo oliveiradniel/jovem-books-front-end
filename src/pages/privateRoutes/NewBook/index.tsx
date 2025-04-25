@@ -5,21 +5,26 @@ import BooksService from '../../../app/services/BooksService';
 
 import { CreateDataBookSchema } from '../../../assets/schemas/BookSchemas';
 
+import AuthorsMapper from '../../../app/services/mappers/AuthorsMapper';
+
 import { emitToast } from '../../../utils/emitToast';
 
 import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
-import { IBookAPI, TCreateDataBook } from '../../../@types/Book';
-import AuthorsMapper from '../../../app/services/mappers/AuthorsMapper';
+import {
+  IBookAPI,
+  TCreateDataBook,
+  TLiteraryGenre,
+} from '../../../@types/Book';
 
 export default function NewBook() {
   const navigate = useNavigate();
   const location = useLocation();
   const book = useMemo(
-    () => (location.state.book as IBookAPI) || {},
-    [location.state.book]
+    () => (location.state?.book as IBookAPI) || {},
+    [location.state?.book]
   );
 
   const bookFormRef = useRef<BookFormHandle>(null);
@@ -34,17 +39,28 @@ export default function NewBook() {
 
   useEffect(() => {
     if (book) {
-      const authors = AuthorsMapper.toDomain({
+      console.log(book);
+      let authors = AuthorsMapper.toDomain({
         authors: book.authors,
-        onlyCommas: true,
       });
 
-      bookFormRef.current?.setFieldValues({ ...book, authors });
+      let literaryGenre = book.literaryGenre?.map(
+        (literaryGenre) => literaryGenre.toUpperCase() as TLiteraryGenre
+      );
+
+      if (authors === null) {
+        authors = '';
+      }
+      if (!literaryGenre) {
+        literaryGenre = [];
+      }
+
+      bookFormRef.current?.setFieldValues({ ...book, authors, literaryGenre });
     }
   }, [book]);
 
   return (
-    <div>
+    <div className="h-full">
       <div className="flex items-center gap-4">
         <button
           type="button"

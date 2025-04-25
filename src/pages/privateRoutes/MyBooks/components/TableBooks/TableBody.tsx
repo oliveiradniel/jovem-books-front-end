@@ -38,9 +38,9 @@ export default function TableBody({ books }: TableBodyProps) {
             {book.authors.length > 1 && `+${book.authors.length - 1}`}
           </td>
           <td className="px-2 py-2 text-center">
-            {LITERARY_GENRE_LABELS[book.genreLiterary[0]]}{' '}
-            {book.genreLiterary.length > 1 &&
-              `+${book.genreLiterary.length - 1}`}
+            {LITERARY_GENRE_LABELS[book.literaryGenre[0]]}{' '}
+            {book.literaryGenre.length > 1 &&
+              `+${book.literaryGenre.length - 1}`}
           </td>
           <td className="rounded-tr-lg rounded-br-lg px-2 py-2 text-center">
             <span

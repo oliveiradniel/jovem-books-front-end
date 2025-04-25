@@ -34,7 +34,11 @@ export default function Card({ book }: CardProps) {
         <div
           role="button"
           tabIndex={0}
-          onClick={() => navigate('/new-book', { state: { book } })}
+          onClick={() =>
+            navigate('/new-book', {
+              state: { book },
+            })
+          }
           className="text-sky-blue animate-fade-in absolute top-0 left-0 flex h-full w-full items-center justify-center bg-black/40 backdrop-blur-[2px]"
         >
           <p className="font-roboto border-snow-white text-snow-white bg-sky-blue rounded-xl border-2 p-2 font-semibold">

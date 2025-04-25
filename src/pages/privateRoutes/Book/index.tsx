@@ -194,12 +194,12 @@ export default function Book() {
             <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {book.genreLiterary?.map((genreLiterary, index) => (
+              {book.literaryGenre?.map((literaryGenre, index) => (
                 <p
                   key={index}
                   className="text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase"
                 >
-                  {LITERARY_GENRE_LABELS[genreLiterary]}
+                  {LITERARY_GENRE_LABELS[literaryGenre]}
                 </p>
               ))}
             </div>

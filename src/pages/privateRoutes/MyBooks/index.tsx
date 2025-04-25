@@ -37,7 +37,6 @@ export default function MyBooks() {
       setIsLoading(true);
 
       const booksList = await BooksService.listBooks();
-
       setBooks(booksList);
     } catch {
       setIsError(true);
@@ -51,7 +50,7 @@ export default function MyBooks() {
   }, []);
 
   return (
-    <div className="bg-blue-black/80 rounded-lg p-5">
+    <div className="bg-blue-black/60 min-h-[580px] rounded-lg p-5">
       <Header
         page={page}
         numberOfBooks={books.length}
