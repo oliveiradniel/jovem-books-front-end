@@ -23,7 +23,7 @@ import Select from './Select';
 import Label from './Label';
 import NumberInput from './NumberInput';
 
-import { IBook, TLiteraryGenre } from '../../@types/Book';
+import { IBook } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
 
 export interface BookFormHandle {
@@ -56,7 +56,7 @@ function BookFormInner<T>(
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
-  const [literaryGenre, setLiteraryGenre] = useState([] as TLiteraryGenre[]);
+  const [literaryGenre, setLiteraryGenre] = useState([] as string[]);
   const [numberOfPages, setNumberOfPages] = useState<number | string | null>(
     null
   );
@@ -131,7 +131,7 @@ function BookFormInner<T>(
     setSinopse(value);
   }
 
-  function handleLiteraryGenreChange(value: TLiteraryGenre) {
+  function handleLiteraryGenreChange(value: string) {
     const hasSixLiteraryGenre = literaryGenre.length === 6;
     if (literaryGenre.includes(value)) {
       const newLiteraryGenre = literaryGenre.filter(
@@ -245,7 +245,7 @@ function BookFormInner<T>(
         onConfirm={handleDeleteBook}
       />
 
-      <form className="mt-10 flex min-h-[550px] flex-col gap-4 overflow-y-auto">
+      <form className="mt-10 flex flex-col gap-4 overflow-y-auto">
         <FormGroup error={getErrorMessageByFieldName(['title'])}>
           <Input
             label="Título"

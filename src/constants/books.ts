@@ -1,5 +1,3 @@
-import { TLiteraryGenre } from '../@types/Book';
-
 export const READING_STATUS = {
   READING: 'Em leitura',
   ON_HOLD: 'Pausado',
@@ -15,8 +13,8 @@ export const LITERARY_GENRE_LABELS = {
   RELIGIOUS: 'Religião',
   MYSTERY: 'Mistério',
   HORROR: 'Terror',
+  HISTORY: 'História',
   BIOGRAPHY: 'Biografia',
-  HISTORICAL: 'História',
   FANTASY: 'Fantasia',
   THRILLER: 'Suspense',
   HUMOR: 'Humor',
@@ -49,7 +47,7 @@ export const LITERARY_GENRE_LABELS = {
   ART: 'Arte',
 };
 
-export const LITERARY_GENRE_OPTIONS: TLiteraryGenre[] = [
+export const LITERARY_GENRE_OPTIONS = [
   'ADVENTURE',
   'ART',
   'ART_AND_DESIGN',
@@ -68,7 +66,7 @@ export const LITERARY_GENRE_OPTIONS: TLiteraryGenre[] = [
   'FICTION',
   'FINANCE',
   'GOTHIC',
-  'HISTORICAL',
+  'HISTORY',
   'HORROR',
   'HUMOR',
   'JUVENILE FICTION',

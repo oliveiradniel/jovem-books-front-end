@@ -4,12 +4,10 @@ import { useCloseOnClickOutside } from '../../../app/hooks/useCloseOnClickOutsid
 
 import Options from './Options';
 
-import { TLiteraryGenre } from '../../../@types/Book';
-
 interface SelectProps {
-  selectedOptions: TLiteraryGenre[];
+  selectedOptions: string[];
   disabled: boolean;
-  onChange: (value: TLiteraryGenre) => void;
+  onChange: (value: string) => void;
 }
 
 export default function Select({
@@ -30,7 +28,7 @@ export default function Select({
   });
 
   return (
-    <div className="relative z-1 flex w-full">
+    <div className="relative flex w-full flex-col">
       <button
         id="select"
         type="button"

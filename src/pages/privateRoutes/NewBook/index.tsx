@@ -13,11 +13,7 @@ import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
-import {
-  IBookAPI,
-  TCreateDataBook,
-  TLiteraryGenre,
-} from '../../../@types/Book';
+import { IBookAPI, TCreateDataBook } from '../../../@types/Book';
 
 export default function NewBook() {
   const navigate = useNavigate();
@@ -39,13 +35,12 @@ export default function NewBook() {
 
   useEffect(() => {
     if (book) {
-      console.log(book);
       let authors = AuthorsMapper.toDomain({
         authors: book.authors,
       });
 
       let literaryGenre = book.literaryGenre?.map(
-        (literaryGenre) => literaryGenre.toUpperCase() as TLiteraryGenre
+        (literaryGenre) => literaryGenre.toUpperCase() as string
       );
 
       if (authors === null) {
@@ -60,7 +55,7 @@ export default function NewBook() {
   }, [book]);
 
   return (
-    <div className="h-full">
+    <div className="h-full overflow-y-auto">
       <div className="flex items-center gap-4">
         <button
           type="button"

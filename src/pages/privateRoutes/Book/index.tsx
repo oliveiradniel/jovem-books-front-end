@@ -23,7 +23,7 @@ import ReadingInformation from './components/ReadingInformation';
 import FinishBookModal from '../../../components/Modals/FinishBookModal';
 import EditCurrentPageModal from '../../../components/Modals/EditCurrentPageModal';
 
-import { IBook } from '../../../@types/Book';
+import { IBook, LiteraryGenreKey } from '../../../@types/Book';
 import { LITERARY_GENRE_LABELS } from '../../../constants/books';
 
 export default function Book() {
@@ -199,7 +199,7 @@ export default function Book() {
                   key={index}
                   className="text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase"
                 >
-                  {LITERARY_GENRE_LABELS[literaryGenre]}
+                  {LITERARY_GENRE_LABELS[literaryGenre as LiteraryGenreKey]}
                 </p>
               ))}
             </div>

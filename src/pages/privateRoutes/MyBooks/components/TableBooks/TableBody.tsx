@@ -7,7 +7,7 @@ import {
   READING_STATUS,
 } from '../../../../../constants/books';
 
-import { IBookAPI } from '../../../../../@types/Book';
+import { IBookAPI, LiteraryGenreKey } from '../../../../../@types/Book';
 
 interface TableBodyProps {
   books: IBookAPI[];
@@ -38,7 +38,7 @@ export default function TableBody({ books }: TableBodyProps) {
             {book.authors.length > 1 && `+${book.authors.length - 1}`}
           </td>
           <td className="px-2 py-2 text-center">
-            {LITERARY_GENRE_LABELS[book.literaryGenre[0]]}{' '}
+            {LITERARY_GENRE_LABELS[book.literaryGenre[0] as LiteraryGenreKey]}{' '}
             {book.literaryGenre.length > 1 &&
               `+${book.literaryGenre.length - 1}`}
           </td>
