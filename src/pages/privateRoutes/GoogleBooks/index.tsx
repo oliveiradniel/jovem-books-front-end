@@ -8,6 +8,7 @@ import CardsContainer from './components/CardsContainer';
 import Card from './components/Card';
 
 import { IBookAPI } from '../../../@types/Book';
+import Pagination from './components/Pagination';
 
 export default function GoogleBooks() {
   const [books, setBooks] = useState([] as IBookAPI[]);
@@ -74,6 +75,8 @@ export default function GoogleBooks() {
         onSearchBooks={handleSearchBooks}
         isLoadingBooks={isLoading}
       />
+
+      {books.length > 0 && <Pagination />}
 
       <CardsContainer
         books={books}

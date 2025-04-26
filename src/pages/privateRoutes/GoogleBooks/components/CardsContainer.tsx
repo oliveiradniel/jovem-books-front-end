@@ -39,7 +39,11 @@ export default function CardsContainer({
     <div
       className={`mt-6 flex max-h-[500px] min-h-[500px] flex-wrap gap-4 overflow-y-auto px-5 ${isLoadingBooks || books.length === 0 ? 'items-center justify-center' : 'justify-center sm:justify-start'}`}
     >
-      {isLoadingBooks ? <RingLoader color="#03a9f4" /> : children}
+      {isLoadingBooks ? (
+        <RingLoader color="#03a9f4" />
+      ) : (
+        books.length > 0 && children
+      )}
 
       {books.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-6">
