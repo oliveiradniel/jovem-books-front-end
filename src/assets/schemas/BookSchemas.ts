@@ -1,40 +1,5 @@
 import { z } from 'zod';
 
-const ILiteraryGenreSchema = z.union([
-  z.literal('ROMANCE'),
-  z.literal('SCIENCE_FICTION'),
-  z.literal('ADVENTURE'),
-  z.literal('PHILOSOPHY'),
-  z.literal('DRAMA'),
-  z.literal('RELIGIOUS'),
-  z.literal('MYSTERY'),
-  z.literal('HORROR'),
-  z.literal('BIOGRAPHY'),
-  z.literal('HISTORICAL'),
-  z.literal('FANTASY'),
-  z.literal('THRILLER'),
-  z.literal('HUMOR'),
-  z.literal('CHILDRENS'),
-  z.literal('YOUNG_ADULT'),
-  z.literal('POETRY'),
-  z.literal('ART_AND_DESIGN'),
-  z.literal('POLITICS'),
-  z.literal('ECONOMICS'),
-  z.literal('SELF_HELP'),
-  z.literal('CRIME'),
-  z.literal('DYSTOPIAN'),
-  z.literal('WESTERN'),
-  z.literal('GOTHIC'),
-  z.literal('EROTIC'),
-  z.literal('CYBERPUNK'),
-  z.literal('STEAMPUNK'),
-  z.literal('COOKING'),
-  z.literal('TRAVEL'),
-  z.literal('SPORTS'),
-  z.literal('FAIRYTALE'),
-  z.literal('OTHER'),
-]);
-
 const BaseBookSchema = z.object({
   id: z
     .string({ message: 'Book id must be a string' })
@@ -55,8 +20,10 @@ const BaseBookSchema = z.object({
     .transform((val) => val ?? null) as z.ZodType<string | null>,
   numberOfPages: z.number({ message: 'Number of pages must be a number' }),
   literaryGenre: z
-    .array(ILiteraryGenreSchema, { message: 'Enter a valid literary genre' })
-    .min(1, 'The genre literary array needs at least one genre literary'),
+    .array(z.string({ message: 'Literary genre must be a string' }), {
+      message: 'Literary genre required',
+    })
+    .min(1, 'The literary genre array needs at least one literary genre'),
   imagePath: z
     .union([
       z

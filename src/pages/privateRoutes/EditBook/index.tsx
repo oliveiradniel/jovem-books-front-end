@@ -41,8 +41,6 @@ export default function EditBook() {
           id: id!,
         });
 
-        console.log(bookData);
-
         setBook(bookData);
         bookFormRef.current?.setFieldValues(bookData);
       } catch {
