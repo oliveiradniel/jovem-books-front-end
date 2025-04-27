@@ -2,12 +2,12 @@ import { RingLoader } from 'react-spinners';
 
 import { IoLogoDropbox } from 'react-icons/io';
 
-import { IBookAPI } from '../../../../@types/Book';
+import { IGoogleBookAPI } from '../../../../@types/Book';
 import { TSelected } from './RadioButtons';
 import { MdError } from 'react-icons/md';
 
 interface CardsContainerProps {
-  books: IBookAPI[];
+  books: IGoogleBookAPI[];
   searchTerm: string;
   selected: TSelected;
   noBookFound: boolean;

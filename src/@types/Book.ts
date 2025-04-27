@@ -27,6 +27,15 @@ export interface IBook extends BaseBook {
   authors: string;
 }
 
+export type IGoogleBookAPI = Omit<BaseBook, 'authors' | 'read'> & {
+  authors: string[];
+};
+
+export interface IGoogleBooksAPI {
+  totalItems: number;
+  data: IGoogleBookAPI[];
+}
+
 export interface IBookAPI extends Omit<BaseBook, 'authors'> {
   authors: string[];
 }

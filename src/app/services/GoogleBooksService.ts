@@ -1,6 +1,6 @@
 import { httpClient } from './utils/httpClient';
 
-import { IBookAPI } from '../../@types/Book';
+import { IGoogleBooksAPI } from '../../@types/Book';
 
 interface GetGoogleBookByTitleProps {
   title: string;
@@ -12,7 +12,7 @@ interface GetGoogleBookByAuthorProps {
 
 class GoogleBooksService {
   async getGoogleBookByTitle(data: GetGoogleBookByTitleProps) {
-    const { data: book } = await httpClient.get<IBookAPI[]>(
+    const { data: book } = await httpClient.get<IGoogleBooksAPI>(
       `/google-books/title`,
       {
         params: data,
@@ -23,7 +23,7 @@ class GoogleBooksService {
   }
 
   async getGoogleBookByAuthor(data: GetGoogleBookByAuthorProps) {
-    const { data: book } = await httpClient.get<IBookAPI[]>(
+    const { data: book } = await httpClient.get<IGoogleBooksAPI>(
       '/google-books/author',
       {
         params: data,

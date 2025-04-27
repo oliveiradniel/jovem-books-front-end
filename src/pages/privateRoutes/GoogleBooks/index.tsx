@@ -6,12 +6,12 @@ import { TSelected } from './components/RadioButtons';
 import Header from './components/Header';
 import CardsContainer from './components/CardsContainer';
 import Card from './components/Card';
-
-import { IBookAPI } from '../../../@types/Book';
 import Pagination from './components/Pagination';
 
+import { IGoogleBookAPI } from '../../../@types/Book';
+
 export default function GoogleBooks() {
-  const [books, setBooks] = useState([] as IBookAPI[]);
+  const [books, setBooks] = useState<IGoogleBookAPI[]>([]);
 
   const [noBookFound, setNoBookFound] = useState(false);
 
@@ -40,23 +40,23 @@ export default function GoogleBooks() {
       setIsLoading(true);
       setIsError(false);
 
-      let booksList = [];
+      let googleBooks;
 
       if (selected === 'title') {
-        booksList = await GoogleBooksService.getGoogleBookByTitle({
+        googleBooks = await GoogleBooksService.getGoogleBookByTitle({
           title: searchTerm,
         });
       } else {
-        booksList = await GoogleBooksService.getGoogleBookByAuthor({
+        googleBooks = await GoogleBooksService.getGoogleBookByAuthor({
           author: searchTerm,
         });
       }
 
-      if (!booksList) {
+      if (googleBooks.totalItems === 0) {
         return setNoBookFound(true);
       }
 
-      setBooks(booksList);
+      setBooks(googleBooks.data);
     } catch {
       setBooks([]);
       setIsError(true);

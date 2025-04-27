@@ -5,10 +5,10 @@ import { truncateString } from '../../../../utils/truncateString';
 
 import { FaBookBookmark } from 'react-icons/fa6';
 
-import { IBookAPI } from '../../../../@types/Book';
+import { IGoogleBookAPI } from '../../../../@types/Book';
 
 interface CardProps {
-  book: IBookAPI;
+  book: IGoogleBookAPI;
 }
 
 export default function Card({ book }: CardProps) {
