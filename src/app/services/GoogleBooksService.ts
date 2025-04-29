@@ -2,31 +2,39 @@ import { httpClient } from './utils/httpClient';
 
 import { IGoogleBooksAPI } from '../../@types/Book';
 
-interface GetGoogleBookByTitleProps {
-  title: string;
-}
-
-interface GetGoogleBookByAuthorProps {
-  author: string;
-}
+export type TGoogleBookSearchParams =
+  | { page: number; title: string }
+  | { page: number; author: string };
 
 class GoogleBooksService {
-  async getGoogleBookByTitle(data: GetGoogleBookByTitleProps) {
+  async searchGoogleBooks(params: TGoogleBookSearchParams) {
+    if ('title' in params) {
+      return this.getGoogleBookByTitle(params.page, params.title);
+    } else {
+      return this.getGoogleBookByAuthor(params.page, params.author);
+    }
+  }
+
+  private async getGoogleBookByTitle(page: number, title: string) {
+    const startIndex = page * 20;
+
     const { data: book } = await httpClient.get<IGoogleBooksAPI>(
-      `/google-books/title`,
+      `/google-books/title?startIndex=${startIndex}`,
       {
-        params: data,
+        params: { title },
       }
     );
 
     return book;
   }
 
-  async getGoogleBookByAuthor(data: GetGoogleBookByAuthorProps) {
+  private async getGoogleBookByAuthor(page: number, author: string) {
+    const startIndex = page * 20;
+
     const { data: book } = await httpClient.get<IGoogleBooksAPI>(
-      '/google-books/author',
+      `/google-books/author?startIndex=${startIndex}`,
       {
-        params: data,
+        params: { author },
       }
     );
 

@@ -19,7 +19,7 @@ export function getMenuItems(isExpanded: boolean) {
     },
     {
       label: 'Google Books',
-      url: '/google-books',
+      url: '/google-books?page=0',
       icon: <FaGoogle className={`${!isExpanded && 'text-xl'}`} />,
       id: 'google-books',
     },
