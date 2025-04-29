@@ -9,8 +9,7 @@ interface NavigationProps {
 }
 
 export default function Navigation({ isExpanded }: NavigationProps) {
-  const { pathname, search } = useLocation();
-  const fullPath = pathname + search;
+  const { pathname } = useLocation();
 
   const {
     shouldRender: shouldRenderMenuLabel,
@@ -25,7 +24,7 @@ export default function Navigation({ isExpanded }: NavigationProps) {
         {menuItems.map((item) => (
           <li
             key={item.id}
-            className={`text-mate-gray font-quicksand text-base font-bold ${item.url === fullPath && 'bg-navy-blue-op-80 text-sky-blue cursor-default!'} hover:bg-navy-blue-op-80 ease-in- rounded-sm transition-colors duration-300`}
+            className={`text-mate-gray font-quicksand text-base font-bold ${item.url === pathname && 'bg-navy-blue-op-80 text-sky-blue cursor-default!'} hover:bg-navy-blue-op-80 ease-in- rounded-sm transition-colors duration-300`}
           >
             <Link
               to={item.url}

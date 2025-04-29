@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import GoogleBooksService, {
   TGoogleBookSearchParams,
@@ -9,20 +8,14 @@ import { TSelected } from './components/RadioButtons';
 import Header from './components/Header';
 import CardsContainer from './components/CardsContainer';
 import Card from './components/Card';
-import Pagination from './components/Pagination';
 
 import { IGoogleBookAPI } from '../../../@types/Book';
 
 export default function GoogleBooks() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
   const [books, setBooks] = useState<IGoogleBookAPI[]>([]);
 
   const [noBookFound, setNoBookFound] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState<number>(
-    Number(searchParams.get('page')) || 1
-  );
   const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState<TSelected>('title');
 
@@ -48,22 +41,6 @@ export default function GoogleBooks() {
     setSearchTerm(value);
   }
 
-  function handlePageIncrement() {
-    const nextPage = currentPage + 1;
-
-    setCurrentPage(nextPage);
-    setSearchParams({ page: nextPage.toString() });
-  }
-
-  function handlePageDecrement() {
-    if (currentPage === 1) return;
-
-    const prevPage = currentPage - 1;
-
-    setCurrentPage(prevPage);
-    setSearchParams({ page: prevPage.toString() });
-  }
-
   const handleSearchBooks = useCallback(async () => {
     setIsLoading(true);
     setIsError(false);
@@ -73,12 +50,10 @@ export default function GoogleBooks() {
       const params: TGoogleBookSearchParams =
         selected === 'title'
           ? {
-              page: Number(searchParams.get('page')) || 1,
               title: searchTerm.toString(),
             }
           : {
-              page: Number(searchParams.get('page')) || 1,
-              author: searchParams.toString(),
+              author: searchTerm.toString(),
             };
 
       const googleBooks = await GoogleBooksService.searchGoogleBooks(params);
@@ -96,25 +71,13 @@ export default function GoogleBooks() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, selected, searchParams]);
+  }, [searchTerm, selected]);
 
   useEffect(() => {
-    const page = Number(searchParams.get('page'));
-
-    if (searchTerm.trim().length === 0 || page > 6) return;
+    if (searchTerm.trim().length === 0) return;
 
     handleSearchBooks();
-  }, [handleSearchBooks, searchTerm, searchParams]);
-
-  useEffect(() => {
-    const page = searchParams.get('page');
-
-    if (!page || Number(page) > 6) {
-      setBooks([]);
-      setCurrentPage(0);
-      setSearchParams({ page: '0' });
-    }
-  }, [searchParams, setSearchParams]);
+  }, [handleSearchBooks, searchTerm]);
 
   return (
     <div>
@@ -126,14 +89,6 @@ export default function GoogleBooks() {
         onSearchBooks={handleSearchBooks}
         isLoadingBooks={isLoading}
       />
-
-      {books.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          onIncrement={handlePageIncrement}
-          onDecrement={handlePageDecrement}
-        />
-      )}
 
       <CardsContainer
         books={books}

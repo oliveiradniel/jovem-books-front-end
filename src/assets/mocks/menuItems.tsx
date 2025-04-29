@@ -7,7 +7,6 @@ export function getMenuItems(isExpanded: boolean) {
     {
       label: 'Dashboard',
       url: '/dashboard',
-      // Usando o componente MdDashboard diretamente no JSX
       icon: <MdDashboard className={`${!isExpanded && 'text-xl'}`} />,
       id: 'dashboard',
     },
@@ -19,7 +18,7 @@ export function getMenuItems(isExpanded: boolean) {
     },
     {
       label: 'Google Books',
-      url: '/google-books?page=0',
+      url: '/google-books',
       icon: <FaGoogle className={`${!isExpanded && 'text-xl'}`} />,
       id: 'google-books',
     },
