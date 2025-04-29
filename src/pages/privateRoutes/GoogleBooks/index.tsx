@@ -34,10 +34,6 @@ export default function GoogleBooks() {
     setNoBookFound(false);
     setIsError(false);
 
-    if (value.length === 0) {
-      setBooks([]);
-    }
-
     setSearchTerm(value);
   }
 
@@ -86,7 +82,6 @@ export default function GoogleBooks() {
         selected={selected}
         onSearchTerm={handleSearchTermChange}
         onSelected={handleSelectedChange}
-        onSearchBooks={handleSearchBooks}
         isLoadingBooks={isLoading}
       />
 

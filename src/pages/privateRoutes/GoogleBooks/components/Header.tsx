@@ -7,7 +7,6 @@ interface HeaderProps {
   isLoadingBooks: boolean;
   onSearchTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSelected: (selected: TSelected) => void;
-  onSearchBooks: () => void;
 }
 
 export default function Header({
@@ -16,7 +15,6 @@ export default function Header({
   isLoadingBooks,
   onSearchTerm,
   onSelected,
-  onSearchBooks,
 }: HeaderProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -24,9 +22,7 @@ export default function Header({
         <SearchInput
           selected={selected}
           value={searchTerm}
-          isLoadingBooks={isLoadingBooks}
           onChange={onSearchTerm}
-          onSearchBooks={onSearchBooks}
         />
         <RadioButtons
           selected={selected}
