@@ -10,6 +10,7 @@ import CardsContainer from './components/CardsContainer';
 import Card from './components/Card';
 
 import { IGoogleBookAPI } from '../../../@types/Book';
+import { useDebounce } from '../../../app/hooks/useDebounce';
 
 export default function GoogleBooks() {
   const [books, setBooks] = useState<IGoogleBookAPI[]>([]);
@@ -17,6 +18,9 @@ export default function GoogleBooks() {
   const [noBookFound, setNoBookFound] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
   const [selected, setSelected] = useState<TSelected>('title');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -46,10 +50,10 @@ export default function GoogleBooks() {
       const params: TGoogleBookSearchParams =
         selected === 'title'
           ? {
-              title: searchTerm.toString(),
+              title: debouncedSearchTerm.toString(),
             }
           : {
-              author: searchTerm.toString(),
+              author: debouncedSearchTerm.toString(),
             };
 
       const googleBooks = await GoogleBooksService.searchGoogleBooks(params);
@@ -67,13 +71,13 @@ export default function GoogleBooks() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchTerm, selected]);
+  }, [debouncedSearchTerm, selected]);
 
   useEffect(() => {
-    if (searchTerm.trim().length === 0) return;
+    if (!debouncedSearchTerm.trim()) return;
 
     handleSearchBooks();
-  }, [handleSearchBooks, searchTerm]);
+  }, [debouncedSearchTerm, handleSearchBooks]);
 
   return (
     <div>
