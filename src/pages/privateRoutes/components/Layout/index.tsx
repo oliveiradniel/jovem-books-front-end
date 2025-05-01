@@ -9,7 +9,8 @@ export default function Layout() {
   const isVisible =
     pathname === '/dashboard' ||
     pathname === '/my-books' ||
-    pathname === '/google-books';
+    pathname === '/google-books' ||
+    pathname === '/profile';
 
   return (
     <div className="flex h-screen w-screen bg-linear-to-r bg-[url(/wallpaper-dashboard.jpg)] bg-no-repeat p-5">

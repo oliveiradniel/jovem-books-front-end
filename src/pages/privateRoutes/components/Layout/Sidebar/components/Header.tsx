@@ -9,17 +9,19 @@ export default function Header() {
 
   const { pathname } = useLocation();
 
-  const title =
-    pathname === '/dashboard'
-      ? 'Dashboard'
-      : pathname === '/my-books'
-        ? 'Meus livros'
-        : pathname === '/google-books' && 'Google Books';
+  const titles: Record<string, string> = {
+    '/dashboard': 'Dashboard',
+    '/my-books': 'Meus Livros',
+    '/google-books': 'Google Books',
+    '/profile': 'Meu perfil',
+  };
 
   return (
     <>
       <div className="mb-3 flex justify-between">
-        <h1 className="font-quicksand text-snow-white text-2xl">{title}</h1>
+        <h1 className="font-quicksand text-snow-white text-2xl">
+          {titles[pathname]}
+        </h1>
         <p className="font-quicksand text-snow-white hidden text-xl font-bold sm:flex">
           {getGreeting({ name: user?.firstName as string })}
         </p>
