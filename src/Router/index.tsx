@@ -16,6 +16,7 @@ import Book from '../pages/privateRoutes/Book';
 import EditBook from '../pages/privateRoutes/EditBook';
 import NewBook from '../pages/privateRoutes/NewBook';
 import NotFound from '../pages/NotFound';
+import Profile from '../pages/privateRoutes/Profile';
 
 export default function Router() {
   const { signedIn } = useAuth();
@@ -37,6 +38,7 @@ export default function Router() {
             <Route path="/google-books" element={<GoogleBooks />} />
             <Route path="/book/:id" element={<Book />} />
             <Route path="/book/edit/:id" element={<EditBook />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
 

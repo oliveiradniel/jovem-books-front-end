@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useDebounce } from '../../../app/hooks/useDebounce';
+
 import GoogleBooksService, {
   TGoogleBookSearchParams,
 } from '../../../app/services/GoogleBooksService';
@@ -10,7 +12,6 @@ import CardsContainer from './components/CardsContainer';
 import Card from './components/Card';
 
 import { IGoogleBookAPI } from '../../../@types/Book';
-import { useDebounce } from '../../../app/hooks/useDebounce';
 
 export default function GoogleBooks() {
   const [books, setBooks] = useState<IGoogleBookAPI[]>([]);

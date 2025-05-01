@@ -13,12 +13,15 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
+import { Link, useLocation } from 'react-router-dom';
 
 interface ProfileProps {
   isExpanded: boolean;
 }
 
 export default function Profile({ isExpanded }: ProfileProps) {
+  const { pathname } = useLocation();
+
   const [hoverOnProfile, setHoverOnProfile] = useState(false);
 
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
@@ -56,16 +59,19 @@ export default function Profile({ isExpanded }: ProfileProps) {
           className={`animate-move-in-top-300 absolute bottom-14 left-0 w-[220px] p-1 ${!isOptionsVisible && 'animate-return-to-bottom-200'} ${!isExpanded && 'w-[220px]!'}`}
         >
           <div className="bg-navy-blue flex h-full flex-col gap-1 rounded-lg p-1">
-            <div className="text-mate-gray hover:bg-blue-black flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer">
+            <Link
+              to="/profile"
+              className={`text-mate-gray hover:bg-blue-black/70 flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out ${pathname === '/profile' ? 'bg-blue-black/70 cursor-default' : 'cursor-pointer'}`}
+            >
               <PiGearSixFill className="text-lg" />
               <span className="text-sm">Perfil</span>
-            </div>
+            </Link>
 
-            <div className="bg-blue-black-op-80 h-[0.1px] w-full"></div>
+            <div className="bg-blue-black/70 h-[0.1px] w-full" />
 
             <button
               onClick={signOut}
-              className="text-mate-gray hover:bg-blue-black flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+              className="text-mate-gray hover:bg-blue-black/70 flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer"
             >
               <TbLogout2 className="text-lg" />
               <span className="text-sm">Sair</span>
