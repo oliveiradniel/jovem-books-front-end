@@ -21,6 +21,8 @@ export type TSignUpErrorMessages =
 
 export type TSessionErrorMessages = TSignInErrorMessages | TSignUpErrorMessages;
 
+export type TProfileErrorMessages = TSignUpErrorMessages;
+
 export type TBookErrorMessages =
   | 'O título do livro deve ter no mínimo 3 caracteres!'
   | 'O nome do autor deve ter no mínimo 3 caracteres!'

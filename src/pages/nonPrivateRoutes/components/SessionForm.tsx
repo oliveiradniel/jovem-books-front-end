@@ -177,10 +177,15 @@ export default function SessionForm<T>({
         return;
       }
 
+      const message =
+        type !== 'signUp'
+          ? 'Não foi possível verificar suas credenciais.'
+          : 'Não foi possível concluir seu cadastro.';
+
       setIsError(true);
       emitToast({
         type: 'error',
-        message: 'Não foi possível concluir seu cadastro.',
+        message,
       });
     } finally {
       setIsSubmitting(false);
