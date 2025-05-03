@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { useAuth } from '../../../../app/hooks/useAuth';
 
@@ -22,8 +22,10 @@ import {
   TProfileErrorMessages,
   TSessionFields,
 } from '../../../../@types/FormError';
+import { IUserAPIResponse } from '../../../../@types/User';
 
 interface ProfileForm {
+  user: IUserAPIResponse | null;
   isBeingEdited: boolean;
   onEditCancellation: () => void;
 }
@@ -41,13 +43,6 @@ export default function ProfileForm({
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
-
-  useEffect(() => {
-    setUsername(user?.username);
-    setFirstName(user?.firstName);
-    setLastName(user?.lastName);
-    setEmail(user?.email);
-  }, [user?.username, user?.firstName, user?.lastName, user?.email]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -193,13 +188,13 @@ export default function ProfileForm({
 
       <FormGroup error={getErrorMessageByFieldName(['username'])}>
         <Input
-          autoFocus={isBeingEdited}
           error={getErrorMessageByFieldName(['username'])}
           label="Nome de usuário"
           type="text"
           placeholder={user?.username}
           value={username}
           disabled={!isBeingEdited}
+          isLoadingData={!user}
           onChange={handleUsernameChange}
         />
       </FormGroup>
@@ -212,6 +207,7 @@ export default function ProfileForm({
           placeholder={user?.firstName}
           value={firstName}
           disabled={!isBeingEdited}
+          isLoadingData={!user}
           onChange={handleFirstNameChange}
         />
       </FormGroup>
@@ -224,6 +220,7 @@ export default function ProfileForm({
           placeholder={user?.lastName}
           value={lastName}
           disabled={!isBeingEdited}
+          isLoadingData={!user}
           onChange={handleLastNameChange}
         />
       </FormGroup>
@@ -236,6 +233,7 @@ export default function ProfileForm({
           placeholder={user?.email}
           value={email}
           disabled={!isBeingEdited}
+          isLoadingData={!user}
           onChange={handleEmailChange}
         />
       </FormGroup>

@@ -33,7 +33,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const getUser = useCallback(async () => {
     try {
       const userData = await UsersService.getMe();
-
       setUser(userData);
     } catch {
       emitToast({
