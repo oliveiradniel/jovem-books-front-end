@@ -49,7 +49,9 @@ export default function ModalBase({
         className={`bg-blue-black-op-80 animate-scale-in-300 flex flex-col gap-2 rounded-lg p-5 ${!isVisible && 'animate-scale-out-100'} ${danger && 'border-blood-red border'}`}
       >
         {title && (
-          <p className="font-quicksand text-snow-white text-sm">{title}</p>
+          <p className="font-quicksand text-snow-white max-w-[500px] text-sm">
+            {title}
+          </p>
         )}
 
         {title && <div className="bg-navy-blue h-[0.1px] w-full" />}
