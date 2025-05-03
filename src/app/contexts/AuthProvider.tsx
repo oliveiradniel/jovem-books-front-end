@@ -4,11 +4,14 @@ import { AuthContext } from './AuthContext';
 
 import { env } from '../../config/env';
 
-import UsersService, { UserAPIResponse } from '../services/UsersService';
 import { emitToast } from '../../utils/emitToast';
 
+import UsersService from '../services/UsersService';
+
+import { IUserAPIResponse } from '../../@types/User';
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserAPIResponse | null>(null);
+  const [user, setUser] = useState<IUserAPIResponse | null>(null);
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
 

@@ -2,14 +2,20 @@ import { ZodError } from 'zod';
 
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { IFormError } from '../../../@types/FormError';
-import { HandleError } from '../../../@types/HandleError';
+import {
+  IFormError,
+  THandleError,
+  TSessionFields,
+  TSignInErrorMessages,
+} from '../../../@types/FormError';
 
 interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleSignInErrors(error: HandleError): IFormError | null {
+export function handleSignInErrors(
+  error: THandleError
+): IFormError<TSessionFields, TSignInErrorMessages> | null {
   if (error instanceof ZodError) {
     if (error.message.includes('The username must be at least 5 characters')) {
       const message = 'O nome de usuário deve ter no mínimo 5 caracteres!';

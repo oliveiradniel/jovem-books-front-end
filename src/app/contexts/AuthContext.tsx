@@ -1,9 +1,9 @@
 import { createContext } from 'react';
 
-import { UserAPIResponse } from '../services/UsersService';
+import { IUserAPIResponse } from '../../@types/User';
 
 interface AuthContextValue {
-  user: UserAPIResponse | null;
+  user: IUserAPIResponse | null;
   signedIn: boolean;
   signIn: (accessToken: string) => void;
   signOut: () => void;

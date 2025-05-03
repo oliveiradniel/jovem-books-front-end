@@ -18,10 +18,10 @@ import Button from './Button';
 
 import {
   IFormError,
+  THandleError,
   TSessionErrorMessages,
   TSessionFields,
 } from '../../../@types/FormError';
-import { THandleError } from '../../../@types/HandleError';
 
 interface SessionFormProps<T> {
   type?: 'signIn' | 'signUp' | 'registrationCompleted';

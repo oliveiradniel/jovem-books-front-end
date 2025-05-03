@@ -25,3 +25,5 @@ export const SignInSchema = BaseUserSchema.omit({
 });
 
 export const SignUpSchema = BaseUserSchema;
+
+export const UpdateUserSchema = BaseUserSchema.omit({ password: true });

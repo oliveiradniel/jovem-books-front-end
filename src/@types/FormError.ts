@@ -1,3 +1,6 @@
+import { AxiosError } from 'axios';
+import { ZodError } from 'zod';
+
 type TSessionBaseErrorMessages =
   | 'O nome de usuário é obrigatório!'
   | 'A senha é obrigatória!'
@@ -18,6 +21,8 @@ export type TSignUpErrorMessages =
   | 'Insira um e-mail válido!'
   | 'O nome de usuário já está em uso!'
   | 'O e-mail já está em uso!';
+
+export type TUpdateUserErrorMessages = TSignUpErrorMessages;
 
 export type TSessionErrorMessages = TSignInErrorMessages | TSignUpErrorMessages;
 
@@ -51,3 +56,5 @@ export interface IFormError<T, K> {
   field: T;
   message: K;
 }
+
+export type THandleError = ZodError | AxiosError | unknown;
