@@ -14,6 +14,10 @@ class UsersService {
 
     return data;
   }
+
+  async deleteUser() {
+    await httpClient.delete('/users');
+  }
 }
 
 export default new UsersService();

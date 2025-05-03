@@ -2,11 +2,14 @@ import ReactDOM from 'react-dom';
 
 import useAnimatedUnmount from '../../app/hooks/useAnimatedUnmount.ts';
 
+import { ClipLoader } from 'react-spinners';
+
 interface ModalBaseProps {
   danger?: boolean;
   title?: string;
   subTitle?: string | null;
   buttonLabelConfirm: string;
+  isLoading?: boolean;
   isVisible: boolean;
   buttonDisabled?: boolean;
   children: React.ReactNode;
@@ -18,6 +21,7 @@ export default function ModalBase({
   danger,
   title,
   buttonLabelConfirm,
+  isLoading = false,
   isVisible,
   buttonDisabled = false,
   onClose,
@@ -36,8 +40,6 @@ export default function ModalBase({
 
   function handleConfirm() {
     onConfirm();
-
-    onClose();
   }
 
   return ReactDOM.createPortal(
@@ -74,9 +76,13 @@ export default function ModalBase({
           <button
             disabled={buttonDisabled}
             onClick={handleConfirm}
-            className={`text-mate-gray font-roboto rounded-lg px-3 py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default ${danger ? 'bg-blood-red disabled:bg-blood-red/60 hover:bg-blood-red/80' : 'disabled:bg-navy-blue/80 hover:bg-navy-blue bg-navy-blue-2'}`}
+            className={`text-mate-gray font-roboto w-[130px] rounded-lg px-3 py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default ${danger ? 'bg-blood-red disabled:bg-blood-red/60 hover:bg-blood-red/80' : 'disabled:bg-navy-blue/80 hover:bg-navy-blue bg-navy-blue-2'}`}
           >
-            {buttonLabelConfirm}
+            {isLoading ? (
+              <ClipLoader color="#ffffff" size={16} />
+            ) : (
+              buttonLabelConfirm
+            )}
           </button>
         </div>
       </div>

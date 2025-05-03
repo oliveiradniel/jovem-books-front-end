@@ -14,7 +14,6 @@ export default function Profile() {
   return (
     <>
       <DeleteUserModal
-        username={user?.username as string}
         isVisible={isDeleteModalVisible}
         onClose={() => setIsDeleteModalVisible(false)}
       />
