@@ -18,7 +18,7 @@ export default function Profile() {
         onClose={() => setIsDeleteModalVisible(false)}
       />
 
-      <div className="flex min-h-[580px] flex-col items-center">
+      <div className="flex min-h-[580px] flex-col items-center justify-center">
         <ProfileForm
           key={user?.id}
           user={user}

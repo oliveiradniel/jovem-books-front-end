@@ -56,9 +56,7 @@ export default function SectionToEditBookCover({
       return;
     }
 
-    if (file) {
-      setSelectedImage(file);
-    }
+    setSelectedImage(file);
   }
 
   function handleRemoveImageFromScreen() {

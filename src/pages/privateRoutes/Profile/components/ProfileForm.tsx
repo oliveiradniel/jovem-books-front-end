@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { useAuth } from '../../../../app/hooks/useAuth';
 
@@ -12,8 +12,8 @@ import { emitToast } from '../../../../utils/emitToast';
 import { handleSignUpErrors } from '../../../nonPrivateRoutes/errors/handleSignUpErrors';
 import { UpdateUserSchema } from '../../../../assets/schemas/UserSchema';
 
-import { FaUser } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
+import { GiRead } from 'react-icons/gi';
 
 import FormGroup from '../../../../components/FormGroup';
 import Input from '../../../../components/BookForm/Input';
@@ -23,6 +23,7 @@ import {
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
+import { env } from '../../../../config/env';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -39,12 +40,22 @@ export default function ProfileForm({
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
+  const isFirstRender = useRef(true);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [username, setUsername] = useState(user?.username);
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const src = selectedImage
+    ? URL.createObjectURL(selectedImage)
+    : `${env.API_URL}/uploads/users/${imageName}`;
 
   const isFormValid =
     errors.length === 0 &&
@@ -114,6 +125,24 @@ export default function ProfileForm({
     setEmail(value);
   }
 
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png'];
+
+    if (!validTypes.includes(file.type)) {
+      emitToast({
+        type: 'error',
+        message: 'Apenas arquivos de imagens JPEG ou PNG são aceitos.',
+      });
+      return;
+    }
+
+    setSelectedImage(file);
+  }
+
   function handleEditCancellation() {
     onEditCancellation();
 
@@ -126,6 +155,12 @@ export default function ProfileForm({
     setFirstName(user?.firstName);
     setLastName(user?.lastName);
     setEmail(user?.email);
+    setSelectedImage(null);
+
+    isFirstRender.current = true;
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -173,17 +208,71 @@ export default function ProfileForm({
     }
   }
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      if (!user?.imagePath) {
+        setImageName(null);
+        return;
+      }
+      setImageName(user?.imagePath);
+
+      isFirstRender.current = false;
+    }
+  }, [user?.imagePath]);
+
   return (
     <form
       onSubmit={handleSubmit}
       className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg p-5"
     >
-      <div className="border-sky-blue/20 mb-10 rounded-full border p-6">
-        {user?.imagePath ? (
-          <img src={user.imagePath} alt="Foto de Perfil" />
-        ) : (
-          <FaUser size={40} className="text-sky-blue/60" />
-        )}
+      <div className="bg-navy-blue/40 mb-4 flex h-[100px] w-full items-center gap-4 rounded-lg px-4 py-2">
+        <div className="relative flex items-center justify-center">
+          <input
+            id="profile-photo"
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+          {isBeingEdited && (!selectedImage || user?.imagePath) && (
+            <button
+              type="button"
+              onClick={() => document.getElementById('profile-photo')?.click()}
+              className="text-sky-blue hover:text-sky-blue/80 absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors duration-300 ease-in-out"
+            >
+              <span className="text-[12px]">
+                Clique para selecionar a foto de perfil
+              </span>
+            </button>
+          )}
+          {user?.imagePath || selectedImage ? (
+            <img
+              src={src}
+              alt="Foto de Perfil"
+              className="h-[90px] w-[90px] rounded-full object-cover"
+            />
+          ) : (
+            <GiRead
+              size={70}
+              className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
+            />
+          )}
+        </div>
+
+        <div className="bg-navy-blue-2 flex h-full w-[0.1px]" />
+
+        <div className="h-full flex-1 py-2">
+          <p className="font-quicksand text-sky-blue text-end text-[14px] font-semibold">
+            {`${user?.firstName} ${user?.lastName}`}
+          </p>
+          <p className="font-quicksand text-light-gray mt-2 text-end text-[12px]">
+            Total de livros cadastrados: {user?._count.books}
+          </p>
+          <p className="font-quicksand text-light-gray text-end text-[12px]">
+            Total de livros lidos: {user?.booksReading}
+          </p>
+        </div>
       </div>
 
       <FormGroup error={getErrorMessageByFieldName(['username'])}>
