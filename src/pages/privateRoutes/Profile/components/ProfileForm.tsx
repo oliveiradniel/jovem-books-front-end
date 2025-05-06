@@ -35,7 +35,7 @@ export default function ProfileForm({
   isBeingEdited,
   onEditCancellation,
 }: ProfileForm) {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
@@ -57,12 +57,7 @@ export default function ProfileForm({
     ? URL.createObjectURL(selectedImage)
     : `${env.API_URL}/uploads/users/${imageName}`;
 
-  const isFormValid =
-    errors.length === 0 &&
-    (username !== user?.username ||
-      firstName !== user?.firstName ||
-      lastName !== user?.lastName ||
-      email !== user?.email);
+  const isFormValid = errors.length === 0;
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     const { value } = event.target;
@@ -143,6 +138,15 @@ export default function ProfileForm({
     setSelectedImage(file);
   }
 
+  function handleRemoveProfilePhoto() {
+    setSelectedImage(null);
+    setImageName(null);
+
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  }
+
   function handleEditCancellation() {
     onEditCancellation();
 
@@ -155,9 +159,11 @@ export default function ProfileForm({
     setFirstName(user?.firstName);
     setLastName(user?.lastName);
     setEmail(user?.email);
-    setSelectedImage(null);
 
     isFirstRender.current = true;
+
+    setSelectedImage(null);
+
     if (inputRef.current) {
       inputRef.current.value = '';
     }
@@ -174,6 +180,7 @@ export default function ProfileForm({
         firstName,
         lastName,
         email,
+        file: selectedImage,
       };
 
       const data = UpdateUserSchema.parse(formData);
@@ -185,13 +192,14 @@ export default function ProfileForm({
       setLastName(updatedUser.lastName);
       setEmail(updatedUser.email);
 
+      updateUser(updatedUser);
+
       emitToast({
         type: 'success',
         message: 'Usuário atualizado com sucesso.',
       });
-
-      onEditCancellation();
     } catch (error) {
+      console.log(error);
       const result = handleSignUpErrors(error);
       if (result) {
         setError(result);
@@ -223,10 +231,10 @@ export default function ProfileForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg p-5"
+      className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg px-5"
     >
-      <div className="bg-navy-blue/40 mb-4 flex h-[100px] w-full items-center gap-4 rounded-lg px-4 py-2">
-        <div className="relative flex items-center justify-center">
+      <div className="bg-navy-blue/40 mb-4 flex w-full items-center gap-4 rounded-lg px-3 py-3">
+        <div className="relative flex h-[90px] w-[90px] items-center justify-center">
           <input
             id="profile-photo"
             ref={inputRef}
@@ -235,7 +243,7 @@ export default function ProfileForm({
             onChange={handleImageChange}
             className="hidden"
           />
-          {isBeingEdited && (!selectedImage || user?.imagePath) && (
+          {isBeingEdited && selectedImage === null && imageName === null && (
             <button
               type="button"
               onClick={() => document.getElementById('profile-photo')?.click()}
@@ -246,11 +254,11 @@ export default function ProfileForm({
               </span>
             </button>
           )}
-          {user?.imagePath || selectedImage ? (
+          {imageName !== null || selectedImage !== null ? (
             <img
               src={src}
               alt="Foto de Perfil"
-              className="h-[90px] w-[90px] rounded-full object-cover"
+              className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && selectedImage === null && imageName === null && 'opacity-20'}`}
             />
           ) : (
             <GiRead
@@ -262,7 +270,7 @@ export default function ProfileForm({
 
         <div className="bg-navy-blue-2 flex h-full w-[0.1px]" />
 
-        <div className="h-full flex-1 py-2">
+        <div className="flex-1">
           <p className="font-quicksand text-sky-blue text-end text-[14px] font-semibold">
             {`${user?.firstName} ${user?.lastName}`}
           </p>
@@ -328,7 +336,7 @@ export default function ProfileForm({
       </FormGroup>
 
       {isBeingEdited && (
-        <div className="mt-6 flex w-full flex-col items-stretch justify-between gap-2">
+        <div className="flex w-full flex-col items-stretch justify-between gap-1">
           <button
             type="submit"
             disabled={isSubmitting || !isFormValid}
@@ -341,14 +349,26 @@ export default function ProfileForm({
             )}
           </button>
 
-          <button
-            type="button"
-            disabled={isSubmitting}
-            onClick={handleEditCancellation}
-            className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
-          >
-            Cancelar
-          </button>
+          <div className="flex gap-1">
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={handleEditCancellation}
+              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              disabled={
+                isSubmitting || (selectedImage === null && imageName === null)
+              }
+              onClick={handleRemoveProfilePhoto}
+              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+            >
+              Remover foto
+            </button>
+          </div>
         </div>
       )}
     </form>

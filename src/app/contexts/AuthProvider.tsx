@@ -45,6 +45,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [signOut]);
 
+  const updateUser = useCallback((user: IUserAPIResponse) => {
+    setUser(user);
+  }, []);
+
   useEffect(() => {
     if (signedIn) {
       getUser();
@@ -52,7 +56,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [signedIn, getUser]);
 
   return (
-    <AuthContext.Provider value={{ signedIn, signIn, signOut, user }}>
+    <AuthContext.Provider
+      value={{ signedIn, signIn, signOut, user, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -16,14 +16,34 @@ const BaseUserSchema = z.object({
   password: z
     .string({ message: 'The password must be a string' })
     .min(8, 'The password must be at least 8 characters'),
+  file: z
+    .union([
+      z
+        .instanceof(File, { message: 'Enter a valid file' })
+        .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
+          message: 'File must be a maximum of 5MB',
+        }),
+      z.null(),
+    ])
+    .refine(
+      (file) =>
+        !file || ['image/png', 'image/jpeg', 'image/jpg'].includes(file.type),
+      { message: 'Only PNG, JPEG or JPG files are allowed' }
+    )
+    .optional()
+    .default(null)
+    .transform((val) => val ?? null) as z.ZodType<File | null>,
 });
 
 export const SignInSchema = BaseUserSchema.omit({
   firstName: true,
   lastName: true,
   email: true,
+  file: true,
 });
 
-export const SignUpSchema = BaseUserSchema;
+export const SignUpSchema = BaseUserSchema.omit({
+  file: true,
+});
 
 export const UpdateUserSchema = BaseUserSchema.omit({ password: true });

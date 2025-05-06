@@ -27,7 +27,7 @@ export default function Profile() {
         />
 
         {!isBeingEdited && (
-          <div className="flex w-[clamp(340px,64vw,500px)] flex-col items-stretch justify-center gap-2 p-5">
+          <div className="mt-4 flex w-[clamp(340px,64vw,500px)] flex-col items-stretch justify-center gap-1 px-5">
             <button
               type="button"
               disabled={!user}

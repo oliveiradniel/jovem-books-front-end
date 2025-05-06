@@ -4,6 +4,7 @@ import { IUserAPIResponse } from '../../@types/User';
 
 interface AuthContextValue {
   user: IUserAPIResponse | null;
+  updateUser: (user: IUserAPIResponse) => void;
   signedIn: boolean;
   signIn: (accessToken: string) => void;
   signOut: () => void;

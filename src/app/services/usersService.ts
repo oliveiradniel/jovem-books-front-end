@@ -9,8 +9,27 @@ class UsersService {
     return data;
   }
 
-  async updateUser(user: TUpdateUser) {
-    const { data } = await httpClient.put<IUserAPIResponse>('/users', user);
+  async updateUser({
+    username,
+    firstName,
+    lastName,
+    email,
+    file,
+  }: TUpdateUser) {
+    const form = new FormData();
+
+    form.append('username', username);
+    form.append('firstName', firstName);
+    form.append('lastName', lastName);
+    form.append('email', email);
+
+    if (file) {
+      form.append('image', file);
+    } else {
+      form.append('removeImage', JSON.stringify(true));
+    }
+
+    const { data } = await httpClient.put<IUserAPIResponse>('/users', form);
 
     return data;
   }

@@ -41,15 +41,10 @@ const BaseBookSchema = z.object({
     .optional()
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<File | null>,
-  removeImage: z
-    .union([z.string(), z.null()])
-    .default(null)
-    .transform((val) => val ?? null) as z.ZodType<string | null>,
 });
 
 export const CreateDataBookSchema = BaseBookSchema.omit({
   id: true,
-  removeImage: true,
 });
 
 export const UpdateDataBookSchema = BaseBookSchema.omit({

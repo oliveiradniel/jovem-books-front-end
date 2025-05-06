@@ -32,7 +32,7 @@ export function handleSignInErrors(
 
   if (error instanceof AxiosError) {
     if (error.message === 'Network Error') {
-      console.log('Erro no servidor');
+      // console.log('Erro no servidor');
       return null;
     }
 
