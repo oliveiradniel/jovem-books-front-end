@@ -97,7 +97,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
             />
           ) : (
             <FaCircleUser
-              className={`text-mate-gray h-6 w-6 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
+              className={`text-mate-gray h-7 w-7 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
             />
           )}
           {shouldRenderUsername && (

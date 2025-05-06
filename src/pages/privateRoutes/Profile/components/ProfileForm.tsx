@@ -24,6 +24,7 @@ import {
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
 import { env } from '../../../../config/env';
+import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -199,7 +200,6 @@ export default function ProfileForm({
         message: 'Usuário atualizado com sucesso.',
       });
     } catch (error) {
-      console.log(error);
       const result = handleSignUpErrors(error);
       if (result) {
         setError(result);
@@ -254,6 +254,7 @@ export default function ProfileForm({
               </span>
             </button>
           )}
+          {!user && <SkeletonLoading rounded="full" />}
           {imageName !== null || selectedImage !== null ? (
             <img
               src={src}
@@ -261,10 +262,12 @@ export default function ProfileForm({
               className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && selectedImage === null && imageName === null && 'opacity-20'}`}
             />
           ) : (
-            <GiRead
-              size={70}
-              className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
-            />
+            user && (
+              <GiRead
+                size={70}
+                className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
+              />
+            )
           )}
         </div>
 
@@ -272,7 +275,7 @@ export default function ProfileForm({
 
         <div className="flex-1">
           <p className="font-quicksand text-sky-blue text-end text-[14px] font-semibold">
-            {`${user?.firstName} ${user?.lastName}`}
+            {user ? `${user?.firstName} ${user?.lastName}` : 'Carregando...'}
           </p>
           <p className="font-quicksand text-light-gray mt-2 text-end text-[12px]">
             Total de livros cadastrados: {user?._count.books}
