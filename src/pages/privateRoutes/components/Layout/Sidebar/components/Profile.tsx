@@ -14,6 +14,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
 import { Link, useLocation } from 'react-router-dom';
+import SkeletonLoading from '../../../../../../components/SkeletonLoading.tsx';
 
 interface ProfileProps {
   isExpanded: boolean;
@@ -89,23 +90,29 @@ export default function Profile({ isExpanded }: ProfileProps) {
         className={`hover:bg-navy-blue bottom-0 m-1 flex justify-between rounded-sm px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'}`}
       >
         <div className="flex items-center gap-2">
-          {user?.imagePath ? (
-            <img
-              src={`${env.API_URL}/uploads/users/${user.imagePath}`}
-              alt="Foto de Perfil"
-              className={`h-7 w-7 rounded-full ${!isExpanded && 'min-h-7 min-w-7'}`}
-            />
-          ) : (
-            <FaCircleUser
-              className={`text-mate-gray h-7 w-7 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
-            />
-          )}
+          <div className="relative flex h-8 w-8 items-center justify-center">
+            {!user && <SkeletonLoading rounded="full" />}
+            {user?.imagePath ? (
+              <img
+                src={`${env.API_URL}/uploads/users/${user.imagePath}`}
+                alt="Foto de Perfil"
+                className={`h-7 w-7 rounded-full ${!isExpanded && 'min-h-7 min-w-7'}`}
+              />
+            ) : (
+              user && (
+                <FaCircleUser
+                  className={`text-mate-gray h-7 w-7 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
+                />
+              )
+            )}
+          </div>
+
           {shouldRenderUsername && (
             <h1
               ref={animatedUsernameRef}
               className={`animate-fade-in-500 font-quicksand text-snow-white-op-70 whitespace-nowrap transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
             >
-              {truncateString(username, 10)}
+              {user ? truncateString(username, 10) : 'Carregando...'}
             </h1>
           )}
         </div>

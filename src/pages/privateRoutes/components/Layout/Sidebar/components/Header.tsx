@@ -23,7 +23,9 @@ export default function Header() {
           {titles[pathname]}
         </h1>
         <p className="font-quicksand text-snow-white hidden text-xl font-bold sm:flex">
-          {getGreeting({ name: user?.firstName as string })}
+          {user
+            ? getGreeting({ name: user?.firstName as string })
+            : 'Carregando...'}
         </p>
       </div>
 

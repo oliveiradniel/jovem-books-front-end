@@ -9,7 +9,6 @@ import { emitToast } from '../../utils/emitToast';
 import UsersService from '../services/UsersService';
 
 import { IUserAPIResponse } from '../../@types/User';
-import { delay } from '../../utils/delay';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserAPIResponse | null>(null);
@@ -35,7 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userData = await UsersService.getMe();
 
-      await delay(3000);
       setUser(userData);
     } catch {
       emitToast({
