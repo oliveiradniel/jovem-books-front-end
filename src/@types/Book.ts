@@ -32,7 +32,6 @@ export type IGoogleBookAPI = Omit<BaseBook, 'authors' | 'read'> & {
 };
 
 export interface IGoogleBooksAPI {
-  totalItems: number;
   data: IGoogleBookAPI[];
 }
 

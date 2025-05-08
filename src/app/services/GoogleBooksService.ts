@@ -1,6 +1,6 @@
 import { httpClient } from './utils/httpClient';
 
-import { IGoogleBooksAPI } from '../../@types/Book';
+import { IGoogleBookAPI } from '../../@types/Book';
 
 export type TGoogleBookSearchParams = { title: string } | { author: string };
 
@@ -14,7 +14,7 @@ class GoogleBooksService {
   }
 
   private async getGoogleBookByTitle(title: string) {
-    const { data: book } = await httpClient.get<IGoogleBooksAPI>(
+    const { data: book } = await httpClient.get<IGoogleBookAPI[]>(
       `/google-books/title`,
       {
         params: { title },
@@ -25,7 +25,7 @@ class GoogleBooksService {
   }
 
   private async getGoogleBookByAuthor(author: string) {
-    const { data: book } = await httpClient.get<IGoogleBooksAPI>(
+    const { data: book } = await httpClient.get<IGoogleBookAPI[]>(
       `/google-books/author`,
       {
         params: { author },

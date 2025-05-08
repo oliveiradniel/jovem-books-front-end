@@ -30,10 +30,6 @@ export default function Header({
           onSelected={onSelected}
         />
       </div>
-
-      <span className="text-light-gray/80 text-[12px]">
-        * Após acabar de digitar, clique em Procurar.
-      </span>
     </div>
   );
 }

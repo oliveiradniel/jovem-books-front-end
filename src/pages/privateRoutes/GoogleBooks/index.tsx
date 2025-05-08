@@ -40,6 +40,10 @@ export default function GoogleBooks() {
     setIsError(false);
 
     setSearchTerm(value);
+
+    if (value.length < 1) {
+      setBooks([]);
+    }
   }
 
   const handleSearchBooks = useCallback(async () => {
@@ -59,13 +63,13 @@ export default function GoogleBooks() {
 
       const googleBooks = await GoogleBooksService.searchGoogleBooks(params);
 
-      if (!googleBooks || googleBooks.totalItems === 0) {
+      if (!googleBooks || googleBooks.length === 0) {
         setBooks([]);
         setNoBookFound(true);
         return;
       }
 
-      setBooks(googleBooks.data);
+      setBooks(googleBooks);
     } catch {
       setBooks([]);
       setIsError(true);
