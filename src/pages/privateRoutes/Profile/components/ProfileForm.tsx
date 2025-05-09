@@ -161,7 +161,9 @@ export default function ProfileForm({
     setLastName(user?.lastName);
     setEmail(user?.email);
 
-    isFirstRender.current = true;
+    if (user?.imagePath) {
+      setImageName(user.imagePath);
+    }
 
     setSelectedImage(null);
 
