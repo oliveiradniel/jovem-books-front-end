@@ -1,5 +1,3 @@
-import { RingLoader } from 'react-spinners';
-
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
@@ -45,12 +43,6 @@ export default function TableBooks({
     <div
       className={`relative ${books && books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
     >
-      {isLoading && (
-        <div className="animate-fade-in absolute top-20 flex w-full justify-center">
-          <RingLoader color="#03a9f4" />
-        </div>
-      )}
-
       {!isLoading && filteredBooks && filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute top-20 flex w-full justify-center">
           {isError ? (
@@ -75,9 +67,7 @@ export default function TableBooks({
         </div>
       )}
 
-      <table
-        className={`w-full ${filteredBooks.length === 0 && 'min-h-[350px]'}`}
-      >
+      <table className={`w-full`}>
         <TableHeader />
 
         {!isLoading && books && <TableBody books={filteredBooks} />}

@@ -7,6 +7,7 @@ import Header from './components/Header';
 
 import { IBookAPI } from '../../../@types/Book';
 import { TPageStatus } from '../../../@types/Read';
+import { RingLoader } from 'react-spinners';
 
 export default function MyBooks() {
   const [books, setBooks] = useState<IBookAPI[]>([]);
@@ -50,7 +51,12 @@ export default function MyBooks() {
   }, []);
 
   return (
-    <div className="bg-blue-black/60 min-h-[580px] rounded-lg p-5">
+    <div className="bg-blue-black/60 relative h-[580px] overflow-y-auto rounded-lg p-5">
+      {isLoading && (
+        <div className="animate-fade-in absolute flex h-[calc(100%-20px)] w-[calc(100%-20px)] items-center justify-center">
+          <RingLoader color="#03a9f4" />
+        </div>
+      )}
       <Header
         page={page}
         numberOfBooks={books.length}
