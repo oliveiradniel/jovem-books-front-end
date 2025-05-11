@@ -152,7 +152,7 @@ export default function SessionForm<T>({
       setIsError(false);
       setIsSubmitting(true);
 
-      const formData = {
+      const userData = {
         username,
         firstName,
         lastName,
@@ -160,7 +160,7 @@ export default function SessionForm<T>({
         password,
       };
 
-      const credentials = validationSchema.parse(formData);
+      const credentials = validationSchema.parse(userData);
 
       await onSubmit(credentials);
 

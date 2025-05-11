@@ -5,8 +5,8 @@ import AuthService from '../../app/services/AuthService';
 import { SignInSchema } from '../../assets/schemas/UserSchema';
 import { handleSignInErrors } from './errors/handleSignInErrors';
 
-import SessionForm from './components/SessionForm';
 import SessionTemplate from './components/SessionTemplate';
+import SessionForm from './components/SessionForm';
 
 import { TSignIn } from '../../@types/User';
 
