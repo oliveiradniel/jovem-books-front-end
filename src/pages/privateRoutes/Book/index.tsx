@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
+
 import { useAuth } from '../../../app/hooks/useAuth';
 
-import BooksService from '../../../app/services/BooksService';
 import ReadsService from '../../../app/services/ReadsService';
 
 import { emitToast } from '../../../utils/emitToast';
@@ -27,18 +28,18 @@ import { IBook, LiteraryGenreKey } from '../../../@types/Book';
 import { LITERARY_GENRE_LABELS } from '../../../constants/books';
 
 export default function Book() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const { user } = useAuth();
 
-  const [book, setBook] = useState({} as IBook);
+  const { bookData, isLoadingBook, isError } = useQueryGetBookById(id!);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [book, setBook] = useState({} as IBook);
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);
   const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
-
-  const { id } = useParams();
-  const navigate = useNavigate();
 
   const isReading =
     book.read?.status === 'READING' || book.read?.status === 'ON_HOLD';
@@ -139,30 +140,19 @@ export default function Book() {
   }
 
   useEffect(() => {
-    async function loadBook() {
-      try {
-        setIsLoading(true);
-
-        const bookData = await BooksService.getBookById({
-          id: id!,
-          onlyCommas: false,
-        });
-
-        setBook(bookData);
-      } catch {
-        emitToast({
-          type: 'error',
-          message: 'Não foi possível encontrar o livro.',
-        });
-
-        navigate('/my-books');
-      } finally {
-        setIsLoading(false);
-      }
+    if (bookData) {
+      setBook(bookData);
     }
 
-    loadBook();
-  }, [id, navigate]);
+    if (isError) {
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível encontrar o livro.',
+      });
+
+      navigate('/my-books');
+    }
+  }, [bookData, isError, navigate]);
 
   return (
     <>
@@ -183,15 +173,15 @@ export default function Book() {
       />
 
       <div className="animate-fade-in h-full overflow-y-auto">
-        <Actions isLoadingBook={isLoading} />
+        <Actions isLoadingBook={isLoadingBook} />
 
         <div className="mt-8 flex justify-between gap-4">
           <div className="w-full lg:max-w-[900px]">
-            <Title title={book.title} isLoadingBook={isLoading} />
+            <Title title={book.title} isLoadingBook={isLoadingBook} />
 
-            <Authors authors={book.authors} isLoadingBook={isLoading} />
+            <Authors authors={book.authors} isLoadingBook={isLoadingBook} />
 
-            <Sinopse text={book.sinopse!} isLoadingBook={isLoading} />
+            <Sinopse text={book.sinopse!} isLoadingBook={isLoadingBook} />
 
             <div className="mt-4 flex flex-wrap gap-2">
               {book.literaryGenre?.map((literaryGenre, index) => (
@@ -208,10 +198,10 @@ export default function Book() {
               <InformationButton
                 status={book.read?.status ?? null}
                 onChangeBookStatus={handleStartReading}
-                isLoadingBook={isLoading}
+                isLoadingBook={isLoadingBook}
               />
 
-              {isReading && !isLoading && (
+              {isReading && !isLoadingBook && (
                 <>
                   <PauseOrPlayButton
                     status={book.read?.status ?? null}
@@ -228,12 +218,12 @@ export default function Book() {
             </div>
           </div>
 
-          <BookCover imagePath={book.imagePath} isLoadingBook={isLoading} />
+          <BookCover imagePath={book.imagePath} isLoadingBook={isLoadingBook} />
         </div>
 
         <ReadingInformation
           book={book}
-          isLoadingBook={isLoading}
+          isLoadingBook={isLoadingBook}
           onFinish={() => setIsEditReadModalVisible(true)}
         />
       </div>

@@ -13,16 +13,17 @@ import BookForm, { BookFormHandle } from '../../../components/BookForm';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
 
 import { IBook, TUpdateBookData } from '../../../@types/Book';
+import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
 
 export default function EditBook() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { bookData, isError, isLoadingBook } = useQueryGetBookById(id!);
+
   const bookFormRef = useRef<BookFormHandle>(null);
 
   const [book, setBook] = useState({} as IBook);
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
 
@@ -33,30 +34,20 @@ export default function EditBook() {
   }
 
   useEffect(() => {
-    async function loadBook() {
-      try {
-        setIsLoading(true);
-
-        const bookData = await BooksService.getBookById({
-          id: id!,
-        });
-
-        setBook(bookData);
-        bookFormRef.current?.setFieldValues(bookData);
-      } catch {
-        emitToast({
-          type: 'success',
-          message: `Não foi possível encontrar o livro`,
-        });
-
-        navigate('/my-books');
-      } finally {
-        setIsLoading(false);
-      }
+    if (bookData) {
+      setBook(bookData);
+      bookFormRef.current?.setFieldValues(bookData);
     }
 
-    loadBook();
-  }, [id, navigate]);
+    if (isError) {
+      emitToast({
+        type: 'success',
+        message: `Não foi possível encontrar o livro`,
+      });
+
+      navigate('/my-books');
+    }
+  }, [bookData, isError, navigate]);
 
   return (
     <div className="animate-fade-in h-full overflow-y-auto">
@@ -70,7 +61,7 @@ export default function EditBook() {
 
       <SectionToEditBookCover
         imagePath={book.imagePath}
-        isLoadingBook={isLoading}
+        isLoadingBook={isLoadingBook}
         isUpdatingBook={false}
         isUpdatingBookCover={isUpdatingBookCover}
         setIsUpdatingBookCover={setIsUpdatingBookCover}
