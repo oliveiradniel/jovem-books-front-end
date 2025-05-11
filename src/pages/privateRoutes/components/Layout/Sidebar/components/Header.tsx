@@ -5,7 +5,7 @@ import { useAuth } from '../../../../../../app/hooks/useAuth';
 import { getGreeting } from '../../../../../../utils/getGreeting';
 
 export default function Header() {
-  const { user } = useAuth();
+  const { user, isLoadingUser } = useAuth();
 
   const { pathname } = useLocation();
 
@@ -23,9 +23,8 @@ export default function Header() {
           {titles[pathname]}
         </h1>
         <p className="font-quicksand text-snow-white hidden text-xl font-bold sm:flex">
-          {user
-            ? getGreeting({ name: user?.firstName as string })
-            : 'Carregando...'}
+          {isLoadingUser && 'Carregando...'}
+          {user && getGreeting({ name: user.firstName })}
         </p>
       </div>
 

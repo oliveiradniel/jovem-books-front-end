@@ -1,9 +1,11 @@
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 import { AuthProvider } from './app/contexts/AuthProvider';
 
 import { Slide, ToastContainer } from 'react-toastify';
 
 import Router from './Router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,18 +20,19 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <Router />
-      </QueryClientProvider>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        transition={Slide}
-        closeButton={false}
-        closeOnClick
-      />
-    </AuthProvider>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          transition={Slide}
+          closeButton={false}
+          closeOnClick
+        />
+      </AuthProvider>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 }
 

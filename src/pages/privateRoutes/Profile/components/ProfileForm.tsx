@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 import { useAuth } from '../../../../app/hooks/useAuth';
 
@@ -28,29 +28,33 @@ import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
+  isLoadingUser: boolean;
   isBeingEdited: boolean;
   onEditCancellation: () => void;
 }
 
 export default function ProfileForm({
+  user,
+  isLoadingUser,
   isBeingEdited,
   onEditCancellation,
 }: ProfileForm) {
-  const { user, updateUser } = useAuth();
+  const { updateUser } = useAuth();
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
-  const isFirstRender = useRef(true);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [username, setUsername] = useState(user?.username);
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
-
+  console.log(isLoadingUser);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imageName, setImageName] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(
+    user?.imagePath ?? null
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -218,18 +222,6 @@ export default function ProfileForm({
     }
   }
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      if (!user?.imagePath) {
-        setImageName(null);
-        return;
-      }
-      setImageName(user?.imagePath);
-
-      isFirstRender.current = false;
-    }
-  }, [user?.imagePath]);
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -256,15 +248,17 @@ export default function ProfileForm({
               </span>
             </button>
           )}
-          {!user && <SkeletonLoading rounded="full" />}
-          {imageName !== null || selectedImage !== null ? (
+
+          {isLoadingUser && <SkeletonLoading rounded="full" />}
+
+          {(imageName !== null || selectedImage !== null) && !isLoadingUser ? (
             <img
               src={src}
               alt="Foto de Perfil"
               className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && selectedImage === null && imageName === null && 'opacity-20'}`}
             />
           ) : (
-            user && (
+            !isLoadingUser && (
               <GiRead
                 size={70}
                 className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}

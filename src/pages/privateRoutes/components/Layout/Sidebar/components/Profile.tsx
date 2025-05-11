@@ -27,7 +27,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-  const { user, signOut } = useAuth();
+  const { user, isLoadingUser, signOut } = useAuth();
 
   const username = user?.username || '';
 
@@ -91,7 +91,8 @@ export default function Profile({ isExpanded }: ProfileProps) {
       >
         <div className="flex items-center gap-2">
           <div className="relative flex h-8 w-8 items-center justify-center">
-            {!user && <SkeletonLoading rounded="full" />}
+            {isLoadingUser && <SkeletonLoading rounded="full" />}
+
             {user?.imagePath ? (
               <img
                 src={`${env.API_URL}/uploads/users/${user.imagePath}`}
@@ -99,7 +100,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
                 className={`h-7 w-7 rounded-full ${!isExpanded && 'min-h-7 min-w-7'}`}
               />
             ) : (
-              user && (
+              !isLoadingUser && (
                 <FaCircleUser
                   className={`text-mate-gray h-7 w-7 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
                 />
@@ -112,7 +113,8 @@ export default function Profile({ isExpanded }: ProfileProps) {
               ref={animatedUsernameRef}
               className={`animate-fade-in-500 font-quicksand text-snow-white-op-70 whitespace-nowrap transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
             >
-              {user ? truncateString(username, 10) : 'Carregando...'}
+              {isLoadingUser && 'Carregando...'}
+              {user && truncateString(username, 10)}
             </h1>
           )}
         </div>

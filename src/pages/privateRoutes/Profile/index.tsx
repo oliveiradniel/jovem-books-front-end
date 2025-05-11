@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-import { useAuth } from '../../../app/hooks/useAuth';
+import { IUserAPIResponse } from '../../../@types/User';
 
 import ProfileForm from './components/ProfileForm';
 import DeleteUserModal from '../../../components/Modals/DeleteUserModal';
+import { useAuth } from '../../../app/hooks/useAuth';
 
 export default function Profile() {
-  const { user } = useAuth();
+  const { user, isLoadingUser } = useAuth();
 
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -21,7 +22,8 @@ export default function Profile() {
       <div className="flex min-h-[580px] flex-col items-center justify-center">
         <ProfileForm
           key={user?.id}
-          user={user}
+          user={user as IUserAPIResponse}
+          isLoadingUser={isLoadingUser}
           isBeingEdited={isBeingEdited}
           onEditCancellation={() => setIsBeingEdited(false)}
         />

@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { useQueryGetUser } from '../hooks/queries/user/useQueryGetUser';
+
 import { AuthContext } from './AuthContext';
 
 import { env } from '../../config/env';
 
 import { emitToast } from '../../utils/emitToast';
 
-import UsersService from '../services/UsersService';
-
 import { IUserAPIResponse } from '../../@types/User';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const { userData, isLoadingUser, isError } = useQueryGetUser();
+
   const [user, setUser] = useState<IUserAPIResponse | null>(null);
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
@@ -31,11 +33,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const getUser = useCallback(async () => {
-    try {
-      const userData = await UsersService.getMe();
+    setUser(userData as IUserAPIResponse);
 
-      setUser(userData);
-    } catch {
+    if (isError) {
       emitToast({
         type: 'error',
         message:
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       signOut();
     }
-  }, [signOut]);
+  }, [userData, isError, signOut]);
 
   const updateUser = useCallback((user: IUserAPIResponse) => {
     setUser(user);
@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ signedIn, signIn, signOut, user, updateUser }}
+      value={{ signedIn, signIn, signOut, user, isLoadingUser, updateUser }}
     >
       {children}
     </AuthContext.Provider>
