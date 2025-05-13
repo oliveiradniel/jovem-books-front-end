@@ -11,13 +11,14 @@ import { emitToast } from '../../utils/emitToast';
 import { IUserAPIResponse } from '../../@types/User';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { userData, isLoadingUser, isError, refetch } = useQueryGetUser();
-
-  const [user, setUser] = useState<IUserAPIResponse | null>(null);
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
 
     return !!storagedAccessToken;
+  });
+
+  const { user, isLoadingUser, isError } = useQueryGetUser({
+    enabled: signedIn,
   });
 
   const signIn = useCallback((accessToken: string) => {
@@ -32,23 +33,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSignedIn(false);
   }, []);
 
-  const getUser = useCallback(async () => {
-    refetch();
-  }, [refetch]);
-
   const updateUser = useCallback((user: IUserAPIResponse) => {
-    setUser(user);
+    console.log(user);
   }, []);
 
   useEffect(() => {
-    if (signedIn) {
-      getUser();
-    }
-
-    if (userData) {
-      setUser(userData as IUserAPIResponse);
-    }
-
     if (isError) {
       emitToast({
         type: 'error',
@@ -58,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       signOut();
     }
-  }, [signedIn, userData, isError, signOut, getUser]);
+  }, [signedIn, isError, signOut]);
 
   return (
     <AuthContext.Provider

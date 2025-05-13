@@ -2,9 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 
 import UsersService from '../../../services/UsersService';
 
-export function useQueryGetUser() {
+interface UseQueryGetUserProps {
+  enabled: boolean;
+}
+
+export function useQueryGetUser({ enabled }: UseQueryGetUserProps) {
   const { data, isError, isFetching, refetch } = useQuery({
-    enabled: false,
+    enabled,
     staleTime: Infinity,
     queryKey: ['user'],
     queryFn: async () => {
@@ -12,5 +16,5 @@ export function useQueryGetUser() {
     },
   });
 
-  return { userData: data, isLoadingUser: isFetching, isError, refetch };
+  return { user: data ?? null, isLoadingUser: isFetching, isError, refetch };
 }
