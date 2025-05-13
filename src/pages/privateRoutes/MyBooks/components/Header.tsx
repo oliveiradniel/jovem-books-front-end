@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 
-import { TPageStatus } from '../../../../@types/Read';
+import { TBookFilter } from '../../../../@types/Book';
 
 import LargeOptionsMenu from '../components/LargeOptionsMenu';
 import Select from '../components/Select';
 
 interface HeaderProps {
-  page: TPageStatus;
+  selectedFilter: TBookFilter;
   numberOfBooks: number;
   numberOfFilteredBooks: number;
-  isLoading: boolean;
-  isError: boolean;
-  onChangePage: (page: TPageStatus) => void;
+  isLoadingBooks: boolean;
+  hasError: boolean;
+  onChangeFilter: (selectedFilter: TBookFilter) => void;
 }
 
 export default function Header({
-  page,
+  selectedFilter,
   numberOfBooks,
   numberOfFilteredBooks,
-  isLoading,
-  isError,
-  onChangePage,
+  isLoadingBooks,
+  hasError,
+  onChangeFilter,
 }: HeaderProps) {
   const [isTheScreenLargeSized, setIsTheScreenLargeSized] = useState(false);
 
@@ -50,24 +50,22 @@ export default function Header({
     <div className="flex h-[40px] justify-between">
       {isTheScreenLargeSized ? (
         <LargeOptionsMenu
-          page={page}
-          disabled={isLoading || numberOfBooks === 0 || isError}
-          onChange={onChangePage}
+          selectedFilter={selectedFilter}
+          disabled={numberOfBooks === 0 || isLoadingBooks || hasError}
+          onChange={onChangeFilter}
         />
       ) : (
         <Select
-          page={page}
-          disabled={isLoading || numberOfBooks === 0 || isError}
-          onChangePage={onChangePage}
+          selectedFilter={selectedFilter}
+          disabled={isLoadingBooks || numberOfBooks === 0 || hasError}
+          onChange={onChangeFilter}
         />
       )}
 
-      <span className="text-mate-gray animate-fade-in flex items-center">
-        {!isLoading && !isError && (
-          <span className="animate-fade-in">
-            Total encontrado ({numberOfFilteredBooks})
-          </span>
-        )}
+      <span className="text-mate-gray flex items-center">
+        {!isLoadingBooks &&
+          !hasError &&
+          `Total encontrado (${numberOfFilteredBooks})`}
       </span>
     </div>
   );

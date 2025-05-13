@@ -8,5 +8,3 @@ export interface IRead {
   notes: string | null;
   finishedAt: string | null;
 }
-
-export type TPageStatus = 'ALL' | 'NOT_READING' | 'READING' | 'FINISHED';

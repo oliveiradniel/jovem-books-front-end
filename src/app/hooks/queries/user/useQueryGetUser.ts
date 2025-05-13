@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import UsersService from '../../../services/UsersService';
 
 export function useQueryGetUser() {
-  const { data, isError, isFetching } = useQuery({
-    enabled: true,
+  const { data, isError, isFetching, refetch } = useQuery({
+    enabled: false,
     staleTime: Infinity,
     queryKey: ['user'],
     queryFn: async () => {
@@ -12,5 +12,5 @@ export function useQueryGetUser() {
     },
   });
 
-  return { userData: data, isLoadingUser: isFetching, isError };
+  return { userData: data, isLoadingUser: isFetching, isError, refetch };
 }

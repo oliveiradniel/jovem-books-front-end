@@ -4,20 +4,25 @@ import { MY_BOOKS_PAGES } from '../../../../../constants/myBooksPages';
 
 import { useCloseOnClickOutside } from '../../../../../app/hooks/useCloseOnClickOutside.ts';
 
+import { TBookFilter } from '../../../../../@types/Book.ts';
+
 import Options from './Options';
 
-import { Page } from '../../@types/Page';
-
 interface SelectProps {
-  page: Page;
+  selectedFilter: TBookFilter;
   disabled: boolean;
-  onChangePage: (page: Page) => void;
+  onChange: (selectedFilter: TBookFilter) => void;
 }
 
-export default function Select({ page, disabled, onChangePage }: SelectProps) {
+export default function Select({
+  selectedFilter,
+  disabled,
+  onChange,
+}: SelectProps) {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-  const pageDirection = page === null ? 'NOT_READING' : page;
+  const filterDirection =
+    selectedFilter === null ? 'NOT_READING' : selectedFilter;
 
   function handleTogglingOfOptionsVisibility() {
     setIsOptionsVisible((prevState) => !prevState);
@@ -38,13 +43,13 @@ export default function Select({ page, disabled, onChangePage }: SelectProps) {
         onClick={handleTogglingOfOptionsVisibility}
         className={`bg-navy-blue text-mate-gray font-quicksand hover:bg-navy-blue-op-80 w-full rounded-lg p-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer ${isOptionsVisible || (disabled && 'hover:bg-navy-blue-op-40!')} ${disabled && 'bg-navy-blue-op-40 border-navy-blue-op-80 text-light-gray cursor-default! border'}`}
       >
-        {MY_BOOKS_PAGES[pageDirection]}
+        {MY_BOOKS_PAGES[filterDirection]}
       </button>
 
       <Options
-        page={page}
+        selectedFilter={selectedFilter}
         isVisible={isOptionsVisible}
-        onSelect={(page: Page) => onChangePage(page)}
+        onSelect={(selectedFilter: TBookFilter) => onChange(selectedFilter)}
       />
     </div>
   );

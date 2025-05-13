@@ -1,51 +1,53 @@
+import { useMemo } from 'react';
+
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
+
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
-import { IBookAPI } from '../../../../../@types/Book';
-import { TPageStatus } from '../../../../../@types/Read';
+import { RingLoader } from 'react-spinners';
+
+import { IBookAPI, TBookFilter } from '../../../../../@types/Book';
 
 interface TabelBooksProps {
-  books: IBookAPI[];
   filteredBooks: IBookAPI[];
-  onLoadBooks: () => void;
-  page: TPageStatus;
+  selectedFilter: TBookFilter;
+  hasError: boolean;
   isLoading: boolean;
-  isError: boolean;
+  onTryAgain: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<IBookAPI[], Error>>;
 }
 
 export default function TableBooks({
-  books,
-  onLoadBooks,
   filteredBooks,
-  page,
+  selectedFilter,
+  hasError,
   isLoading,
-  isError,
+  onTryAgain,
 }: TabelBooksProps) {
-  let message: string;
-
-  const allBooks = page === 'ALL';
-  const unreadBooks = page === 'NOT_READING';
-  const booksInReading = page === 'READING';
-  const finishedBooks = page === 'FINISHED';
-
-  if (allBooks) {
-    message =
-      'Não há nenhum livro cadastrado, vá até o Dashboard ou Google Books para adicionar novos livros.';
-  } else if (unreadBooks) {
-    message = 'Todos os livros cadastrados estão em leitura ou finalizados.';
-  } else if (booksInReading) {
-    message = 'Não há nenhum livro em leitura.';
-  } else if (finishedBooks) {
-    message = 'Não há nenhum livro concluído.';
-  }
+  const message = useMemo(() => {
+    switch (selectedFilter) {
+      case 'ALL':
+        return 'Não há nenhum livro cadastrado, vá até o Dashboard ou Google Books para adicionar novos livros.';
+      case 'NOT_READING':
+        return 'Todos os livros cadastrados estão em leitura ou finalizados.';
+      case 'READING':
+        return 'Não há nenhum livro em leitura.';
+      case 'FINISHED':
+        return 'Não há nenhum livro concluído.';
+      default:
+        return '';
+    }
+  }, [selectedFilter]);
 
   return (
-    <div
-      className={`relative ${books && books.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}
-    >
-      {!isLoading && filteredBooks && filteredBooks.length === 0 && (
-        <div className="animate-fade-in absolute top-20 flex w-full justify-center">
-          {isError ? (
+    <div className={`relative h-full overflow-y-auto`}>
+      {(isLoading || hasError || filteredBooks.length === 0) && (
+        <div className="animate-fade-in absolute flex h-full w-full items-center justify-center">
+          {isLoading && <RingLoader color="#03a9f4" />}
+
+          {hasError && (
             <div className="flex flex-col gap-6">
               <p className="text-blood-red font-quicksand font-semibold">
                 Não foi possível encontrar seus livros.
@@ -53,13 +55,15 @@ export default function TableBooks({
 
               <button
                 type="button"
-                onClick={onLoadBooks}
-                className="text-snow-white bg-blood-red font-roboto hover:bg-blood-red/80 rounded-lg py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
+                onClick={() => onTryAgain()}
+                className="text-snow-white bg-blood-red font-roboto hover:bg-blood-red/90 rounded-lg py-2 font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer"
               >
                 Tentar novamente
               </button>
             </div>
-          ) : (
+          )}
+
+          {!isLoading && filteredBooks.length === 0 && (
             <p className="text-ocean-blue font-quicksand text-center font-semibold">
               {message!}
             </p>
@@ -70,7 +74,9 @@ export default function TableBooks({
       <table className={`w-full`}>
         <TableHeader />
 
-        {!isLoading && books && <TableBody books={filteredBooks} />}
+        {!isLoading && filteredBooks.length > 0 && (
+          <TableBody books={filteredBooks} />
+        )}
       </table>
     </div>
   );

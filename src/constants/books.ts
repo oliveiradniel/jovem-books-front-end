@@ -43,7 +43,7 @@ export const LITERARY_GENRE_LABELS = {
   'PORTUGUESE LITERATURE': 'Literatura Portuguesa',
   FICTION: 'Ficção',
   PSYCHOLOGY: 'Psicologia',
-  'BIOGRAPHY & AUTOBIOGRAPHY': 'Biografia e Autobiografia',
+  'BIOGRAPHY & AUTOBIOGRAPHY': 'Biografia',
   ART: 'Arte',
 };
 

@@ -6,6 +6,8 @@ import { useErrors } from '../../../../app/hooks/useErrors';
 
 import UsersService from '../../../../app/services/UsersService';
 
+import { env } from '../../../../config/env';
+
 import { sanitizeAndCapitalize } from '../../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../../utils/emitToast';
 
@@ -15,6 +17,7 @@ import { UpdateUserSchema } from '../../../../assets/schemas/UserSchema';
 import { ClipLoader } from 'react-spinners';
 import { GiRead } from 'react-icons/gi';
 
+import SkeletonLoading from '../../../../components/SkeletonLoading';
 import FormGroup from '../../../../components/FormGroup';
 import Input from '../../../../components/BookForm/Input';
 
@@ -23,8 +26,6 @@ import {
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
-import { env } from '../../../../config/env';
-import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -50,7 +51,7 @@ export default function ProfileForm({
   const [firstName, setFirstName] = useState(user?.firstName);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
-  console.log(isLoadingUser);
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageName, setImageName] = useState<string | null>(
     user?.imagePath ?? null
@@ -277,7 +278,7 @@ export default function ProfileForm({
             Total de livros cadastrados: {user?._count.books}
           </p>
           <p className="font-quicksand text-light-gray text-end text-[12px]">
-            Total de livros lidos: {user?.booksReading}
+            Total de livros lidos: {user?.finishedBooks}
           </p>
         </div>
       </div>

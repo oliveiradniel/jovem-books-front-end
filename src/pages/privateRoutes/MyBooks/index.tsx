@@ -1,80 +1,52 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import BooksService from '../../../app/services/BooksService';
+import { useQueryListBooks } from '../../../app/hooks/queries/book/useQueryListBooks';
 
 import TableBooks from './components/TableBooks';
 import Header from './components/Header';
 
-import { IBookAPI } from '../../../@types/Book';
-import { TPageStatus } from '../../../@types/Read';
-import { RingLoader } from 'react-spinners';
+import { TBookFilter } from '../../../@types/Book';
 
 export default function MyBooks() {
-  const [books, setBooks] = useState<IBookAPI[]>([]);
-  const [page, setPage] = useState<TPageStatus>('ALL');
+  const { booksList, isLoadingBooks, isError, refetch } = useQueryListBooks();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<TBookFilter>('ALL');
 
   const filteredBooksByStatus = useMemo(
     () =>
-      books.filter((book) => {
-        if (page === 'NOT_READING') {
-          return !book.read;
+      booksList.filter((book) => {
+        if (selectedFilter === 'NOT_READING') {
+          return book.read === null;
         }
 
-        if (page === 'ALL') {
-          return books;
+        if (selectedFilter === 'ALL') {
+          return true;
         }
 
-        return book.read?.status === page;
+        return book.read?.status === selectedFilter;
       }),
-    [page, books]
+    [selectedFilter, booksList]
   );
-
-  async function loadBooks() {
-    try {
-      setIsError(false);
-      setIsLoading(true);
-
-      const booksList = await BooksService.listBooks();
-      setBooks(booksList);
-    } catch {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadBooks();
-  }, []);
 
   return (
     <div className="bg-blue-black/60 relative h-[580px] overflow-y-auto rounded-lg p-5">
-      {isLoading && (
-        <div className="animate-fade-in absolute flex h-[calc(100%-20px)] w-[calc(100%-20px)] items-center justify-center">
-          <RingLoader color="#03a9f4" />
-        </div>
-      )}
       <Header
-        page={page}
-        numberOfBooks={books.length}
+        selectedFilter={selectedFilter}
+        numberOfBooks={booksList.length}
         numberOfFilteredBooks={filteredBooksByStatus.length}
-        isLoading={isLoading}
-        isError={isError}
-        onChangePage={setPage}
+        hasError={isError}
+        isLoadingBooks={isLoadingBooks}
+        onChangeFilter={setSelectedFilter}
       />
 
       <div className="bg-navy-blue my-4 h-[0.1px] w-full" />
 
       <TableBooks
-        books={books}
-        onLoadBooks={loadBooks}
         filteredBooks={filteredBooksByStatus}
-        page={page}
-        isLoading={isLoading}
-        isError={isError}
+        selectedFilter={selectedFilter}
+        hasError={isError}
+        isLoading={isLoadingBooks}
+        onTryAgain={refetch}
       />
     </div>
   );

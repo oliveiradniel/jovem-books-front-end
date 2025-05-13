@@ -1,16 +1,19 @@
+import { TBookFilter } from '../../../../../@types/Book.ts';
 import useAnimatedUnmount from '../../../../../app/hooks/useAnimatedUnmount.ts';
-
-import { Page } from '../../@types/Page';
 
 import Button from './Button';
 
 interface OptionsProps {
-  page: Page;
+  selectedFilter: TBookFilter;
   isVisible: boolean;
-  onSelect: (page: Page) => void;
+  onSelect: (selectedFilter: TBookFilter) => void;
 }
 
-export default function Options({ page, isVisible, onSelect }: OptionsProps) {
+export default function Options({
+  selectedFilter,
+  isVisible,
+  onSelect,
+}: OptionsProps) {
   const { shouldRender, animatedElementRef } =
     useAnimatedUnmount<HTMLDivElement>(isVisible);
 
@@ -26,28 +29,28 @@ export default function Options({ page, isVisible, onSelect }: OptionsProps) {
     >
       <Button
         label="Todos os livros"
-        page={page}
+        selectedFilter={selectedFilter}
         buttonPage="ALL"
         onClick={() => onSelect('ALL')}
       />
 
       <Button
         label="Não lidos"
-        page={page}
+        selectedFilter={selectedFilter}
         buttonPage="NOT_READING"
         onClick={() => onSelect('NOT_READING')}
       />
 
       <Button
         label="Em leitura"
-        page={page}
+        selectedFilter={selectedFilter}
         buttonPage="READING"
         onClick={() => onSelect('READING')}
       />
 
       <Button
         label="Concluídos"
-        page={page}
+        selectedFilter={selectedFilter}
         buttonPage="FINISHED"
         onClick={() => onSelect('FINISHED')}
       />

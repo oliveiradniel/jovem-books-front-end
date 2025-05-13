@@ -1,14 +1,15 @@
-import { Page } from '../../@types/Page';
+import { TBookFilter } from '../../../../../@types/Book';
+
 import Button from './Button';
 
 interface LargeOptionsMenuProps {
-  page: Page;
+  selectedFilter: TBookFilter;
   disabled: boolean;
-  onChange: (page: Page) => void;
+  onChange: (selectedFilter: TBookFilter) => void;
 }
 
 export default function LargeOptionsMenu({
-  page,
+  selectedFilter,
   disabled,
   onChange,
 }: LargeOptionsMenuProps) {
@@ -16,32 +17,28 @@ export default function LargeOptionsMenu({
     <div className="flex gap-4">
       <Button
         label="Todos os livros"
-        page={page}
-        buttonPage="ALL"
+        isSelected={selectedFilter === 'ALL'}
         disabled={disabled}
         onClick={() => onChange('ALL')}
       />
 
       <Button
         label="Não lidos"
-        page={page}
-        buttonPage="NOT_READING"
+        isSelected={selectedFilter === 'NOT_READING'}
         disabled={disabled}
         onClick={() => onChange('NOT_READING')}
       />
 
       <Button
         label="Em leitura"
-        page={page}
-        buttonPage="READING"
+        isSelected={selectedFilter === 'READING'}
         disabled={disabled}
         onClick={() => onChange('READING')}
       />
 
       <Button
         label="Concluídos"
-        page={page}
-        buttonPage="FINISHED"
+        isSelected={selectedFilter === 'FINISHED'}
         disabled={disabled}
         onClick={() => onChange('FINISHED')}
       />

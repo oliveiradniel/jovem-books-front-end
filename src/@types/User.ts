@@ -22,7 +22,7 @@ export interface IUserAPIResponse {
   password: string;
   createdAt: string;
   updatedAt: string | null;
-  booksReading: number;
+  finishedBooks: number;
   _count: {
     books: number;
   };
