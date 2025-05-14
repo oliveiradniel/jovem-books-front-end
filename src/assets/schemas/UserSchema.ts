@@ -16,6 +16,17 @@ const BaseUserSchema = z.object({
   password: z
     .string({ message: 'The password must be a string' })
     .min(8, 'The password must be at least 8 characters'),
+});
+
+export const SignInSchema = BaseUserSchema.omit({
+  firstName: true,
+  lastName: true,
+  email: true,
+});
+
+export const SignUpSchema = BaseUserSchema;
+
+export const UpdateUserSchema = BaseUserSchema.omit({ password: true }).extend({
   file: z
     .union([
       z
@@ -34,16 +45,3 @@ const BaseUserSchema = z.object({
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<File | null>,
 });
-
-export const SignInSchema = BaseUserSchema.omit({
-  firstName: true,
-  lastName: true,
-  email: true,
-  file: true,
-});
-
-export const SignUpSchema = BaseUserSchema.omit({
-  file: true,
-});
-
-export const UpdateUserSchema = BaseUserSchema.omit({ password: true });

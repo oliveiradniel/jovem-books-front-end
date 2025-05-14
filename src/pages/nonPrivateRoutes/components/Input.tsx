@@ -5,16 +5,16 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error: string[] | null;
   theFieldIsEmpty: boolean;
+  isLoading: boolean;
   Icon: React.ElementType;
-  isDisabled: boolean;
   isAPasswordInput?: boolean;
 }
 
 export default function Input({
   error,
   theFieldIsEmpty,
+  isLoading,
   Icon,
-  isDisabled,
   isAPasswordInput = false,
   ...props
 }: InputProps) {
@@ -32,9 +32,9 @@ export default function Input({
 
   return (
     <div
-      className={`bg-midnight-blue-op-40 border-midnight-blue-op-40 flex items-center gap-3 rounded-lg border px-4 py-2 transition-all duration-300 ease-in-out ${
+      className={`bg-midnight-blue-op-40 border-midnight-blue-op-40 flex items-center gap-3 rounded-lg border px-4 py-2 transition-all duration-300 ease-in-out ${isLoading && 'bg-transparent'} ${
         isTheFieldFocused && 'border-royal-purple'
-      } ${isDisabled && 'bg-transparent'} ${error && error.length > 0 && 'border-blood-red!'}`}
+      } ${error && error.length > 0 && 'border-blood-red!'}`}
     >
       <Icon
         className={`text-light-gray-op-40 h-5 w-5 transition duration-300 ease-in-out ${
@@ -44,6 +44,7 @@ export default function Input({
 
       <input
         type={typeField}
+        disabled={isLoading}
         onFocus={() => setIsTheFieldFocused(true)}
         onBlur={() => setIsTheFieldFocused(false)}
         {...props}
@@ -53,14 +54,12 @@ export default function Input({
       {isAPasswordInput && (
         <button
           type="button"
-          disabled={isDisabled}
+          disabled={isLoading}
           onClick={handlePasswordVisibility}
           onBlur={() => {
             setIsTheFieldFocused(false);
           }}
-          className={
-            isDisabled ? 'hover:cursor-default' : 'hover:cursor-pointer'
-          }
+          className={'cursor-pointer disabled:cursor-default'}
         >
           {!isThePasswordVisible ? (
             <FaEye

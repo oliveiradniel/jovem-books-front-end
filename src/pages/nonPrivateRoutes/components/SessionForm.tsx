@@ -4,8 +4,8 @@ import { useErrors } from '../../../app/hooks/useErrors';
 
 import { ZodSchema } from 'zod';
 
-import { emitToast } from '../../../utils/emitToast';
 import { sanitizeAndCapitalize } from '../../../utils/sanitizeAndCapitalize';
+import { emitToast } from '../../../utils/emitToast';
 
 import { FaUserSecret } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
@@ -23,7 +23,9 @@ import {
   TSessionFields,
 } from '../../../@types/FormError';
 
-interface SessionFormProps<T> {
+import { useMutateSession } from '../../../app/hooks/mutations/useMutateSession';
+
+export interface ISessionFormProps<T> {
   type?: 'signIn' | 'signUp' | 'registrationCompleted';
   validationSchema: ZodSchema<T>;
   onSubmit: (credentials: T) => Promise<void>;
@@ -37,9 +39,17 @@ export default function SessionForm<T>({
   validationSchema,
   onSubmit,
   handleErrors,
-}: SessionFormProps<T>) {
+}: ISessionFormProps<T>) {
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TSessionErrorMessages>();
+
+  const { submitSession, isLoading, hasError } = useMutateSession<T>({
+    type,
+    validationSchema,
+    handleErrors,
+    onSubmit,
+    setError,
+  });
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -47,11 +57,7 @@ export default function SessionForm<T>({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [isError, setIsError] = useState(false);
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const buttonLabel = type === 'signIn' ? 'Entrar' : 'Criar';
+  const buttonLabel = type !== 'signUp' ? 'Entrar' : 'Criar';
 
   const validSignInForm = username.length > 0 && password.length > 0;
 
@@ -148,27 +154,16 @@ export default function SessionForm<T>({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const userData = {
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+
     try {
-      setIsError(false);
-      setIsSubmitting(true);
-
-      const userData = {
-        username,
-        firstName,
-        lastName,
-        email,
-        password,
-      };
-
-      const credentials = validationSchema.parse(userData);
-
-      await onSubmit(credentials);
-
-      setUsername('');
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setPassword('');
+      submitSession(userData);
     } catch (error) {
       const result = handleErrors(error);
       if (result) {
@@ -182,13 +177,10 @@ export default function SessionForm<T>({
           ? 'Não foi possível verificar suas credenciais.'
           : 'Não foi possível concluir seu cadastro.';
 
-      setIsError(true);
       emitToast({
         type: 'error',
         message,
       });
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -203,8 +195,7 @@ export default function SessionForm<T>({
           autoFocus
           theFieldIsEmpty={username.length > 0}
           Icon={FaUserSecret}
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
+          isLoading={isLoading}
           type="text"
           placeholder="Nome de usuário"
           value={username}
@@ -222,8 +213,7 @@ export default function SessionForm<T>({
                 error={getErrorMessageByFieldName(['firstName'])}
                 theFieldIsEmpty={firstName.length > 0}
                 Icon={FaUser}
-                isDisabled={isSubmitting}
-                disabled={isSubmitting}
+                isLoading={isLoading}
                 type="text"
                 placeholder="Primeiro nome"
                 value={firstName}
@@ -234,8 +224,7 @@ export default function SessionForm<T>({
                 error={getErrorMessageByFieldName(['lastName'])}
                 theFieldIsEmpty={lastName.length > 0}
                 Icon={FaUser}
-                isDisabled={isSubmitting}
-                disabled={isSubmitting}
+                isLoading={isLoading}
                 type="text"
                 placeholder="Sobrenome"
                 value={lastName}
@@ -250,8 +239,7 @@ export default function SessionForm<T>({
               error={getErrorMessageByFieldName(['email'])}
               theFieldIsEmpty={email.length > 0}
               Icon={MdEmail}
-              isDisabled={isSubmitting}
-              disabled={isSubmitting}
+              isLoading={isLoading}
               type="email"
               placeholder="E-mail"
               value={email}
@@ -267,10 +255,9 @@ export default function SessionForm<T>({
         <Input
           error={getErrorMessageByFieldName(['password', 'credentials'])}
           theFieldIsEmpty={password.length > 0}
+          isLoading={isLoading}
           isAPasswordInput
           Icon={RiLockPasswordFill}
-          isDisabled={isSubmitting}
-          disabled={isSubmitting}
           placeholder="Senha"
           value={password}
           onChange={handlePasswordChange}
@@ -278,9 +265,9 @@ export default function SessionForm<T>({
       </FormGroup>
 
       <Button
-        label={isError ? 'Tentar novamente' : buttonLabel}
+        label={hasError ? 'Tentar novamente' : buttonLabel}
         isAbsolute={type !== 'registrationCompleted'}
-        isSubmitting={isSubmitting}
+        isSubmitting={isLoading}
         disabled={!isFormValid}
       />
     </form>
