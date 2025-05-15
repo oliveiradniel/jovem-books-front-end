@@ -1,19 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
+
 import BooksService from '../../../app/services/BooksService';
 
-import { UpdateDataBookSchema } from '../../../assets/schemas/BookSchemas';
+import { UpdateBookSchema } from '../../../assets/schemas/BookSchemas';
 
 import { emitToast } from '../../../utils/emitToast';
+import { formatAuthors } from '../../../utils/formatAuthors';
 
 import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 import SectionToEditBookCover from './components/SectionToEditBookCover';
 
-import { IBook, TUpdateBookData } from '../../../@types/Book';
-import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
+import { IBook, TUpdateBook } from '../../../@types/Book';
 
 export default function EditBook() {
   const { id } = useParams();
@@ -27,16 +29,22 @@ export default function EditBook() {
 
   const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
 
-  async function handleSubmit(book: TUpdateBookData) {
-    await BooksService.updateBook(book);
+  async function handleSubmit(book: TUpdateBook) {
+    const updatedBook = await BooksService.updateBook(book);
 
     emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
+
+    return updatedBook;
   }
 
   useEffect(() => {
     if (bookData) {
-      setBook(bookData);
-      bookFormRef.current?.setFieldValues(bookData);
+      const authors = formatAuthors({ authors: bookData.authors });
+
+      const formattedBook = { ...bookData, authors };
+
+      setBook(formattedBook);
+      bookFormRef.current?.setFieldValues(formattedBook);
     }
 
     if (isError) {
@@ -73,7 +81,7 @@ export default function EditBook() {
         ref={bookFormRef}
         buttonLabel="Salvar alterações"
         onSubmit={handleSubmit}
-        validationSchema={UpdateDataBookSchema}
+        validationSchema={UpdateBookSchema}
       />
     </div>
   );

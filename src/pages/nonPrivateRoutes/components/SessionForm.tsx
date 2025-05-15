@@ -45,10 +45,7 @@ export default function SessionForm<T>({
 
   const { submitSession, isLoading, hasError } = useMutateSession<T>({
     type,
-    validationSchema,
-    handleErrors,
     onSubmit,
-    setError,
   });
 
   const [username, setUsername] = useState('');
@@ -163,7 +160,9 @@ export default function SessionForm<T>({
     };
 
     try {
-      submitSession(userData);
+      const data = validationSchema.parse(userData);
+
+      submitSession(data);
     } catch (error) {
       const result = handleErrors(error);
       if (result) {

@@ -7,10 +7,10 @@ import { CiEdit } from 'react-icons/ci';
 
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 
-import { IBook } from '../../../../@types/Book';
+import { IBookAPI } from '../../../../@types/Book';
 
 interface ReadingInformationProps {
-  book: IBook;
+  book: IBookAPI;
   isLoadingBook: boolean;
   onFinish: () => void;
 }

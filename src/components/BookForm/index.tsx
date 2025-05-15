@@ -1,6 +1,8 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useMutateSubmitBook } from '../../app/hooks/mutations/useMutateSubmitBook';
+
 import { useErrors } from '../../app/hooks/useErrors';
 
 import BooksService from '../../app/services/BooksService';
@@ -23,7 +25,7 @@ import Select from './Select';
 import Label from './Label';
 import NumberInput from './NumberInput';
 
-import { IBook } from '../../@types/Book';
+import { IBook, IBookAPI } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
 
 export interface BookFormHandle {
@@ -35,7 +37,7 @@ interface BookFormProps<T> {
   buttonLabel: 'Criar' | 'Salvar alterações';
   validationSchema: ZodSchema<T>;
   isLoadingBook?: boolean;
-  onSubmit: (book: T) => Promise<void>;
+  onSubmit: (book: T) => Promise<IBookAPI>;
 }
 
 function BookFormInner<T>(
@@ -53,6 +55,11 @@ function BookFormInner<T>(
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TBookFields, TBookErrorMessages>();
 
+  const { submitBook, isLoading, hasError } = useMutateSubmitBook({
+    type: buttonLabel,
+    onSubmit,
+  });
+
   const [title, setTitle] = useState('');
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
@@ -61,7 +68,6 @@ function BookFormInner<T>(
     null
   );
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
@@ -204,35 +210,24 @@ function BookFormInner<T>(
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    const formattedNumberOfPages = Number(numberOfPages);
+    const bookData = {
+      id: id!,
+      title,
+      authors: AuthorsMapper.toPersistence({ authors }),
+      sinopse: sinopse,
+      numberOfPages: Number(numberOfPages),
+      literaryGenre,
+    };
 
     try {
-      setIsLoading(true);
+      const data = validationSchema.parse(bookData);
 
-      const formData = {
-        id: id,
-        title,
-        authors: AuthorsMapper.toPersistence({ authors }),
-        sinopse,
-        numberOfPages: formattedNumberOfPages,
-        literaryGenre,
-      };
-
-      const data = validationSchema.parse(formData);
-
-      await onSubmit(data);
+      submitBook(data);
     } catch (error) {
       const result = handleBookErrors(error);
       if (result) {
         setError(result);
-        return;
       }
-
-      const errorMessage = `Não foi possível ${buttonLabel === 'Criar' ? 'criar o' : 'salvar as alterações do'} livro.`;
-
-      emitToast({ type: 'error', message: errorMessage });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -310,7 +305,7 @@ function BookFormInner<T>(
 
         <div className="flex gap-2">
           <Button
-            buttonLabel={buttonLabel}
+            buttonLabel={hasError ? 'Tentar novamente' : buttonLabel}
             disabled={!isFormValid}
             isLoading={isLoading}
             onClick={handleSubmit}

@@ -29,29 +29,25 @@ export default function Options({
     >
       <Button
         label="Todos os livros"
-        selectedFilter={selectedFilter}
-        buttonPage="ALL"
+        isSelected={selectedFilter === 'ALL'}
         onClick={() => onSelect('ALL')}
       />
 
       <Button
         label="Não lidos"
-        selectedFilter={selectedFilter}
-        buttonPage="NOT_READING"
+        isSelected={selectedFilter === 'NOT_READING'}
         onClick={() => onSelect('NOT_READING')}
       />
 
       <Button
         label="Em leitura"
-        selectedFilter={selectedFilter}
-        buttonPage="READING"
+        isSelected={selectedFilter === 'READING'}
         onClick={() => onSelect('READING')}
       />
 
       <Button
         label="Concluídos"
-        selectedFilter={selectedFilter}
-        buttonPage="FINISHED"
+        isSelected={selectedFilter === 'FINISHED'}
         onClick={() => onSelect('FINISHED')}
       />
     </div>

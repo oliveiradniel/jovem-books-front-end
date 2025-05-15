@@ -24,7 +24,7 @@ import ReadingInformation from './components/ReadingInformation';
 import FinishBookModal from '../../../components/Modals/FinishBookModal';
 import EditCurrentPageModal from '../../../components/Modals/EditCurrentPageModal';
 
-import { IBook, LiteraryGenreKey } from '../../../@types/Book';
+import { IBookAPI, LiteraryGenreKey } from '../../../@types/Book';
 import { LITERARY_GENRE_LABELS } from '../../../constants/books';
 
 export default function Book() {
@@ -35,7 +35,7 @@ export default function Book() {
 
   const { bookData, isLoadingBook, isError } = useQueryGetBookById(id!);
 
-  const [book, setBook] = useState({} as IBook);
+  const [book, setBook] = useState({} as IBookAPI);
 
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
     useState(false);

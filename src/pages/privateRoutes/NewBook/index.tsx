@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
 
-import { CreateDataBookSchema } from '../../../assets/schemas/BookSchemas';
+import { CreateBookSchema } from '../../../assets/schemas/BookSchemas';
 
 import AuthorsMapper from '../../../app/services/mappers/AuthorsMapper';
 
@@ -13,7 +13,7 @@ import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
-import { IBookAPI, TCreateDataBook } from '../../../@types/Book';
+import { IBookAPI, TCreateBook } from '../../../@types/Book';
 import { LITERARY_GENRE_OPTIONS } from '../../../constants/books';
 
 export default function NewBook() {
@@ -26,12 +26,14 @@ export default function NewBook() {
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
-  async function handleSubmit(book: TCreateDataBook) {
-    await BooksService.createBook(book);
+  async function handleSubmit(book: TCreateBook) {
+    const createdBook = await BooksService.createBook(book);
 
     bookFormRef.current?.resetFields();
 
     emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
+
+    return createdBook;
   }
 
   useEffect(() => {
@@ -77,7 +79,7 @@ export default function NewBook() {
         ref={bookFormRef}
         buttonLabel="Criar"
         onSubmit={handleSubmit}
-        validationSchema={CreateDataBookSchema}
+        validationSchema={CreateBookSchema}
       />
     </div>
   );

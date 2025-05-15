@@ -1,13 +1,6 @@
 import { httpClient } from './utils/httpClient';
 
-import AuthorsMapper from './mappers/AuthorsMapper';
-
-import {
-  IBook,
-  IBookAPI,
-  TCreateDataBook,
-  TUpdateBookData,
-} from '../../@types/Book';
+import { IBookAPI, TCreateBook, TUpdateBook } from '../../@types/Book';
 
 interface UpdateBookCoverProps {
   id: string;
@@ -20,15 +13,10 @@ interface GetBookByIdProps {
 }
 
 class BooksService {
-  async getBookById({ id, onlyCommas }: GetBookByIdProps): Promise<IBook> {
+  async getBookById({ id }: GetBookByIdProps): Promise<IBookAPI> {
     const { data } = await httpClient.get<IBookAPI>(`/books/${id}`);
 
-    const domainAuthors = AuthorsMapper.toDomain({
-      authors: data.authors,
-      onlyCommas,
-    }) as string;
-
-    return { ...data, authors: domainAuthors };
+    return data;
   }
 
   async listBooks() {
@@ -37,11 +25,16 @@ class BooksService {
     return data;
   }
 
-  async createBook(book: TCreateDataBook) {
-    await httpClient.post('/books', book);
+  async createBook(book: TCreateBook): Promise<IBookAPI> {
+    const { data: createdBook } = await httpClient.post<IBookAPI>(
+      '/books',
+      book
+    );
+
+    return createdBook;
   }
 
-  async updateBook({ id, ...book }: TUpdateBookData): Promise<IBook> {
+  async updateBook({ id, ...book }: TUpdateBook): Promise<IBookAPI> {
     const { data: updatedBook } = await httpClient.put<IBookAPI>(
       `/books/${id}`,
       book,
@@ -52,12 +45,7 @@ class BooksService {
       }
     );
 
-    const domainAuthors = AuthorsMapper.toDomain({
-      authors: updatedBook.authors,
-      onlyCommas: false,
-    }) as string;
-
-    return { ...updatedBook, authors: domainAuthors };
+    return updatedBook;
   }
 
   async updateImage({ id, image }: UpdateBookCoverProps) {

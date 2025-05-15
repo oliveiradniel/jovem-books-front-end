@@ -1,34 +1,35 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { ISessionFormProps } from '../../../pages/nonPrivateRoutes/components/SessionForm';
+import { emitToast } from '../../../utils/emitToast';
 
-import { TSignIn, TSignUp } from '../../../@types/User';
-
-import {
-  IFormError,
-  TSessionErrorMessages,
-  TSessionFields,
-} from '../../../@types/FormError';
+interface UseMutateSessionProps<T> {
+  type: 'signIn' | 'signUp' | 'registrationCompleted';
+  onSubmit: (credentials: T) => Promise<void>;
+}
 
 export function useMutateSession<T>({
-  validationSchema,
+  type,
   onSubmit,
-}: ISessionFormProps<T> & {
-  setError: ({
-    field,
-    message,
-  }: IFormError<TSessionFields, TSessionErrorMessages>) => void;
-}) {
-  const { mutateAsync, isPending, isError } = useMutation({
-    mutationFn: async (data: TSignIn | TSignUp) => {
-      const credentials = validationSchema.parse(data);
+}: UseMutateSessionProps<T>) {
+  const { mutate, isPending, isError } = useMutation({
+    mutationFn: async (data: T) => {
+      await onSubmit(data);
+    },
+    onError: () => {
+      const message =
+        type !== 'signUp'
+          ? 'Não foi possível verificar suas credenciais.'
+          : 'Não foi possível concluir seu cadastro.';
 
-      await onSubmit(credentials);
+      emitToast({
+        type: 'error',
+        message,
+      });
     },
   });
 
   return {
-    submitSession: mutateAsync,
+    submitSession: mutate,
     isLoading: isPending,
     hasError: isError,
   };

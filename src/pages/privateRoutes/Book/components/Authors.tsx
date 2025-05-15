@@ -1,22 +1,23 @@
 interface AuthorsProps {
-  authors: string;
+  authors: string[]; // ["Eu e Eu", "Eu"]
   isLoadingBook: boolean;
 }
 
 export default function Authors({ authors, isLoadingBook }: AuthorsProps) {
-  function formatColors(authorsStr: string) {
-    const parts = authorsStr?.split(/(,| e )/).filter((part) => part !== '');
+  function renderAuthors() {
+    return authors?.map((author, index) => {
+      const isLast = index === authors.length - 1;
+      const isSecondLast = index === authors.length - 2;
 
-    return parts?.map((part, index) => {
-      const isCommaOrE = part === ',' || part === ' e ';
       return (
-        <span
-          key={index}
-          className={`font-roboto ${
-            isCommaOrE ? 'text-snow-white font-thin' : 'text-sky-blue/70'
-          } `}
-        >
-          {part}
+        <span key={index} className="text-sky-blue/70">
+          {author}
+          {isSecondLast && !isLast && (
+            <span className="text-snow-white font-thin"> e </span>
+          )}
+          {!isLast && !isSecondLast && (
+            <span className="text-snow-white font-thin">, </span>
+          )}
         </span>
       );
     });
@@ -25,7 +26,7 @@ export default function Authors({ authors, isLoadingBook }: AuthorsProps) {
   return (
     <h6 className="text-sky-blue/70 mt-2">
       <span className="text-snow-white font-thin">Escrito por</span>{' '}
-      {isLoadingBook ? '...' : formatColors(authors)}
+      {isLoadingBook ? '...' : renderAuthors()}
     </h6>
   );
 }

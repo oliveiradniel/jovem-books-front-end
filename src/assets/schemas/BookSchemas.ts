@@ -43,10 +43,11 @@ const BaseBookSchema = z.object({
     .transform((val) => val ?? null) as z.ZodType<File | null>,
 });
 
-export const CreateDataBookSchema = BaseBookSchema.omit({
+export const CreateBookSchema = BaseBookSchema.omit({
   id: true,
+  imagePath: true,
 });
 
-export const UpdateDataBookSchema = BaseBookSchema.omit({
+export const UpdateBookSchema = BaseBookSchema.omit({
   numberOfPages: true,
 });

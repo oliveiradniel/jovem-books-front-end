@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 import {
-  CreateDataBookSchema,
-  UpdateDataBookSchema,
+  CreateBookSchema,
+  UpdateBookSchema,
 } from '../assets/schemas/BookSchemas';
 
 import { LITERARY_GENRE_LABELS } from '../constants/books';
@@ -43,8 +43,8 @@ export type ReadingStatus = 'READING' | 'ON_HOLD' | 'FINISHED';
 
 export type TBookFilter = 'ALL' | 'NOT_READING' | 'READING' | 'FINISHED';
 
-export type TCreateDataBook = z.infer<typeof CreateDataBookSchema>;
+export type TCreateBook = z.infer<typeof CreateBookSchema>;
 
-export type TUpdateBookData = z.infer<typeof UpdateDataBookSchema>;
+export type TUpdateBook = z.infer<typeof UpdateBookSchema>;
 
 export type LiteraryGenreKey = keyof typeof LITERARY_GENRE_LABELS;
