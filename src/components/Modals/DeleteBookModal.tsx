@@ -6,6 +6,7 @@ import Input from './Input';
 interface DeleteBookModalProps {
   bookTitle: string;
   isVisible: boolean;
+  isDeleting: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -13,6 +14,7 @@ interface DeleteBookModalProps {
 export default function DeleteBookModal({
   bookTitle,
   isVisible,
+  isDeleting,
   onClose,
   onConfirm,
 }: DeleteBookModalProps) {
@@ -29,12 +31,6 @@ export default function DeleteBookModal({
     onClose();
   }
 
-  function handleConfirm() {
-    onConfirm();
-
-    handleClose();
-  }
-
   return (
     <ModalBase
       danger
@@ -43,7 +39,8 @@ export default function DeleteBookModal({
       buttonDisabled={title !== bookTitle}
       isVisible={isVisible}
       onClose={handleClose}
-      onConfirm={handleConfirm}
+      onConfirm={() => onConfirm()}
+      isLoading={isDeleting}
     >
       <Input
         danger

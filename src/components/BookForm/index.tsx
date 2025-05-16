@@ -1,18 +1,14 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useMutateSubmitBook } from '../../app/hooks/mutations/useMutateSubmitBook';
 
 import { useErrors } from '../../app/hooks/useErrors';
 
-import BooksService from '../../app/services/BooksService';
-
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
 
 import { ZodSchema } from 'zod';
 import { handleBookErrors } from '../../pages/privateRoutes/EditBook/errors/handleBookErrors';
-
-import { emitToast } from '../../utils/emitToast';
 
 import { FiTrash2 } from 'react-icons/fi';
 
@@ -27,6 +23,7 @@ import NumberInput from './NumberInput';
 
 import { IBook, IBookAPI } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
+import { useMutateDeleteBook } from '../../app/hooks/mutations/useMutateDeleteBook';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -50,7 +47,6 @@ function BookFormInner<T>(
   ref: React.Ref<BookFormHandle>
 ) {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TBookFields, TBookErrorMessages>();
@@ -61,14 +57,19 @@ function BookFormInner<T>(
   });
 
   const [title, setTitle] = useState('');
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const { deleteBook, isDeleting } = useMutateDeleteBook({
+    title,
+    onCloseModal: () => setIsDeleteModalVisible(false),
+  });
+
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
   const [literaryGenre, setLiteraryGenre] = useState([] as string[]);
   const [numberOfPages, setNumberOfPages] = useState<number | string | null>(
     null
   );
-
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useImperativeHandle(ref, () => ({
     setFieldValues(book) {
@@ -190,21 +191,7 @@ function BookFormInner<T>(
   }
 
   async function handleDeleteBook() {
-    try {
-      await BooksService.deleteBook(id!);
-
-      emitToast({
-        type: 'success',
-        message: `O livro ${title} foi excluído com sucesso.`,
-      });
-
-      navigate('/my-books');
-    } catch {
-      emitToast({
-        type: 'error',
-        message: `Não foi possível excluir o livro ${title}.`,
-      });
-    }
+    deleteBook({ id: id! });
   }
 
   async function handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
@@ -236,6 +223,7 @@ function BookFormInner<T>(
       <DeleteBookModal
         bookTitle={title}
         isVisible={isDeleteModalVisible}
+        isDeleting={isDeleting}
         onClose={() => setIsDeleteModalVisible(false)}
         onConfirm={handleDeleteBook}
       />
