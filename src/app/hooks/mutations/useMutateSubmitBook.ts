@@ -21,7 +21,7 @@ export function useMutateSubmitBook<T>({
     },
     onSuccess: ({ id }) => {
       queryClient.invalidateQueries({
-        queryKey: ['books', { id }],
+        queryKey: ['book', { id }],
       });
 
       queryClient.invalidateQueries({

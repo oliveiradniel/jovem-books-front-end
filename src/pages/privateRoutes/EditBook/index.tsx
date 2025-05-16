@@ -27,8 +27,6 @@ export default function EditBook() {
 
   const [book, setBook] = useState({} as IBook);
 
-  const [isUpdatingBookCover, setIsUpdatingBookCover] = useState(false);
-
   async function handleSubmit(book: TUpdateBook) {
     const updatedBook = await BooksService.updateBook(book);
 
@@ -71,8 +69,6 @@ export default function EditBook() {
         imagePath={book.imagePath}
         isLoadingBook={isLoadingBook}
         isUpdatingBook={false}
-        isUpdatingBookCover={isUpdatingBookCover}
-        setIsUpdatingBookCover={setIsUpdatingBookCover}
       />
 
       <div className="bg-navy-blue my-8 h-[0.4px] w-full" />

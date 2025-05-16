@@ -8,7 +8,7 @@ export function useQueryGetBookById(id: string) {
     isLoading: isFetching,
     isError,
   } = useQuery({
-    queryKey: ['books', { id }],
+    queryKey: ['book', { id }],
     staleTime: Infinity,
     queryFn: async () => {
       return await BooksService.getBookById({

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import BooksService from '../../../../app/services/BooksService';
+import { useMutateBookImage } from '../../../../app/hooks/mutations/useMutateBookImage';
 
 import { env } from '../../../../config/env';
 
@@ -18,20 +18,18 @@ interface EditBookCoverProps {
   imagePath: string | null;
   isLoadingBook: boolean;
   isUpdatingBook: boolean;
-  isUpdatingBookCover: boolean;
-  setIsUpdatingBookCover: (value: boolean) => void;
 }
 
 export default function SectionToEditBookCover({
   imagePath,
   isLoadingBook,
   isUpdatingBook,
-  isUpdatingBookCover,
-  setIsUpdatingBookCover,
 }: EditBookCoverProps) {
   const { id } = useParams();
 
   const isFirstRender = useRef(true);
+
+  const { submitBookImage, isUpdatingBookImage } = useMutateBookImage();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
@@ -60,48 +58,25 @@ export default function SectionToEditBookCover({
   }
 
   function handleRemoveImageFromScreen() {
-    if (selectedImage) {
+    if (isToRemoveTheBookCover && selectedImage === null) {
       setSelectedImage(null);
-    } else if (!selectedImage) {
+      setIsToRemoveTheBookCover(false);
+    } else {
       setIsToRemoveTheBookCover(true);
     }
   }
 
   async function handleSubmit() {
     if (selectedImage || isToRemoveTheBookCover) {
-      try {
-        setIsUpdatingBookCover(true);
+      const updatedBook = await submitBookImage({
+        id: id!,
+        image: selectedImage,
+      });
 
-        const updatedBook = await BooksService.updateImage({
-          id: id!,
-          image: selectedImage,
-        });
+      setSelectedImage(null);
+      setIsToRemoveTheBookCover(false);
 
-        if (selectedImage) {
-          emitToast({ type: 'success', message: 'Capa alterada com sucesso.' });
-        } else {
-          emitToast({ type: 'success', message: 'Capa excluída com sucesso.' });
-        }
-
-        setImageName(updatedBook.imagePath);
-        if (!selectedImage) setSelectedImage(null);
-      } catch {
-        if (selectedImage) {
-          emitToast({
-            type: 'error',
-            message: 'Não foi possível alterar a capa do livro.',
-          });
-        } else {
-          emitToast({
-            type: 'error',
-            message: 'Não foi possível excluir a capa do livro.',
-          });
-        }
-      } finally {
-        setSelectedImage(null);
-        setIsToRemoveTheBookCover(false);
-        setIsUpdatingBookCover(false);
-      }
+      setImageName(updatedBook.imagePath);
     } else {
       document.getElementById('book-cover')?.click();
     }
@@ -130,7 +105,7 @@ export default function SectionToEditBookCover({
               <img
                 src={src}
                 alt="Capa do Livro"
-                className="h-[65px] w-[65px] rounded-full"
+                className="h-[65px] w-[65px] rounded-full object-cover"
               />
             ) : (
               <MdOutlinePermMedia size={45} color="#adadad40" />
@@ -146,8 +121,8 @@ export default function SectionToEditBookCover({
                   ? 'Alterar capa'
                   : 'Adicionar capa'
             }
-            disabled={isUpdatingBookCover || isUpdatingBook || isLoadingBook}
-            isLoading={isUpdatingBookCover}
+            disabled={isUpdatingBookImage || isUpdatingBook || isLoadingBook}
+            isLoading={isUpdatingBookImage}
             isLoadingOther={isUpdatingBook || isLoadingBook}
             onClick={handleSubmit}
           >
@@ -169,7 +144,7 @@ export default function SectionToEditBookCover({
               )
             }
             disabled={
-              isUpdatingBookCover ||
+              isUpdatingBookImage ||
               isUpdatingBook ||
               (!imageName && !selectedImage) ||
               isLoadingBook
