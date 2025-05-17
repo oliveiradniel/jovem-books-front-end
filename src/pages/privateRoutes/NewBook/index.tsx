@@ -27,13 +27,11 @@ export default function NewBook() {
   const bookFormRef = useRef<BookFormHandle>(null);
 
   async function handleSubmit(book: TCreateBook) {
-    const createdBook = await BooksService.createBook(book);
+    await BooksService.createBook(book);
 
     bookFormRef.current?.resetFields();
 
     emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
-
-    return createdBook;
   }
 
   useEffect(() => {
@@ -77,7 +75,7 @@ export default function NewBook() {
 
       <BookForm
         ref={bookFormRef}
-        buttonLabel="Criar"
+        type="create"
         onSubmit={handleSubmit}
         validationSchema={CreateBookSchema}
       />

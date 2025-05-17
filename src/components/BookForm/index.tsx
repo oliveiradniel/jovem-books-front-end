@@ -2,6 +2,7 @@ import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useMutateSubmitBook } from '../../app/hooks/mutations/useMutateSubmitBook';
+import { useMutateDeleteBook } from '../../app/hooks/mutations/useMutateDeleteBook';
 
 import { useErrors } from '../../app/hooks/useErrors';
 
@@ -21,9 +22,8 @@ import Select from './Select';
 import Label from './Label';
 import NumberInput from './NumberInput';
 
-import { IBook, IBookAPI } from '../../@types/Book';
+import { IBook } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
-import { useMutateDeleteBook } from '../../app/hooks/mutations/useMutateDeleteBook';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -31,19 +31,14 @@ export interface BookFormHandle {
 }
 
 interface BookFormProps<T> {
-  buttonLabel: 'Criar' | 'Salvar alterações';
+  type: 'create' | 'update';
   validationSchema: ZodSchema<T>;
   isLoadingBook?: boolean;
-  onSubmit: (book: T) => Promise<IBookAPI>;
+  onSubmit: (book: T) => Promise<void>;
 }
 
 function BookFormInner<T>(
-  {
-    buttonLabel,
-    validationSchema,
-    isLoadingBook = false,
-    onSubmit,
-  }: BookFormProps<T>,
+  { type, validationSchema, isLoadingBook = false, onSubmit }: BookFormProps<T>,
   ref: React.Ref<BookFormHandle>
 ) {
   const { id } = useParams();
@@ -52,7 +47,7 @@ function BookFormInner<T>(
     useErrors<TBookFields, TBookErrorMessages>();
 
   const { submitBook, isLoading, hasError } = useMutateSubmitBook({
-    type: buttonLabel,
+    type,
     onSubmit,
   });
 
@@ -70,6 +65,8 @@ function BookFormInner<T>(
   const [numberOfPages, setNumberOfPages] = useState<number | string | null>(
     null
   );
+
+  const buttonLabel = type === 'create' ? 'Criar' : 'Salvar alterações';
 
   useImperativeHandle(ref, () => ({
     setFieldValues(book) {
@@ -209,7 +206,7 @@ function BookFormInner<T>(
     try {
       const data = validationSchema.parse(bookData);
 
-      submitBook(data);
+      await submitBook(data);
     } catch (error) {
       const result = handleBookErrors(error);
       if (result) {
@@ -278,7 +275,7 @@ function BookFormInner<T>(
           </div>
         </FormGroup>
 
-        {buttonLabel === 'Criar' && (
+        {type === 'create' && (
           <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
             <NumberInput
               error={getErrorMessageByFieldName(['numberOfPages'])}
@@ -298,7 +295,7 @@ function BookFormInner<T>(
             isLoading={isLoading}
             onClick={handleSubmit}
           />
-          {buttonLabel === 'Salvar alterações' && (
+          {type === 'update' && (
             <DeleteButton
               buttonLabel={<FiTrash2 />}
               disabled={isLoading || isLoadingBook}
@@ -311,7 +308,7 @@ function BookFormInner<T>(
   );
 }
 
-const BookForm = forwardRef(BookFormInner) as <T>(
+export const BookForm = forwardRef(BookFormInner) as <T>(
   props: BookFormProps<T> & { ref?: React.Ref<BookFormHandle> }
 ) => ReturnType<typeof BookFormInner>;
 

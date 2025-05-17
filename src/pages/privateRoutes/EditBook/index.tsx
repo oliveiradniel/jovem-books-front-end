@@ -28,11 +28,9 @@ export default function EditBook() {
   const [book, setBook] = useState({} as IBook);
 
   async function handleSubmit(book: TUpdateBook) {
-    const updatedBook = await BooksService.updateBook(book);
+    await BooksService.updateBook(book);
 
     emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
-
-    return updatedBook;
   }
 
   useEffect(() => {
@@ -75,7 +73,7 @@ export default function EditBook() {
 
       <BookForm
         ref={bookFormRef}
-        buttonLabel="Salvar alterações"
+        type="update"
         onSubmit={handleSubmit}
         validationSchema={UpdateBookSchema}
       />

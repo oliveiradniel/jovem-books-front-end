@@ -30,7 +30,7 @@ class BooksService {
       '/books',
       book
     );
-
+    console.log(createdBook);
     return createdBook;
   }
 
