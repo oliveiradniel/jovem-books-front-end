@@ -26,6 +26,7 @@ import {
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
+import { useQueryListBooks } from '../../../../app/hooks/queries/book/useQueryListBooks';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -41,6 +42,16 @@ export default function ProfileForm({
   onEditCancellation,
 }: ProfileForm) {
   const { updateUser } = useAuth();
+
+  const { booksList } = useQueryListBooks();
+
+  const totalBooks = booksList.length;
+  let totalOfBooksFinished = 0;
+  booksList.forEach((book) => {
+    if (book.read?.status === 'FINISHED') {
+      totalOfBooksFinished += 1;
+    }
+  });
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
@@ -275,10 +286,10 @@ export default function ProfileForm({
             {user ? `${user?.firstName} ${user?.lastName}` : 'Carregando...'}
           </p>
           <p className="font-quicksand text-light-gray mt-2 text-end text-[12px]">
-            Total de livros cadastrados: {user?._count.books}
+            Total de livros cadastrados: {totalBooks}
           </p>
           <p className="font-quicksand text-light-gray text-end text-[12px]">
-            Total de livros lidos: {user?.finishedBooks}
+            Total de livros lidos: {totalOfBooksFinished}
           </p>
         </div>
       </div>

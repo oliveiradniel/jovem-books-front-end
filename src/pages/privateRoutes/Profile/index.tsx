@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
+import { useAuth } from '../../../app/hooks/useAuth';
+
 import { IUserAPIResponse } from '../../../@types/User';
 
 import ProfileForm from './components/ProfileForm';
 import DeleteUserModal from '../../../components/Modals/DeleteUserModal';
-import { useAuth } from '../../../app/hooks/useAuth';
 
 export default function Profile() {
   const { user, isLoadingUser } = useAuth();

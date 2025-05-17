@@ -22,8 +22,4 @@ export interface IUserAPIResponse {
   password: string;
   createdAt: string;
   updatedAt: string | null;
-  finishedBooks: number;
-  _count: {
-    books: number;
-  };
 }
