@@ -44,7 +44,6 @@ export default function SessionForm<T>({
     useErrors<TSessionFields, TSessionErrorMessages>();
 
   const { submitSession, isLoading, hasError } = useMutateSession<T>({
-    type,
     onSubmit,
   });
 
@@ -162,7 +161,7 @@ export default function SessionForm<T>({
     try {
       const data = validationSchema.parse(userData);
 
-      submitSession(data);
+      await submitSession(data);
     } catch (error) {
       const result = handleErrors(error);
       if (result) {
