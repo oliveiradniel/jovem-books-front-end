@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import UsersService from '../../../services/UsersService';
+import { delay } from '../../../../utils/delay';
 
 interface UseQueryGetUserProps {
   enabled: boolean;
@@ -12,6 +13,8 @@ export function useQueryGetUser({ enabled }: UseQueryGetUserProps) {
     staleTime: Infinity,
     queryKey: ['user'],
     queryFn: async () => {
+      await delay(6000);
+
       return await UsersService.getMe();
     },
   });

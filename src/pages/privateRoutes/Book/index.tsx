@@ -33,7 +33,8 @@ export default function Book() {
 
   const { user } = useAuth();
 
-  const { bookData, isLoadingBook, isError } = useQueryGetBookById(id!);
+  const { bookData, isLoadingBook, isRefetchingBook, isError } =
+    useQueryGetBookById(id!);
 
   const [book, setBook] = useState({} as IBookAPI);
 
@@ -173,21 +174,36 @@ export default function Book() {
       />
 
       <div className="animate-fade-in h-full overflow-y-auto">
-        <Actions isLoadingBook={isLoadingBook} />
+        <Actions
+          isLoadingBook={isLoadingBook}
+          isRefetchingBook={isRefetchingBook}
+        />
 
         <div className="mt-8 flex justify-between gap-4">
           <div className="w-full lg:max-w-[900px]">
-            <Title title={book.title} isLoadingBook={isLoadingBook} />
+            <Title
+              title={book.title}
+              isLoadingBook={isLoadingBook}
+              isRefetchingBook={isRefetchingBook}
+            />
 
-            <Authors authors={book.authors} isLoadingBook={isLoadingBook} />
+            <Authors
+              authors={book.authors}
+              isLoadingBook={isLoadingBook}
+              isRefetchingBook={isRefetchingBook}
+            />
 
-            <Sinopse text={book.sinopse!} isLoadingBook={isLoadingBook} />
+            <Sinopse
+              text={book.sinopse!}
+              isLoadingBook={isLoadingBook}
+              isRefetchingBook={isRefetchingBook}
+            />
 
             <div className="mt-4 flex flex-wrap gap-2">
               {book.literaryGenre?.map((literaryGenre, index) => (
                 <p
                   key={index}
-                  className="text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase"
+                  className={`text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase transition-opacity duration-300 ease-in-out ${isRefetchingBook && 'opacity-70'}`}
                 >
                   {LITERARY_GENRE_LABELS[literaryGenre as LiteraryGenreKey]}
                 </p>
@@ -199,16 +215,19 @@ export default function Book() {
                 status={book.read?.status ?? null}
                 onChangeBookStatus={handleStartReading}
                 isLoadingBook={isLoadingBook}
+                isRefetchingBook={isRefetchingBook}
               />
 
               {isReading && !isLoadingBook && (
                 <>
                   <PauseOrPlayButton
                     status={book.read?.status ?? null}
+                    isRefetchingBook={isRefetchingBook}
                     onClick={handlePauseOrContinuationReading}
                   />
 
                   <FinishButton
+                    isRefetchingBook={isRefetchingBook}
                     onChangeBookStatus={() =>
                       setIsConfirmationModalVisible(true)
                     }
@@ -218,12 +237,17 @@ export default function Book() {
             </div>
           </div>
 
-          <BookCover imagePath={book.imagePath} isLoadingBook={isLoadingBook} />
+          <BookCover
+            imagePath={book.imagePath}
+            isLoadingBook={isLoadingBook}
+            isRefetchingBook={isRefetchingBook}
+          />
         </div>
 
         <ReadingInformation
           book={book}
           isLoadingBook={isLoadingBook}
+          isRefetchingBook={isRefetchingBook}
           onFinish={() => setIsEditReadModalVisible(true)}
         />
       </div>

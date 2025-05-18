@@ -4,18 +4,21 @@ import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
 
 interface PauseButtonProps {
   status: ReadingStatus | null;
+  isRefetchingBook: boolean;
   onClick: () => void;
 }
 
 export default function PauseOrPlayButton({
   status,
+  isRefetchingBook,
   onClick,
 }: PauseButtonProps) {
   return (
     <button
       type="button"
+      disabled={isRefetchingBook}
       onClick={onClick}
-      className="animate-fade-in-500 hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue hover:border-navy-blue-op-80 flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer sm:w-[140px]"
+      className={`animate-fade-in-500 hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue hover:border-navy-blue-op-80 disabled:bg-navy-blue/40 flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default sm:w-[140px]`}
     >
       <p className="flex items-center justify-center gap-2">
         {status === 'READING' && <IoPauseOutline size={20} />}
