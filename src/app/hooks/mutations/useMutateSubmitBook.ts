@@ -14,8 +14,8 @@ export function useMutateSubmitBook<T>({
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending, isError } = useMutation({
-    mutationFn: async (data: T) => {
-      await onSubmit(data);
+    mutationFn: async (variables: T) => {
+      await onSubmit(variables);
     },
     onSuccess: (_, variables) => {
       if (type === 'update') {

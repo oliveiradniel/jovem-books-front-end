@@ -8,7 +8,7 @@ import ProfileForm from './components/ProfileForm';
 import DeleteUserModal from '../../../components/Modals/DeleteUserModal';
 
 export default function Profile() {
-  const { user, isLoadingUser } = useAuth();
+  const { user, isLoadingUser, isRefetchingUser } = useAuth();
 
   const [isBeingEdited, setIsBeingEdited] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -25,6 +25,7 @@ export default function Profile() {
           key={user?.id}
           user={user as IUserAPIResponse}
           isLoadingUser={isLoadingUser}
+          isRefetchingUser={isRefetchingUser}
           isBeingEdited={isBeingEdited}
           onEditCancellation={() => setIsBeingEdited(false)}
         />
@@ -33,7 +34,7 @@ export default function Profile() {
           <div className="mt-4 flex w-[clamp(340px,64vw,500px)] flex-col items-stretch justify-center gap-1 px-5">
             <button
               type="button"
-              disabled={!user}
+              disabled={isLoadingUser || isRefetchingUser}
               onClick={() => setIsBeingEdited(true)}
               className="bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
@@ -42,7 +43,7 @@ export default function Profile() {
 
             <button
               type="button"
-              disabled={!user}
+              disabled={isLoadingUser || isRefetchingUser}
               onClick={() => setIsDeleteModalVisible(true)}
               className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
             >

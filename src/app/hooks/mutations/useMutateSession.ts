@@ -12,8 +12,8 @@ export function useMutateSession<T>({
   onSubmit,
 }: UseMutateSessionProps<T>) {
   const { mutate, isPending, isError } = useMutation({
-    mutationFn: async (data: T) => {
-      await onSubmit(data);
+    mutationFn: async (variables: T) => {
+      await onSubmit(variables);
     },
     onError: () => {
       const message =

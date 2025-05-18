@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../../../../../../app/hooks/useAuth.ts';
 
@@ -13,7 +14,7 @@ import { FaCircleUser } from 'react-icons/fa6';
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 import { PiGearSixFill } from 'react-icons/pi';
 import { TbLogout2 } from 'react-icons/tb';
-import { Link, useLocation } from 'react-router-dom';
+
 import SkeletonLoading from '../../../../../../components/SkeletonLoading.tsx';
 
 interface ProfileProps {
@@ -27,7 +28,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
 
-  const { user, isLoadingUser, signOut } = useAuth();
+  const { user, isLoadingUser, isRefetchingUser, signOut } = useAuth();
 
   const username = user?.username || '';
 
@@ -87,7 +88,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
         onClick={handleVisibilityOfProfileOptionsToggle}
         onMouseOver={() => setHoverOnProfile(true)}
         onMouseOut={() => setHoverOnProfile(false)}
-        className={`hover:bg-navy-blue bottom-0 m-1 flex justify-between rounded-sm px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'}`}
+        className={`hover:bg-navy-blue bottom-0 m-1 flex justify-between rounded-sm px-5 py-2 transition-all duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'} ${isRefetchingUser && 'opacity-60'}`}
       >
         <div className="flex items-center gap-2">
           <div className="relative flex h-8 w-8 items-center justify-center">
@@ -97,12 +98,12 @@ export default function Profile({ isExpanded }: ProfileProps) {
               <img
                 src={`${env.API_URL}/uploads/users/${user.imagePath}`}
                 alt="Foto de Perfil"
-                className={`h-7 w-7 rounded-full ${!isExpanded && 'min-h-7 min-w-7'}`}
+                className={`h-7 w-7 rounded-full object-cover ${!isExpanded && 'min-h-7 min-w-7'}`}
               />
             ) : (
               !isLoadingUser && (
                 <FaCircleUser
-                  className={`text-mate-gray h-7 w-7 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'}`}
+                  className={`text-mate-gray h-7 w-7 transition-all duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${isRefetchingUser && 'opacity-40'}`}
                 />
               )
             )}

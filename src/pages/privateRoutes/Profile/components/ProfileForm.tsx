@@ -1,10 +1,10 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
-import { useAuth } from '../../../../app/hooks/useAuth';
+import { useQueryListBooks } from '../../../../app/hooks/queries/book/useQueryListBooks';
+
+import { useMutateUpdateUser } from '../../../../app/hooks/mutations/useMutateUpdateUser';
 
 import { useErrors } from '../../../../app/hooks/useErrors';
-
-import UsersService from '../../../../app/services/UsersService';
 
 import { env } from '../../../../config/env';
 
@@ -26,11 +26,11 @@ import {
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
-import { useQueryListBooks } from '../../../../app/hooks/queries/book/useQueryListBooks';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
   isLoadingUser: boolean;
+  isRefetchingUser: boolean;
   isBeingEdited: boolean;
   onEditCancellation: () => void;
 }
@@ -38,11 +38,10 @@ interface ProfileForm {
 export default function ProfileForm({
   user,
   isLoadingUser,
+  isRefetchingUser,
   isBeingEdited,
   onEditCancellation,
 }: ProfileForm) {
-  const { updateUser } = useAuth();
-
   const { booksList } = useQueryListBooks();
 
   const totalBooks = booksList.length;
@@ -56,6 +55,8 @@ export default function ProfileForm({
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
+  const { updateUser, isUpdatingUser } = useMutateUpdateUser();
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [username, setUsername] = useState(user?.username);
@@ -67,8 +68,6 @@ export default function ProfileForm({
   const [imageName, setImageName] = useState<string | null>(
     user?.imagePath ?? null
   );
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
@@ -191,34 +190,22 @@ export default function ProfileForm({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const formData = {
+      username,
+      firstName,
+      lastName,
+      email,
+      file: selectedImage,
+      removeImage: !imageName && !selectedImage,
+    };
+
     try {
-      setIsSubmitting(true);
-
-      const formData = {
-        username,
-        firstName,
-        lastName,
-        email,
-        file: selectedImage,
-      };
-
       const data = UpdateUserSchema.parse(formData);
 
-      const updatedUser = await UsersService.updateUser(data);
-
-      setUsername(updatedUser.username);
-      setFirstName(updatedUser.firstName);
-      setLastName(updatedUser.lastName);
-      setEmail(updatedUser.email);
-
-      updateUser(updatedUser);
-
-      emitToast({
-        type: 'success',
-        message: 'Usuário atualizado com sucesso.',
-      });
+      await updateUser(data);
     } catch (error) {
       const result = handleSignUpErrors(error);
+
       if (result) {
         setError(result);
 
@@ -229,8 +216,6 @@ export default function ProfileForm({
         type: 'error',
         message: 'Não foi possível atualizar seu usuário.',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -249,15 +234,14 @@ export default function ProfileForm({
             onChange={handleImageChange}
             className="hidden"
           />
-          {isBeingEdited && selectedImage === null && imageName === null && (
+          {isBeingEdited && (
             <button
               type="button"
+              disabled={isUpdatingUser || isRefetchingUser}
               onClick={() => document.getElementById('profile-photo')?.click()}
-              className="text-sky-blue hover:text-sky-blue/80 absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center transition-colors duration-300 ease-in-out"
+              className={`text-sky-blue absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center text-[12px] transition-all duration-300 ease-in-out disabled:cursor-default disabled:opacity-40 ${isRefetchingUser ? 'text-sky-blue' : 'hover:text-sky-blue/80'}`}
             >
-              <span className="text-[12px]">
-                Clique para selecionar a foto de perfil
-              </span>
+              Selecione a foto de perfil
             </button>
           )}
 
@@ -267,13 +251,13 @@ export default function ProfileForm({
             <img
               src={src}
               alt="Foto de Perfil"
-              className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && selectedImage === null && imageName === null && 'opacity-20'}`}
+              className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
             />
           ) : (
             !isLoadingUser && (
               <GiRead
                 size={70}
-                className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
+                className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'} ${isRefetchingUser && !isBeingEdited && 'opacity-40'}`}
               />
             )
           )}
@@ -282,8 +266,12 @@ export default function ProfileForm({
         <div className="bg-navy-blue-2 flex h-full w-[0.1px]" />
 
         <div className="flex-1">
-          <p className="font-quicksand text-sky-blue text-end text-[14px] font-semibold">
-            {user ? `${user?.firstName} ${user?.lastName}` : 'Carregando...'}
+          <p
+            className={`font-quicksand text-sky-blue text-end text-[14px] font-semibold transition-opacity duration-300 ease-in-out ${!isUpdatingUser && !isLoadingUser && isRefetchingUser && 'opacity-40'}`}
+          >
+            {!isLoadingUser
+              ? `${user?.firstName} ${user?.lastName}`
+              : 'Carregando...'}
           </p>
           <p className="font-quicksand text-light-gray mt-2 text-end text-[12px]">
             Total de livros cadastrados: {totalBooks}
@@ -301,7 +289,7 @@ export default function ProfileForm({
           type="text"
           placeholder={user?.username}
           value={username}
-          disabled={!isBeingEdited}
+          disabled={!isBeingEdited || isRefetchingUser}
           isLoadingData={!user}
           onChange={handleUsernameChange}
         />
@@ -314,7 +302,7 @@ export default function ProfileForm({
           type="text"
           placeholder={user?.firstName}
           value={firstName}
-          disabled={!isBeingEdited}
+          disabled={!isBeingEdited || isRefetchingUser}
           isLoadingData={!user}
           onChange={handleFirstNameChange}
         />
@@ -327,7 +315,7 @@ export default function ProfileForm({
           type="text"
           placeholder={user?.lastName}
           value={lastName}
-          disabled={!isBeingEdited}
+          disabled={!isBeingEdited || isRefetchingUser}
           isLoadingData={!user}
           onChange={handleLastNameChange}
         />
@@ -340,7 +328,7 @@ export default function ProfileForm({
           type="text"
           placeholder={user?.email}
           value={email}
-          disabled={!isBeingEdited}
+          disabled={!isBeingEdited || isRefetchingUser}
           isLoadingData={!user}
           onChange={handleEmailChange}
         />
@@ -350,10 +338,10 @@ export default function ProfileForm({
         <div className="flex w-full flex-col items-stretch justify-between gap-1">
           <button
             type="submit"
-            disabled={isSubmitting || !isFormValid}
-            className={`bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting && 'bg-sky-blue!'}`}
+            disabled={isUpdatingUser || isRefetchingUser || !isFormValid}
+            className={`bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default ${(isUpdatingUser || isRefetchingUser) && 'bg-sky-blue!'}`}
           >
-            {isSubmitting ? (
+            {isUpdatingUser || isRefetchingUser ? (
               <ClipLoader size={16} color="#ffffff" />
             ) : (
               'Salvar alterações'
@@ -363,7 +351,7 @@ export default function ProfileForm({
           <div className="flex gap-1">
             <button
               type="button"
-              disabled={isSubmitting}
+              disabled={isUpdatingUser || isRefetchingUser}
               onClick={handleEditCancellation}
               className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
@@ -372,7 +360,9 @@ export default function ProfileForm({
             <button
               type="button"
               disabled={
-                isSubmitting || (selectedImage === null && imageName === null)
+                isUpdatingUser ||
+                isRefetchingUser ||
+                (selectedImage === null && imageName === null)
               }
               onClick={handleRemoveProfilePhoto}
               className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"

@@ -3,9 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../../../../../app/hooks/useAuth';
 
 import { getGreeting } from '../../../../../../utils/getGreeting';
+import { ClipLoader } from 'react-spinners';
 
 export default function Header() {
-  const { user, isLoadingUser } = useAuth();
+  const { user, isLoadingUser, isRefetchingUser } = useAuth();
 
   const { pathname } = useLocation();
 
@@ -22,8 +23,11 @@ export default function Header() {
         <h1 className="font-quicksand text-snow-white text-2xl">
           {titles[pathname]}
         </h1>
-        <p className="font-quicksand text-snow-white hidden text-xl font-bold sm:flex">
-          {isLoadingUser && 'Carregando...'}
+        <p className="font-quicksand text-snow-white hidden items-center text-xl font-bold sm:flex">
+          {isLoadingUser && isRefetchingUser && 'Carregando...'}
+          {!isLoadingUser && isRefetchingUser && (
+            <ClipLoader color="#ffffff" size={16} className="mr-2 text-sm" />
+          )}
           {user && getGreeting({ name: user.firstName })}
         </p>
       </div>

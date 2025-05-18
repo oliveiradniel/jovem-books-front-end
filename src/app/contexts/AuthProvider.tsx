@@ -17,7 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storagedAccessToken;
   });
 
-  const { user, isLoadingUser, isError } = useQueryGetUser({
+  const { user, isLoadingUser, isRefetchingUser, isError } = useQueryGetUser({
     enabled: signedIn,
   });
 
@@ -51,7 +51,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ signedIn, signIn, signOut, user, isLoadingUser, updateUser }}
+      value={{
+        signedIn,
+        signIn,
+        signOut,
+        user,
+        isLoadingUser,
+        isRefetchingUser,
+        updateUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
