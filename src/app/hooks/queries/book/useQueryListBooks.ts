@@ -1,16 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+
 import BooksService from '../../../services/BooksService';
+import { delay } from '../../../../utils/delay';
 
 export function useQueryListBooks() {
-  const { data, isFetching, isError, refetch } = useQuery({
+  const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ['books'],
     staleTime: Infinity,
-    queryFn: async () => await BooksService.listBooks(),
+    queryFn: async () => {
+      await delay(3000);
+
+      return await BooksService.listBooks();
+    },
   });
 
   return {
     booksList: data ?? [],
-    isLoadingBooks: isFetching,
+    isLoadingBooks: isLoading,
+    isRefetchingBooks: isFetching,
     isError,
     refetch,
   };

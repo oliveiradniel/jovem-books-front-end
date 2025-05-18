@@ -11,12 +11,15 @@ import { IBookAPI, LiteraryGenreKey } from '../../../../../@types/Book';
 
 interface TableBodyProps {
   books: IBookAPI[];
+  isRefetching: boolean;
 }
 
-export default function TableBody({ books }: TableBodyProps) {
+export default function TableBody({ books, isRefetching }: TableBodyProps) {
   const navigate = useNavigate();
 
   function handleClickOnBookData(bookId: string) {
+    if (isRefetching) return;
+
     navigate(`/book/${bookId}`);
   }
 
@@ -28,7 +31,7 @@ export default function TableBody({ books }: TableBodyProps) {
           tabIndex={0}
           key={book.id}
           onClick={() => handleClickOnBookData(String(book.id))}
-          className="border-navy-blue hover:bg-navy-blue-op-40 border-b transition-colors duration-400 ease-in-out hover:cursor-pointer"
+          className={`border-navy-blue border-b transition-colors duration-400 ease-in-out ${isRefetching ? 'cursor-default' : 'hover:bg-navy-blue/40 cursor-pointer'}`}
         >
           <td className="rounded-tl-lg rounded-bl-lg px-2 py-2 text-center">
             {truncateString(book.title, 10)}

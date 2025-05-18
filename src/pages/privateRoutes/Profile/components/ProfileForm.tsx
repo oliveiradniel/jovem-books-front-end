@@ -42,7 +42,7 @@ export default function ProfileForm({
   isBeingEdited,
   onEditCancellation,
 }: ProfileForm) {
-  const { booksList } = useQueryListBooks();
+  const { booksList, isLoadingBooks, isRefetchingBooks } = useQueryListBooks();
 
   const totalBooks = booksList.length;
   let totalOfBooksFinished = 0;
@@ -273,11 +273,16 @@ export default function ProfileForm({
               ? `${user?.firstName} ${user?.lastName}`
               : 'Carregando...'}
           </p>
-          <p className="font-quicksand text-light-gray mt-2 text-end text-[12px]">
-            Total de livros cadastrados: {totalBooks}
+          <p
+            className={`font-quicksand text-light-gray mt-2 text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
+          >
+            Total de livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
           </p>
-          <p className="font-quicksand text-light-gray text-end text-[12px]">
-            Total de livros lidos: {totalOfBooksFinished}
+          <p
+            className={`font-quicksand text-light-gray text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
+          >
+            Total de livros lidos:{' '}
+            {isLoadingBooks ? '...' : totalOfBooksFinished}
           </p>
         </div>
       </div>

@@ -14,6 +14,7 @@ interface TabelBooksProps {
   selectedFilter: TBookFilter;
   hasError: boolean;
   isLoading: boolean;
+  isRefetching: boolean;
   onTryAgain: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<IBookAPI[], Error>>;
@@ -24,6 +25,7 @@ export default function TableBooks({
   selectedFilter,
   hasError,
   isLoading,
+  isRefetching,
   onTryAgain,
 }: TabelBooksProps) {
   const message = useMemo(() => {
@@ -75,7 +77,7 @@ export default function TableBooks({
         <TableHeader />
 
         {!isLoading && filteredBooks.length > 0 && (
-          <TableBody books={filteredBooks} />
+          <TableBody books={filteredBooks} isRefetching={isRefetching} />
         )}
       </table>
     </div>

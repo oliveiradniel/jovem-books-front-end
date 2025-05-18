@@ -8,7 +8,8 @@ import Header from './components/Header';
 import { TBookFilter } from '../../../@types/Book';
 
 export default function MyBooks() {
-  const { booksList, isLoadingBooks, isError, refetch } = useQueryListBooks();
+  const { booksList, isLoadingBooks, isRefetchingBooks, isError, refetch } =
+    useQueryListBooks();
 
   const [selectedFilter, setSelectedFilter] = useState<TBookFilter>('ALL');
 
@@ -36,6 +37,7 @@ export default function MyBooks() {
         numberOfFilteredBooks={filteredBooksByStatus.length}
         hasError={isError}
         isLoadingBooks={isLoadingBooks}
+        isRefetchingBooks={isRefetchingBooks}
         onChangeFilter={setSelectedFilter}
       />
 
@@ -46,6 +48,7 @@ export default function MyBooks() {
         selectedFilter={selectedFilter}
         hasError={isError}
         isLoading={isLoadingBooks}
+        isRefetching={isRefetchingBooks}
         onTryAgain={refetch}
       />
     </div>
