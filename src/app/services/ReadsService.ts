@@ -4,6 +4,10 @@ import { ReadingStatus } from '../../@types/Book';
 
 import { httpClient } from './utils/httpClient';
 
+interface GetReadByBookIProps {
+  bookId: string;
+}
+
 interface CreateReadProps {
   bookId: string;
   currentPage: number;
@@ -16,6 +20,12 @@ type UpdateReadProps = Omit<Partial<CreateReadProps>, 'bookId'> &
   Pick<CreateReadProps, 'bookId'>;
 
 class ReadsService {
+  async getReadByBookId({ bookId }: GetReadByBookIProps) {
+    const { data: read } = await httpClient.get<IRead>(`/reads/${bookId}`);
+
+    return read;
+  }
+
   async createRead({ bookId, ...data }: CreateReadProps) {
     const { data: updatedRead } = await httpClient.post<IRead>(
       `/reads/${bookId}`,
