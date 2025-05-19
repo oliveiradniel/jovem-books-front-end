@@ -77,7 +77,7 @@ export default function ModalBase({
           <button
             disabled={buttonDisabled || isLoading}
             onClick={handleConfirm}
-            className={`text-mate-gray font-roboto min-w-[130px] cursor-pointer rounded-lg px-3 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default ${danger ? 'bg-blood-red disabled:bg-blood-red/60 hover:bg-blood-red/80!' : 'disabled:bg-navy-blue/80! hover:bg-navy-blue bg-navy-blue-2'}`}
+            className={`text-mate-gray font-roboto min-w-[130px] cursor-pointer rounded-lg px-3 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default ${danger ? 'bg-blood-red disabled:bg-blood-red/60 hover:bg-blood-red/80' : 'disabled:bg-navy-blue/80! hover:bg-navy-blue bg-navy-blue-2'}`}
           >
             {isLoading ? (
               <ClipLoader color="#ffffff" size={16} />

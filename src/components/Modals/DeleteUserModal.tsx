@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { useAuth } from '../../app/hooks/useAuth';
+import { useMutateDeleteUser } from '../../app/hooks/mutations/user/useMutateDeleteUser';
 
-import UsersService from '../../app/services/UsersService';
+import { useAuth } from '../../app/hooks/useAuth';
 
 import ModalBase from './ModalBase';
 import Input from './Input';
-import { emitToast } from '../../utils/emitToast';
 
 interface DeleteUserModalProps {
   isVisible: boolean;
@@ -17,33 +16,11 @@ export default function DeleteUserModal({
   isVisible,
   onClose,
 }: DeleteUserModalProps) {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
+
+  const { deleteUser, isDeleting } = useMutateDeleteUser();
 
   const [value, setValue] = useState('');
-
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  async function handleDeleteUser() {
-    try {
-      setIsDeleting(true);
-
-      await UsersService.deleteUser();
-
-      signOut();
-
-      emitToast({
-        type: 'success',
-        message: 'Seu usuário foi excluído com sucesso.',
-      });
-    } catch {
-      emitToast({
-        type: 'error',
-        message: 'Não foi possível excluir seu usuário.',
-      });
-    } finally {
-      setIsDeleting(false);
-    }
-  }
 
   return (
     <ModalBase
@@ -55,10 +32,11 @@ export default function DeleteUserModal({
       buttonLabelConfirm="Confirmar"
       buttonDisabled={user?.username !== value}
       onClose={() => onClose()}
-      onConfirm={() => handleDeleteUser()}
+      onConfirm={deleteUser}
     >
       <Input
         value={value}
+        disabled={isDeleting}
         onChange={({ target }) => setValue(target.value)}
         placeholder={user?.username}
       />

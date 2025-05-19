@@ -8,8 +8,6 @@ import { env } from '../../config/env';
 
 import { emitToast } from '../../utils/emitToast';
 
-import { IUserAPIResponse } from '../../@types/User';
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
@@ -33,10 +31,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSignedIn(false);
   }, []);
 
-  const updateUser = useCallback((user: IUserAPIResponse) => {
-    console.log(user);
-  }, []);
-
   useEffect(() => {
     if (isError) {
       emitToast({
@@ -58,7 +52,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isLoadingUser,
         isRefetchingUser,
-        updateUser,
       }}
     >
       {children}
