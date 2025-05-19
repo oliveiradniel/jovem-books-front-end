@@ -20,7 +20,7 @@ export function useQueryGetReadByBookId({ bookId }: UseQueryGetReadByBookId) {
   });
 
   return {
-    read: data ?? null,
+    readData: data ?? null,
     isLoadingRead: isLoading,
     isRefetchingRead: isRefetching,
   };

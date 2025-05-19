@@ -15,8 +15,10 @@ import ReadsService from '../../../../app/services/ReadsService';
 import PauseOrPlayButton from './PauseOrPlayButton';
 import FinishButton from './FinishButton';
 import EditCurrentPageModal from '../../../../components/Modals/EditCurrentPageModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FinishBookModal from '../../../../components/Modals/FinishBookModal';
+import { useMutateStartRead } from '../../../../app/hooks/mutations/useMutateStartReading';
+import { IRead } from '../../../../@types/Read';
 
 interface ReadingInformationProps {
   bookTitle: string;
@@ -29,9 +31,15 @@ export default function ReadingInformation({
 }: ReadingInformationProps) {
   const { id } = useParams();
 
-  const { read, isLoadingRead, isRefetchingRead } = useQueryGetReadByBookId({
-    bookId: id!,
-  });
+  const { readData, isLoadingRead, isRefetchingRead } = useQueryGetReadByBookId(
+    {
+      bookId: id!,
+    }
+  );
+
+  const { startRead, isStartingRead } = useMutateStartRead();
+
+  const [read, setRead] = useState<IRead | null>(null);
 
   const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
   const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
@@ -39,7 +47,7 @@ export default function ReadingInformation({
 
   const isReading = read?.status === 'READING' || read?.status === 'ON_HOLD';
   const isFinished = read?.status === 'FINISHED';
-  const isNotFinished = read && read?.status !== 'FINISHED';
+  const isNotFinished = read && read.status !== 'FINISHED';
 
   const bookProgress = Number(
     read ? (read.currentPage / numberOfPages) * 100 : '0'
@@ -56,7 +64,13 @@ export default function ReadingInformation({
       ? formatDate(new Date(read.finishedAt!))
       : formatDate(new Date(read.createdAt)));
 
-  async function handlePagesNumberChange(number: number) {
+  async function handleStartReading() {
+    const updatedRead = await startRead({ bookId: id! });
+
+    setRead(updatedRead);
+  }
+
+  async function handleUpdateCurrentPage(number: number) {
     try {
       await ReadsService.updateRead({
         bookId: id!,
@@ -64,26 +78,6 @@ export default function ReadingInformation({
       });
     } catch (error) {
       console.log(error);
-    }
-  }
-
-  async function handleStartReading() {
-    try {
-      await ReadsService.createRead({
-        bookId: id!,
-        status: 'READING',
-        currentPage: 1,
-      });
-
-      emitToast({
-        type: 'success',
-        message: `Boa leitura.`,
-      });
-    } catch {
-      emitToast({
-        type: 'error',
-        message: `Não foi possível iniciar a leitura do livro.`,
-      });
     }
   }
 
@@ -123,6 +117,12 @@ export default function ReadingInformation({
     }
   }
 
+  useEffect(() => {
+    if (readData) {
+      setRead(readData);
+    }
+  }, [readData]);
+
   return (
     <>
       <EditCurrentPageModal
@@ -130,7 +130,7 @@ export default function ReadingInformation({
         pagesTotalNumber={numberOfPages}
         isVisible={isEditReadModalVisible}
         onClose={() => setIsEditReadModalVisible(false)}
-        onConfirm={handlePagesNumberChange}
+        onConfirm={handleUpdateCurrentPage}
       />
 
       <FinishBookModal
@@ -146,20 +146,20 @@ export default function ReadingInformation({
           <InformationButton
             status={read?.status ?? null}
             onChangeBookStatus={handleStartReading}
-            isLoadingBook={isLoadingRead}
-            isRefetchingBook={isRefetchingRead}
+            isLoadingRead={isLoadingRead}
+            isUpdatingRead={isStartingRead}
           />
 
           {isReading && !isLoadingRead && (
             <>
               <PauseOrPlayButton
                 status={read?.status ?? null}
-                isRefetchingBook={isRefetchingRead}
+                isRefetchingRead={isRefetchingRead}
                 onClick={handlePauseOrContinuationReading}
               />
 
               <FinishButton
-                isRefetchingBook={isRefetchingRead}
+                isRefetchingRead={isRefetchingRead}
                 onChangeBookStatus={() => setIsConfirmationModalVisible(true)}
               />
             </>
