@@ -1,18 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 
 import ReadsService from '../../../services/ReadsService';
-import { delay } from '../../../../utils/delay';
 
 interface UseQueryGetReadByBookId {
   bookId: string;
 }
 
 export function useQueryGetReadByBookId({ bookId }: UseQueryGetReadByBookId) {
-  const { data, isLoading, isRefetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['read', { bookId }],
     queryFn: async () => {
-      await delay(6000);
-
       return await ReadsService.getReadByBookId({
         bookId,
       });
@@ -22,6 +19,5 @@ export function useQueryGetReadByBookId({ bookId }: UseQueryGetReadByBookId) {
   return {
     readData: data ?? null,
     isLoadingRead: isLoading,
-    isRefetchingRead: isRefetching,
   };
 }

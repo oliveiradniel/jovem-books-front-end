@@ -7,6 +7,7 @@ interface FinishBookModalProps {
   bookTitle: string;
   remainingPages: number;
   isVisible: boolean;
+  isUpdating: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
@@ -15,6 +16,7 @@ export default function FinishBookModal({
   remainingPages,
   bookTitle,
   isVisible,
+  isUpdating,
   onClose,
   onConfirm,
 }: FinishBookModalProps) {
@@ -38,8 +40,6 @@ export default function FinishBookModal({
 
   function handleConfirm() {
     onConfirm();
-
-    handleClose();
   }
 
   return (
@@ -47,6 +47,7 @@ export default function FinishBookModal({
       title="Essa ação não poderá ser desfeita. Digite o título do livro para continuar."
       buttonDisabled={title !== bookTitle}
       isVisible={isVisible}
+      isLoading={isUpdating}
       onClose={handleClose}
       onConfirm={handleConfirm}
       subTitle={subTitle}
@@ -57,6 +58,7 @@ export default function FinishBookModal({
         type="text"
         placeholder={bookTitle}
         value={title}
+        disabled={isUpdating}
         onChange={handleBookTitleChange}
       />
     </Modal>

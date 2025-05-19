@@ -5,19 +5,17 @@ import { useQueryGetReadByBookId } from '../../../../app/hooks/queries/read/useQ
 
 import { useMutateStartRead } from '../../../../app/hooks/mutations/useMutateStartReading';
 import { useMutateUpdateCurrentPage } from '../../../../app/hooks/mutations/useMutateUpdateCurrentPage';
+import { useMutateUpdateReadStatus } from '../../../../app/hooks/mutations/useMutateUpdateReadStatus';
 
 import { formatDate } from '../../../../utils/formatDate';
 import { getDaysBetween } from '../../../../utils/getDaysBetween';
-import { emitToast } from '../../../../utils/emitToast';
 
 import { CiEdit } from 'react-icons/ci';
-import { ClipLoader } from 'react-spinners';
 
 import { IRead } from '../../../../@types/Read';
 
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 import InformationButton from './InformationButton';
-import ReadsService from '../../../../app/services/ReadsService';
 import PauseOrPlayButton from './PauseOrPlayButton';
 import FinishButton from './FinishButton';
 
@@ -35,21 +33,23 @@ export default function ReadingInformation({
 }: ReadingInformationProps) {
   const { id } = useParams();
 
-  const { readData, isLoadingRead, isRefetchingRead } = useQueryGetReadByBookId(
-    {
-      bookId: id!,
-    }
-  );
+  const { readData, isLoadingRead } = useQueryGetReadByBookId({
+    bookId: id!,
+  });
 
   const { startRead, isStartingRead } = useMutateStartRead();
   const { updateCurrentPage, isUpdatingCurrentPage } =
     useMutateUpdateCurrentPage();
+  const { updateReadStatus, isUpdatingReadStatus } =
+    useMutateUpdateReadStatus();
 
   const [read, setRead] = useState<IRead | null>(null);
 
   const [isEditReadModalVisible, setIsEditReadModalVisible] = useState(false);
-  const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
-    useState(false);
+  const [
+    isConfirmationFinishBookModalVisible,
+    setIsConfirmationFinishBookModalVisible,
+  ] = useState(false);
 
   const isReading = read?.status === 'READING' || read?.status === 'ON_HOLD';
   const isFinished = read?.status === 'FINISHED';
@@ -85,39 +85,25 @@ export default function ReadingInformation({
   }
 
   async function handlePauseOrContinuationReading() {
-    const status = read?.status;
+    const statusDirection = read?.status === 'READING' ? 'ON_HOLD' : 'READING';
 
-    const statusDirection = status === 'READING' ? 'ON_HOLD' : 'READING';
+    const updatedRead = await updateReadStatus({
+      bookId: id!,
+      status: statusDirection,
+    });
 
-    try {
-      await ReadsService.updateRead({
-        bookId: id!,
-        status: statusDirection,
-      });
-    } catch {
-      if (status === 'READING') {
-        emitToast({
-          type: 'error',
-          message: `Não foi possível pausar a leitura do livro.`,
-        });
-      } else if (status === 'ON_HOLD') {
-        emitToast({
-          type: 'error',
-          message: `Não foi possível continuar a leitura do livro.`,
-        });
-      }
-    }
+    setRead(updatedRead);
   }
 
   async function handleFinishReading() {
-    try {
-      await ReadsService.updateRead({
-        bookId: id!,
-        status: 'FINISHED',
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const updatedRead = await updateReadStatus({
+      bookId: id!,
+      status: 'FINISHED',
+    });
+
+    setRead(updatedRead);
+
+    setIsConfirmationFinishBookModalVisible(false);
   }
 
   useEffect(() => {
@@ -140,8 +126,9 @@ export default function ReadingInformation({
       <FinishBookModal
         bookTitle={bookTitle}
         remainingPages={numberOfPages! - (read?.currentPage ?? 0)}
-        isVisible={isConfirmationModalVisible}
-        onClose={() => setIsConfirmationModalVisible(false)}
+        isVisible={isConfirmationFinishBookModalVisible}
+        isUpdating={isUpdatingReadStatus}
+        onClose={() => setIsConfirmationFinishBookModalVisible(false)}
         onConfirm={handleFinishReading}
       />
 
@@ -151,20 +138,23 @@ export default function ReadingInformation({
             status={read?.status ?? null}
             onChangeBookStatus={handleStartReading}
             isLoadingRead={isLoadingRead}
-            isUpdatingRead={isStartingRead}
+            isStartingRead={isStartingRead}
+            isUpdatingReadStatus={isUpdatingReadStatus}
           />
 
           {isReading && !isLoadingRead && (
             <>
               <PauseOrPlayButton
                 status={read?.status ?? null}
-                isRefetchingRead={isRefetchingRead}
+                disabled={isUpdatingReadStatus}
                 onClick={handlePauseOrContinuationReading}
               />
 
               <FinishButton
-                isRefetchingRead={isRefetchingRead}
-                onChangeBookStatus={() => setIsConfirmationModalVisible(true)}
+                disabled={isUpdatingReadStatus}
+                onChangeBookStatus={() =>
+                  setIsConfirmationFinishBookModalVisible(true)
+                }
               />
             </>
           )}
@@ -228,22 +218,14 @@ export default function ReadingInformation({
           )}
 
           {!isLoadingRead && isNotFinished && (
-            <>
-              {isRefetchingRead ? (
-                <ClipLoader color="#ffffff" size={14} />
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setIsEditReadModalVisible(true)}
-                  className="flex"
-                >
-                  <CiEdit
-                    size={20}
-                    className="text-sky-blue transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
-                  />
-                </button>
-              )}
-            </>
+            <button
+              type="button"
+              disabled={isUpdatingReadStatus}
+              onClick={() => setIsEditReadModalVisible(true)}
+              className="text-sky-blue hover:text-sky-blue/85 disabled:text-light-gray flex cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default"
+            >
+              <CiEdit size={20} />
+            </button>
           )}
         </div>
       </div>

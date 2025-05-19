@@ -82,22 +82,24 @@ export default function EditCurrentPageModal({
           type="text"
           placeholder="Página atual"
           value={numberOfPage ?? ''}
+          disabled={isUpdating}
           onChange={handleNumberOfPagesChange}
         />
 
         <button
           type="button"
+          disabled={isUpdating}
           onClick={handlePageIncrement}
-          className="bg-navy-blue-2 text-snow-white hover:bg-navy-blue flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer"
+          className="bg-navy-blue-2 text-snow-white hover:bg-navy-blue disabled:bg-navy-blue/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default"
         >
           <AiOutlinePlus size={14} />
         </button>
 
         <button
           type="button"
-          disabled={numberOfPage === 0}
+          disabled={numberOfPage === 0 || isUpdating}
           onClick={handlePageDecrement}
-          className="bg-navy-blue-2 text-snow-white hover:bg-navy-blue disabled:bg-navy-blue-op-80 flex h-8 w-8 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default"
+          className="bg-navy-blue-2 text-snow-white hover:bg-navy-blue disabled:bg-navy-blue/80 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default"
         >
           <AiOutlineMinus size={14} />
         </button>
