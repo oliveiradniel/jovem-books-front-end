@@ -11,6 +11,7 @@ interface EditCurrentPageModalProps {
   currentPage: number | null;
   pagesTotalNumber: number;
   isVisible: boolean;
+  isUpdating: boolean;
   onClose: () => void;
   onConfirm: (number: number) => void;
 }
@@ -19,6 +20,7 @@ export default function EditCurrentPageModal({
   currentPage,
   pagesTotalNumber,
   isVisible,
+  isUpdating,
   onClose,
   onConfirm,
 }: EditCurrentPageModalProps) {
@@ -45,14 +47,8 @@ export default function EditCurrentPageModal({
     setNumberOfPage(newValue);
   }
 
-  function handleClose() {
-    onClose();
-  }
-
   function handleConfirm() {
     onConfirm(Number(numberOfPage));
-
-    handleClose();
   }
 
   function handlePageIncrement() {
@@ -75,6 +71,7 @@ export default function EditCurrentPageModal({
       title={`Em que página você está hoje ${user?.firstName}?`}
       buttonLabelConfirm="Salvar alterações"
       isVisible={isVisible}
+      isLoading={isUpdating}
       buttonDisabled={buttonDisabled}
       onClose={onClose}
       onConfirm={handleConfirm}

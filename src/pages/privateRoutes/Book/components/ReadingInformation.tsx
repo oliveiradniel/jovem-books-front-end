@@ -1,24 +1,28 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useQueryGetReadByBookId } from '../../../../app/hooks/queries/read/useQueryGetReadByBookId';
 
+import { useMutateStartRead } from '../../../../app/hooks/mutations/useMutateStartReading';
+import { useMutateUpdateCurrentPage } from '../../../../app/hooks/mutations/useMutateUpdateCurrentPage';
+
 import { formatDate } from '../../../../utils/formatDate';
 import { getDaysBetween } from '../../../../utils/getDaysBetween';
+import { emitToast } from '../../../../utils/emitToast';
 
 import { CiEdit } from 'react-icons/ci';
 import { ClipLoader } from 'react-spinners';
 
+import { IRead } from '../../../../@types/Read';
+
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 import InformationButton from './InformationButton';
-import { emitToast } from '../../../../utils/emitToast';
 import ReadsService from '../../../../app/services/ReadsService';
 import PauseOrPlayButton from './PauseOrPlayButton';
 import FinishButton from './FinishButton';
+
 import EditCurrentPageModal from '../../../../components/Modals/EditCurrentPageModal';
-import { useEffect, useState } from 'react';
 import FinishBookModal from '../../../../components/Modals/FinishBookModal';
-import { useMutateStartRead } from '../../../../app/hooks/mutations/useMutateStartReading';
-import { IRead } from '../../../../@types/Read';
 
 interface ReadingInformationProps {
   bookTitle: string;
@@ -38,6 +42,8 @@ export default function ReadingInformation({
   );
 
   const { startRead, isStartingRead } = useMutateStartRead();
+  const { updateCurrentPage, isUpdatingCurrentPage } =
+    useMutateUpdateCurrentPage();
 
   const [read, setRead] = useState<IRead | null>(null);
 
@@ -70,15 +76,12 @@ export default function ReadingInformation({
     setRead(updatedRead);
   }
 
-  async function handleUpdateCurrentPage(number: number) {
-    try {
-      await ReadsService.updateRead({
-        bookId: id!,
-        currentPage: number,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  async function handleUpdateCurrentPage(page: number) {
+    const updatedRead = await updateCurrentPage({ bookId: id!, page });
+
+    setRead(updatedRead);
+
+    setIsEditReadModalVisible(false);
   }
 
   async function handlePauseOrContinuationReading() {
@@ -129,6 +132,7 @@ export default function ReadingInformation({
         currentPage={read?.currentPage ?? null}
         pagesTotalNumber={numberOfPages}
         isVisible={isEditReadModalVisible}
+        isUpdating={isUpdatingCurrentPage}
         onClose={() => setIsEditReadModalVisible(false)}
         onConfirm={handleUpdateCurrentPage}
       />
