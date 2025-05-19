@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { TUpdateBook } from '../../../@types/Book';
+import { TUpdateBook } from '../../../../@types/Book';
 
 interface UseMutationSubmitBookProps<T> {
   type: 'create' | 'update';

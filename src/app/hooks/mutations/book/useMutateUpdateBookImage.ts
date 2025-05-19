@@ -1,14 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import BooksService from '../../services/BooksService';
-import { emitToast } from '../../../utils/emitToast';
+import BooksService from '../../../services/BooksService';
+import { emitToast } from '../../../../utils/emitToast';
 
 interface MutationProps {
   id: string;
   image: File | null;
 }
 
-export function useMutateBookImage() {
+export function useMutateUpdateBookImage() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({

@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import BooksService from '../../services/BooksService';
+import BooksService from '../../../services/BooksService';
 
-import { emitToast } from '../../../utils/emitToast';
+import { emitToast } from '../../../../utils/emitToast';
 
 interface UseMutateDeletBookProps {
   title: string;

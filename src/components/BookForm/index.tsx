@@ -1,8 +1,8 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useMutateSubmitBook } from '../../app/hooks/mutations/useMutateSubmitBook';
-import { useMutateDeleteBook } from '../../app/hooks/mutations/useMutateDeleteBook';
+import { useMutateSubmitBook } from '../../app/hooks/mutations/book/useMutateSubmitBook';
+import { useMutateDeleteBook } from '../../app/hooks/mutations/book/useMutateDeleteBook';
 
 import { useErrors } from '../../app/hooks/useErrors';
 

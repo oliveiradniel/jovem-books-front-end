@@ -2,7 +2,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 
 import { useQueryListBooks } from '../../../../app/hooks/queries/book/useQueryListBooks';
 
-import { useMutateUpdateUser } from '../../../../app/hooks/mutations/useMutateUpdateUser';
+import { useMutateUpdateUser } from '../../../../app/hooks/mutations/user/useMutateUpdateUser';
 
 import { useErrors } from '../../../../app/hooks/useErrors';
 

@@ -23,7 +23,7 @@ import {
   TSessionFields,
 } from '../../../@types/FormError';
 
-import { useMutateSession } from '../../../app/hooks/mutations/useMutateSession';
+import { useMutateSession } from '../../../app/hooks/mutations/user/useMutateSession';
 
 export interface ISessionFormProps<T> {
   type?: 'signIn' | 'signUp' | 'registrationCompleted';

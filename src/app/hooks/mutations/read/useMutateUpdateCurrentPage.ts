@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import ReadsService from '../../services/ReadsService';
+import ReadsService from '../../../services/ReadsService';
 
-import { delay } from '../../../utils/delay';
-import { emitToast } from '../../../utils/emitToast';
+import { delay } from '../../../../utils/delay';
+import { emitToast } from '../../../../utils/emitToast';
 
 interface UseMutationProps {
   bookId: string;

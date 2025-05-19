@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useMutateBookImage } from '../../../../app/hooks/mutations/useMutateBookImage';
+import { useMutateUpdateBookImage } from '../../../../app/hooks/mutations/book/useMutateUpdateBookImage';
 
 import { env } from '../../../../config/env';
 
@@ -29,7 +29,7 @@ export default function SectionToEditBookCover({
 
   const isFirstRender = useRef(true);
 
-  const { submitBookImage, isUpdatingBookImage } = useMutateBookImage();
+  const { submitBookImage, isUpdatingBookImage } = useMutateUpdateBookImage();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);

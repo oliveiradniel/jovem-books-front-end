@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 
 import { useQueryGetReadByBookId } from '../../../../app/hooks/queries/read/useQueryGetReadByBookId';
 
-import { useMutateStartRead } from '../../../../app/hooks/mutations/useMutateStartReading';
-import { useMutateUpdateCurrentPage } from '../../../../app/hooks/mutations/useMutateUpdateCurrentPage';
-import { useMutateUpdateReadStatus } from '../../../../app/hooks/mutations/useMutateUpdateReadStatus';
+import { useMutateStartRead } from '../../../../app/hooks/mutations/read/useMutateStartReading';
+import { useMutateUpdateCurrentPage } from '../../../../app/hooks/mutations/read/useMutateUpdateCurrentPage';
+import { useMutateUpdateReadStatus } from '../../../../app/hooks/mutations/read/useMutateUpdateReadStatus';
 
 import { formatDate } from '../../../../utils/formatDate';
 import { getDaysBetween } from '../../../../utils/getDaysBetween';
