@@ -18,6 +18,7 @@ export default function Dashboard() {
           to="/new-collection"
           Icon={AddCategoryIcon}
           buttonLabel="Nova coleção"
+          disabled
         />
       </div>
     </div>
