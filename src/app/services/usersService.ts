@@ -1,6 +1,8 @@
 import { httpClient } from './utils/httpClient';
 
 import { IUserAPIResponse, TUpdateUser } from '../../@types/User';
+import { IPreSignedURL, TGetPreSignedURL } from '../../@types/S3';
+import { httpClientS3 } from './utils/httpClientS3';
 
 class UsersService {
   async getMe() {
@@ -34,8 +36,47 @@ class UsersService {
     return data;
   }
 
+  async updateImage(imagePath: string) {
+    const form = new FormData();
+    if (imagePath) {
+      form.append('imagePath', imagePath);
+    } else {
+      form.append('removeImage', JSON.stringify(true));
+    }
+
+    const { data: updatedUser } = await httpClient.put<IUserAPIResponse>(
+      `/users`,
+      form
+    );
+
+    return updatedUser;
+  }
+
+  async uploadAvatarS3({
+    preSignedURL,
+    file,
+  }: {
+    preSignedURL: string;
+    file: File;
+  }) {
+    await httpClientS3.put(preSignedURL, file, {
+      headers: { 'Content-Type': file.type },
+    });
+  }
+
   async deleteUser() {
     await httpClient.delete('/users');
+  }
+
+  async getPreSignedURL({ mimeType, fileSize }: TGetPreSignedURL) {
+    const { data } = await httpClient.get<IPreSignedURL>(
+      `/users/upload-avatar?type=${mimeType}&size=${fileSize}`
+    );
+
+    return {
+      url: data.url,
+      key: data.key,
+    };
   }
 }
 
