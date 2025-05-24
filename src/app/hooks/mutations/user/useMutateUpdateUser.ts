@@ -28,7 +28,7 @@ export function useMutateUpdateUser({
         await UsersService.uploadImageS3({ preSignedURL: data.url, file });
       }
 
-      await UsersService.updateUser({
+      return await UsersService.updateUser({
         ...variables,
         imagePath: key ?? currentImagePath,
       });

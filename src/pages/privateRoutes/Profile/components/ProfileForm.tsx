@@ -190,6 +190,7 @@ export default function ProfileForm({
       inputRef.current.value = '';
     }
   }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -205,7 +206,11 @@ export default function ProfileForm({
     try {
       const data = UpdateUserSchema.parse({ ...formData, imagePath: null });
 
-      await updateUser(data);
+      const { imagePath } = await updateUser(data);
+
+      setImageName(imagePath);
+      setSelectedImage(null);
+      setRemoveImage(false);
     } catch (error) {
       const result = handleSignUpErrors(error);
 
