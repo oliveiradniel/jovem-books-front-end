@@ -12,6 +12,8 @@ import { sanitizeAndCapitalize } from '../../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../../utils/emitToast';
 
 import { handleSignUpErrors } from '../../../nonPrivateRoutes/errors/handleSignUpErrors';
+import { handleUploadImageErrors } from '../../../nonPrivateRoutes/errors/handleUploadImageErrors';
+
 import { UpdateUserSchema } from '../../../../assets/schemas/UserSchema';
 
 import { ClipLoader } from 'react-spinners';
@@ -216,6 +218,17 @@ export default function ProfileForm({
 
       if (result) {
         setError(result);
+
+        return;
+      }
+
+      const uploadMessageError = handleUploadImageErrors(error);
+
+      if (uploadMessageError) {
+        emitToast({
+          type: 'error',
+          message: uploadMessageError,
+        });
 
         return;
       }
