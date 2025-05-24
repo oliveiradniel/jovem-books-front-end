@@ -55,7 +55,9 @@ export default function ProfileForm({
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
-  const { updateUser, isUpdatingUser } = useMutateUpdateUser();
+  const { updateUser, isUpdatingUser } = useMutateUpdateUser({
+    currentImagePath: user?.imagePath ?? null,
+  });
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -68,6 +70,7 @@ export default function ProfileForm({
   const [imageName, setImageName] = useState<string | null>(
     user?.imagePath ?? null
   );
+  const [removeImage, setRemoveImage] = useState(false);
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
@@ -157,12 +160,13 @@ export default function ProfileForm({
   function handleRemoveProfilePhoto() {
     setSelectedImage(null);
     setImageName(null);
+    setRemoveImage(true);
 
     if (inputRef.current) {
       inputRef.current.value = '';
     }
   }
-  console.log(user);
+
   function handleEditCancellation() {
     onEditCancellation();
 
@@ -195,11 +199,11 @@ export default function ProfileForm({
       lastName,
       email,
       file: selectedImage,
-      removeImage: !imageName && !selectedImage,
+      removeImage,
     };
 
     try {
-      const data = UpdateUserSchema.parse(formData);
+      const data = UpdateUserSchema.parse({ ...formData, imagePath: null });
 
       await updateUser(data);
     } catch (error) {

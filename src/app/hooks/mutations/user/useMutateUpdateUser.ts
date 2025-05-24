@@ -5,25 +5,33 @@ import UsersService from '../../../services/UsersService';
 import { TUpdateUser } from '../../../../@types/User';
 import { TMimeType } from '../../../../@types/S3';
 
-export function useMutateUpdateUser() {
+export function useMutateUpdateUser({
+  currentImagePath,
+}: {
+  currentImagePath: string | null;
+}) {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (variables: TUpdateUser) => {
-      await UsersService.updateUser(variables);
-
       const { file } = variables;
+      let key: string | undefined;
 
       if (file !== null) {
-        const { url, key } = await UsersService.getPreSignedURL({
+        const data = await UsersService.getPreSignedURL({
           mimeType: file.type as TMimeType,
           fileSize: file.size,
         });
 
-        await UsersService.uploadImageS3({ preSignedURL: url, file });
+        key = data.key;
 
-        await UsersService.updateImage(key);
+        await UsersService.uploadImageS3({ preSignedURL: data.url, file });
       }
+
+      await UsersService.updateUser({
+        ...variables,
+        imagePath: key ?? currentImagePath,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

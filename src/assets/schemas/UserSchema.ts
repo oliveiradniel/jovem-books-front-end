@@ -44,5 +44,6 @@ export const UpdateUserSchema = BaseUserSchema.omit({ password: true }).extend({
     .optional()
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<File | null>,
+  imagePath: z.string({ message: 'Image path must be a string' }).nullable(),
   removeImage: z.boolean().default(false),
 });

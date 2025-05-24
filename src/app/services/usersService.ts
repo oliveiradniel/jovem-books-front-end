@@ -16,7 +16,7 @@ class UsersService {
     firstName,
     lastName,
     email,
-    file,
+    imagePath,
     removeImage,
   }: TUpdateUser) {
     const form = new FormData();
@@ -27,8 +27,8 @@ class UsersService {
     form.append('email', email);
     form.append('removeImage', JSON.stringify(removeImage));
 
-    if (file) {
-      form.append('image', file);
+    if (imagePath) {
+      form.append('imagePath', imagePath);
     }
 
     const { data } = await httpClient.put<IUserAPIResponse>('/users', form);
