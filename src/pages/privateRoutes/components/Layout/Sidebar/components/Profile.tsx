@@ -106,7 +106,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
             {user?.imagePath ? (
               <img
-                src={`${env.API_URL}/uploads/users/${user.imagePath}`}
+                src={`${env.VITE_AWS_BUCKET_URL}/${user.imagePath}`}
                 alt="Foto de Perfil"
                 className={`h-7 w-7 rounded-full object-cover ${!isExpanded && 'min-h-7 min-w-7'}`}
               />

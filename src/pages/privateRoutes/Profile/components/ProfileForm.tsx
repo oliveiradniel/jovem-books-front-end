@@ -71,7 +71,7 @@ export default function ProfileForm({
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
-    : `${env.API_URL}/uploads/users/${imageName}`;
+    : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   const isFormValid = errors.length === 0;
 

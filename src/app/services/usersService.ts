@@ -1,8 +1,8 @@
 import { httpClient } from './utils/httpClient';
+import { httpClientS3 } from './utils/httpClientS3';
 
 import { IUserAPIResponse, TUpdateUser } from '../../@types/User';
 import { IPreSignedURL, TGetPreSignedURL } from '../../@types/S3';
-import { httpClientS3 } from './utils/httpClientS3';
 
 class UsersService {
   async getMe() {
