@@ -162,7 +162,7 @@ export default function ProfileForm({
       inputRef.current.value = '';
     }
   }
-
+  console.log(user);
   function handleEditCancellation() {
     onEditCancellation();
 
@@ -186,7 +186,6 @@ export default function ProfileForm({
       inputRef.current.value = '';
     }
   }
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 

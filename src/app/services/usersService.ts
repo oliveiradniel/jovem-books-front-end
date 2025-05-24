@@ -52,7 +52,7 @@ class UsersService {
     return updatedUser;
   }
 
-  async uploadAvatarS3({
+  async uploadImageS3({
     preSignedURL,
     file,
   }: {
