@@ -210,7 +210,8 @@ export default function ReadingInformation({
                 <p className="flex gap-2">
                   Terminado em:
                   <span className="text-sky-blue font-semibold">
-                    {totalDaysToFinish} dias
+                    {totalDaysToFinish}{' '}
+                    {totalDaysToFinish === 1 ? 'dia' : 'dias'}
                   </span>
                 </p>
               )}
