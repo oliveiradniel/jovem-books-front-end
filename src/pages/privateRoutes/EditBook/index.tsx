@@ -25,7 +25,7 @@ export default function EditBook() {
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
-  const [book, setBook] = useState({} as IBook);
+  const [book, setBook] = useState<IBook | null>(null);
 
   async function handleSubmit(book: TUpdateBook) {
     await BooksService.updateBook(book);
@@ -64,7 +64,7 @@ export default function EditBook() {
       </button>
 
       <SectionToEditBookCover
-        imagePath={book.imagePath}
+        imagePath={book?.imagePath ?? null}
         isLoadingBook={isLoadingBook}
         isUpdatingBook={false}
       />

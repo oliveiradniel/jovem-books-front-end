@@ -1,10 +1,12 @@
 import { httpClient } from './utils/httpClient';
 
 import { IBookAPI, TCreateBook, TUpdateBook } from '../../@types/Book';
+import { IPreSignedURL, TGetPreSignedURL } from '../../@types/S3';
 
 interface UpdateBookCoverProps {
   id: string;
-  image: File | null;
+  imagePath: string | null;
+  removeImage: boolean;
 }
 
 interface GetBookByIdProps {
@@ -48,12 +50,12 @@ class BooksService {
     return updatedBook;
   }
 
-  async updateImage({ id, image }: UpdateBookCoverProps) {
+  async updateImage({ id, imagePath, removeImage }: UpdateBookCoverProps) {
     const form = new FormData();
-    if (image) {
-      form.append('image', image);
-    } else {
-      form.append('removeImage', JSON.stringify(true));
+    form.append('removeImage', JSON.stringify(removeImage));
+
+    if (imagePath) {
+      form.append('imagePath', imagePath);
     }
 
     const { data: updatedBook } = await httpClient.put<IBookAPI>(
@@ -66,6 +68,17 @@ class BooksService {
 
   async deleteBook(id: string) {
     await httpClient.delete(`/books/${id}`);
+  }
+
+  async getPreSignedURL({ mimeType, fileSize }: TGetPreSignedURL) {
+    const { data } = await httpClient.get<IPreSignedURL>(
+      `/books/upload-cover?type=${mimeType}&size=${fileSize}`
+    );
+
+    return {
+      url: data.url,
+      key: data.key,
+    };
   }
 }
 

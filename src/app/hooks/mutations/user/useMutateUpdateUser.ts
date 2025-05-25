@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import UsersService from '../../../services/UsersService';
+import S3Service from '../../../services/S3Service';
 
 import { TUpdateUser } from '../../../../@types/User';
 import { TMimeType } from '../../../../@types/S3';
@@ -25,7 +26,7 @@ export function useMutateUpdateUser({
 
         key = data.key;
 
-        await UsersService.uploadImageS3({ preSignedURL: data.url, file });
+        await S3Service.uploadImageS3({ preSignedURL: data.url, file });
       }
 
       return await UsersService.updateUser({

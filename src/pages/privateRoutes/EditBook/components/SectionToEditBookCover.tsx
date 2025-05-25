@@ -28,17 +28,18 @@ export default function SectionToEditBookCover({
   const { id } = useParams();
 
   const isFirstRender = useRef(true);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { submitBookImage, isUpdatingBookImage } = useMutateUpdateBookImage();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
 
-  const [isToRemoveTheBookCover, setIsToRemoveTheBookCover] = useState(false);
+  const [removeImage, setRemoveImage] = useState(false);
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
-    : `${env.API_URL}/uploads/books/${imageName}`;
+    : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -58,23 +59,30 @@ export default function SectionToEditBookCover({
   }
 
   function handleRemoveImageFromScreen() {
-    if (isToRemoveTheBookCover && selectedImage === null) {
-      setSelectedImage(null);
-      setIsToRemoveTheBookCover(false);
-    } else {
-      setIsToRemoveTheBookCover(true);
+    if (imageName && selectedImage === null && !removeImage) {
+      setRemoveImage(true);
+      return;
     }
+
+    if (imageName && selectedImage === null && removeImage) {
+      setRemoveImage(false);
+      return;
+    }
+
+    setRemoveImage(false);
+    setSelectedImage(null);
   }
 
   async function handleSubmit() {
-    if (selectedImage || isToRemoveTheBookCover) {
+    if (selectedImage || removeImage) {
       const updatedBook = await submitBookImage({
         id: id!,
-        image: selectedImage,
+        file: selectedImage,
+        removeImage: removeImage,
       });
 
       setSelectedImage(null);
-      setIsToRemoveTheBookCover(false);
+      setRemoveImage(false);
 
       setImageName(updatedBook.imagePath);
     } else {
@@ -101,7 +109,7 @@ export default function SectionToEditBookCover({
           {isLoadingBook && <SkeletonLoading rounded="full" />}
 
           {!isLoadingBook &&
-            ((selectedImage || imageName) && !isToRemoveTheBookCover ? (
+            ((selectedImage || imageName) && !removeImage ? (
               <img
                 src={src}
                 alt="Capa do Livro"
@@ -115,7 +123,7 @@ export default function SectionToEditBookCover({
         <div className="flex gap-2">
           <SaveButton
             buttonLabel={
-              selectedImage || isToRemoveTheBookCover
+              selectedImage || removeImage
                 ? 'Salvar'
                 : imagePath
                   ? 'Alterar capa'
@@ -128,6 +136,7 @@ export default function SectionToEditBookCover({
           >
             <input
               id="book-cover"
+              ref={inputRef}
               type="file"
               accept="image/*"
               onChange={handleImageChange}
@@ -137,7 +146,7 @@ export default function SectionToEditBookCover({
 
           <DeleteButton
             buttonLabel={
-              !isToRemoveTheBookCover && !selectedImage ? (
+              !removeImage && !selectedImage ? (
                 <FiTrash2 />
               ) : (
                 <span className="font-quicksand">X</span>

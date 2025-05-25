@@ -1,38 +1,55 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import BooksService from '../../../services/BooksService';
+import S3Service from '../../../services/S3Service';
+
 import { emitToast } from '../../../../utils/emitToast';
+
+import { TMimeType } from '../../../../@types/S3';
 
 interface MutationProps {
   id: string;
-  image: File | null;
+  file: File | null;
+  removeImage: boolean;
 }
 
 export function useMutateUpdateBookImage() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: async ({ id, image }: MutationProps) => {
-      const updatedBook = await BooksService.updateImage({
-        id,
-        image,
-      });
+    mutationFn: async ({ id, file, removeImage }: MutationProps) => {
+      let key: string | undefined;
 
-      return updatedBook;
+      if (file) {
+        const data = await BooksService.getPreSignedURL({
+          mimeType: file.type as TMimeType,
+          fileSize: file.size,
+        });
+
+        key = data.key;
+
+        await S3Service.uploadImageS3({ preSignedURL: data.url, file });
+      }
+
+      return await BooksService.updateImage({
+        id,
+        imagePath: key ?? null,
+        removeImage,
+      });
     },
-    onSuccess: (_, { id, image }) => {
+    onSuccess: (_, { id, file }) => {
       queryClient.invalidateQueries({
         queryKey: ['book', { id }],
       });
 
-      if (image) {
+      if (file) {
         emitToast({ type: 'success', message: 'Capa alterada com sucesso.' });
       } else {
         emitToast({ type: 'success', message: 'Capa excluída com sucesso.' });
       }
     },
-    onError: (_, { image }) => {
-      if (image) {
+    onError: (_, { file }) => {
+      if (file) {
         emitToast({
           type: 'error',
           message: 'Não foi possível alterar a capa do livro.',
