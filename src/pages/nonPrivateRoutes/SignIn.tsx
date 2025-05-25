@@ -3,7 +3,7 @@ import { useAuth } from '../../app/hooks/useAuth';
 import AuthService from '../../app/services/AuthService';
 
 import { SignInSchema } from '../../assets/schemas/UserSchema';
-import { handleSignInErrors } from './errors/handleSignInErrors';
+import { handleSignInErrors } from '../../app/handleErrors/handleSignInErrors';
 
 import SessionTemplate from './components/SessionTemplate';
 import SessionForm from './components/SessionForm';

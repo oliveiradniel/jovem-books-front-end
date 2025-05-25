@@ -57,4 +57,4 @@ export interface IFormError<T, K> {
   message: K;
 }
 
-export type THandleError = ZodError | AxiosError | unknown;
+export type TError = ZodError | AxiosError | unknown;

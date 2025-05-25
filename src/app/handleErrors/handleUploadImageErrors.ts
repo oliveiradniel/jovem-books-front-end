@@ -2,13 +2,13 @@ import { ZodError } from 'zod';
 
 import { AxiosError, AxiosResponse } from 'axios';
 
-import { THandleError } from '../../../@types/FormError';
+import { TError } from '../../@types/FormError';
 
 interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
-export function handleUploadImageErrors(error: THandleError): string | null {
+export function handleUploadImageErrors(error: TError): string | null {
   if (error instanceof ZodError) {
     if (error.message.includes('Only PNG, JPEG or JPG files are allowed')) {
       const message = 'Apenas arquivos de imagens JPEG ou PNG são aceitos!';
@@ -41,6 +41,16 @@ export function handleUploadImageErrors(error: THandleError): string | null {
 
     if (errorMessage === 'The file must be a maximum of 5MB') {
       const message = 'O arquivo deve ter no máximo 5MB!';
+
+      return message;
+    }
+
+    if (
+      error.response?.data ===
+      'Number of requests exceeded, please try again later'
+    ) {
+      const message =
+        'Parece que você está fazendo muitas requisições. Tente mais tarde!';
 
       return message;
     }

@@ -4,17 +4,17 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 import {
   IFormError,
-  THandleError,
+  TError,
   TSessionFields,
   TSignInErrorMessages,
-} from '../../../@types/FormError';
+} from '../../@types/FormError';
 
 interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
 export function handleSignInErrors(
-  error: THandleError
+  error: TError
 ): IFormError<TSessionFields, TSignInErrorMessages> | null {
   if (error instanceof ZodError) {
     if (error.message.includes('The username must be at least 5 characters')) {

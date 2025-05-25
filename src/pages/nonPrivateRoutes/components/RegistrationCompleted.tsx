@@ -7,13 +7,13 @@ import useAnimatedUnmount from '../../../app/hooks/useAnimatedUnmount.ts';
 import AuthService from '../../../app/services/AuthService.ts';
 
 import { SignInSchema } from '../../../assets/schemas/UserSchema.ts';
-import { handleSignInErrors } from '../errors/handleSignInErrors';
 
 import { FaArrowLeftLong } from 'react-icons/fa6';
 
 import SessionForm from './SessionForm.tsx';
 
 import { TSignIn } from '../../../@types/User.ts';
+import { handleSignInErrors } from '../../../app/handleErrors/handleSignInErrors.ts';
 
 interface RegistrationCompletedProps {
   isVisible: boolean;

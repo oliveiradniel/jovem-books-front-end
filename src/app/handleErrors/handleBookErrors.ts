@@ -6,16 +6,15 @@ import {
   IFormError,
   TBookErrorMessages,
   TBookFields,
-} from '../../../../@types/FormError';
-
-type Error = ZodError | AxiosError | unknown;
+  TError,
+} from '../../@types/FormError';
 
 interface APIError extends AxiosError {
   response: AxiosResponse<{ message: string }>;
 }
 
 export function handleBookErrors(
-  error: Error
+  error: TError
 ): IFormError<TBookFields, TBookErrorMessages> | null {
   if (error instanceof ZodError) {
     if (error.message.includes('Title must be at least 3 characters')) {

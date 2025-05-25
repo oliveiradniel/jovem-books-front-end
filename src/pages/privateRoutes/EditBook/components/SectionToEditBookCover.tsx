@@ -7,6 +7,8 @@ import { env } from '../../../../config/env';
 
 import { emitToast } from '../../../../utils/emitToast';
 
+import { handleUploadImageErrors } from '../../../../app/handleErrors/handleUploadImageErrors';
+
 import { FiTrash2 } from 'react-icons/fi';
 import { MdOutlinePermMedia } from 'react-icons/md';
 
@@ -75,16 +77,46 @@ export default function SectionToEditBookCover({
 
   async function handleSubmit() {
     if (selectedImage || removeImage) {
-      const updatedBook = await submitBookImage({
-        id: id!,
-        file: selectedImage,
-        removeImage: removeImage,
-      });
+      try {
+        const updatedBook = await submitBookImage({
+          id: id!,
+          file: selectedImage,
+          removeImage: removeImage,
+        });
 
-      setSelectedImage(null);
-      setRemoveImage(false);
+        setSelectedImage(null);
+        setRemoveImage(false);
 
-      setImageName(updatedBook.imagePath);
+        setImageName(updatedBook.imagePath);
+
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
+      } catch (error) {
+        console.log(error);
+        const uploadMessageError = handleUploadImageErrors(error);
+
+        if (uploadMessageError) {
+          emitToast({
+            type: 'error',
+            message: uploadMessageError,
+          });
+
+          return;
+        }
+
+        if (selectedImage) {
+          emitToast({
+            type: 'error',
+            message: 'Não foi possível alterar a capa do livro.',
+          });
+        } else {
+          emitToast({
+            type: 'error',
+            message: 'Não foi possível excluir a capa do livro.',
+          });
+        }
+      }
     } else {
       document.getElementById('book-cover')?.click();
     }

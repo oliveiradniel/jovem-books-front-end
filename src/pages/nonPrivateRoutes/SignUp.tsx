@@ -3,7 +3,7 @@ import { useState } from 'react';
 import AuthService from '../../app/services/AuthService';
 
 import { SignUpSchema } from '../../assets/schemas/UserSchema';
-import { handleSignUpErrors } from './errors/handleSignUpErrors';
+import { handleSignUpErrors } from '../../app/handleErrors/handleSignUpErrors';
 
 import RegistrationCompleted from './components/RegistrationCompleted';
 import SessionForm from './components/SessionForm';

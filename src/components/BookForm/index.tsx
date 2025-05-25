@@ -9,7 +9,7 @@ import { useErrors } from '../../app/hooks/useErrors';
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
 
 import { ZodSchema } from 'zod';
-import { handleBookErrors } from '../../pages/privateRoutes/EditBook/errors/handleBookErrors';
+import { handleBookErrors } from '../../app/handleErrors/handleBookErrors';
 
 import { FiTrash2 } from 'react-icons/fi';
 

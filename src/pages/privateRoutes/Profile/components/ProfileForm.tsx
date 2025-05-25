@@ -11,10 +11,9 @@ import { env } from '../../../../config/env';
 import { sanitizeAndCapitalize } from '../../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../../utils/emitToast';
 
-import { handleSignUpErrors } from '../../../nonPrivateRoutes/errors/handleSignUpErrors';
-import { handleUploadImageErrors } from '../../../nonPrivateRoutes/errors/handleUploadImageErrors';
-
 import { UpdateUserSchema } from '../../../../assets/schemas/UserSchema';
+import { handleSignUpErrors } from '../../../../app/handleErrors/handleSignUpErrors';
+import { handleUploadImageErrors } from '../../../../app/handleErrors/handleUploadImageErrors';
 
 import { ClipLoader } from 'react-spinners';
 import { GiRead } from 'react-icons/gi';
@@ -210,9 +209,14 @@ export default function ProfileForm({
 
       const { imagePath } = await updateUser(data);
 
-      setImageName(imagePath);
       setSelectedImage(null);
       setRemoveImage(false);
+
+      setImageName(imagePath);
+
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
     } catch (error) {
       const result = handleSignUpErrors(error);
 

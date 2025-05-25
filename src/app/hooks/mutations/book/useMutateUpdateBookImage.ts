@@ -48,19 +48,6 @@ export function useMutateUpdateBookImage() {
         emitToast({ type: 'success', message: 'Capa excluída com sucesso.' });
       }
     },
-    onError: (_, { file }) => {
-      if (file) {
-        emitToast({
-          type: 'error',
-          message: 'Não foi possível alterar a capa do livro.',
-        });
-      } else {
-        emitToast({
-          type: 'error',
-          message: 'Não foi possível excluir a capa do livro.',
-        });
-      }
-    },
   });
 
   return {
