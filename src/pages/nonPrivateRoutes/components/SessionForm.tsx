@@ -18,7 +18,7 @@ import Button from './Button';
 
 import {
   IFormError,
-  THandleError,
+  TError,
   TSessionErrorMessages,
   TSessionFields,
 } from '../../../@types/FormError';
@@ -30,7 +30,7 @@ export interface ISessionFormProps<T> {
   validationSchema: ZodSchema<T>;
   onSubmit: (credentials: T) => Promise<void>;
   handleErrors: (
-    error: THandleError
+    error: TError
   ) => IFormError<TSessionFields, TSessionErrorMessages> | null;
 }
 
