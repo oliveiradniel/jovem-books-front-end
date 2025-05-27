@@ -4,11 +4,11 @@ import ReadsService from '../../../services/ReadsService';
 
 import { emitToast } from '../../../../utils/emitToast';
 
-import { ReadingStatus } from '../../../../@types/Book';
+import { TReadingStatus } from '../../../../@types/Read';
 
 interface UseMutationProps {
   bookId: string;
-  status: ReadingStatus;
+  status: TReadingStatus;
 }
 
 export function useMutateUpdateReadStatus() {

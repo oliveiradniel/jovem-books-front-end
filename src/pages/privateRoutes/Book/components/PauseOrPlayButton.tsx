@@ -2,10 +2,10 @@ import { ButtonHTMLAttributes } from 'react';
 
 import { IoPauseOutline, IoPlayOutline } from 'react-icons/io5';
 
-import { ReadingStatus } from '../../../../@types/Book';
+import { TReadingStatus } from '../../../../@types/Read';
 
 interface PauseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  status: ReadingStatus | null;
+  status: TReadingStatus | null;
 }
 
 export default function PauseOrPlayButton({

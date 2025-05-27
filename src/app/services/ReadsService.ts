@@ -1,6 +1,6 @@
 import { IRead } from '../../@types/Read';
 
-import { ReadingStatus } from '../../@types/Book';
+import { TReadingStatus } from '../../@types/Read';
 
 import { httpClient } from './utils/httpClient';
 
@@ -15,7 +15,7 @@ interface CreateReadProps {
 interface UpdateReadProps {
   bookId: string;
   currentPage?: number;
-  status?: ReadingStatus;
+  status?: TReadingStatus;
   note?: string;
   finishedAt?: Date;
 }

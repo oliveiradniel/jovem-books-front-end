@@ -7,6 +7,8 @@ import {
 
 import { LITERARY_GENRE_LABELS } from '../constants/books';
 
+import { TReadingStatus } from './Read';
+
 type BaseBook = {
   id: string;
   title: string;
@@ -16,7 +18,7 @@ type BaseBook = {
   numberOfPages: number;
   literaryGenre: string[];
   read: {
-    status: ReadingStatus;
+    status: TReadingStatus;
     currentPage: number;
     createdAt: string;
     finishedAt: string | null;
@@ -38,8 +40,6 @@ export interface IGoogleBooksAPI {
 export interface IBookAPI extends Omit<BaseBook, 'authors'> {
   authors: string[];
 }
-
-export type ReadingStatus = 'READING' | 'ON_HOLD' | 'FINISHED';
 
 export type TBookFilter = 'ALL' | 'NOT_READING' | 'READING' | 'FINISHED';
 

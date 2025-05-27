@@ -1,10 +1,10 @@
-import { ReadingStatus } from './Book';
+export type TReadingStatus = 'READING' | 'ON_HOLD' | 'FINISHED';
 
 export interface IRead {
   createdAt: string;
   bookId: string;
   currentPage: number;
-  status: ReadingStatus;
+  status: TReadingStatus;
   notes: string | null;
   finishedAt: string | null;
 }

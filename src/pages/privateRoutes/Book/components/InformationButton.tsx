@@ -1,4 +1,4 @@
-import { ReadingStatus } from '../../../../@types/Book';
+import { TReadingStatus } from '../../../../@types/Read';
 
 import { BsFillBookmarkCheckFill } from 'react-icons/bs';
 import { FaStopwatch } from 'react-icons/fa';
@@ -7,8 +7,8 @@ import { GrInProgress } from 'react-icons/gr';
 import { ClockLoader } from 'react-spinners';
 
 interface InformationButtonProps {
-  status: ReadingStatus | null;
-  onChangeBookStatus: (status: ReadingStatus) => void;
+  status: TReadingStatus | null;
+  onChangeBookStatus: (status: TReadingStatus) => void;
   isLoadingRead: boolean;
   isStartingRead: boolean;
   isUpdatingReadStatus: boolean;

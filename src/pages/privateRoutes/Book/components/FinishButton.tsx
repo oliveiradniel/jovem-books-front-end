@@ -1,8 +1,9 @@
 import { ButtonHTMLAttributes } from 'react';
-import { ReadingStatus } from '../../../../@types/Book';
+
+import { TReadingStatus } from '../../../../@types/Read';
 
 interface FinishButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  onChangeBookStatus: (status: ReadingStatus) => void;
+  onChangeBookStatus: (status: TReadingStatus) => void;
 }
 
 export default function FinishButton({
