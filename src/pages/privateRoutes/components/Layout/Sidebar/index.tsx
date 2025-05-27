@@ -31,9 +31,15 @@ export default function Sidebar() {
     };
   }, [isExpanded]);
 
+  useEffect(() => {
+    if (window.innerWidth <= 700) {
+      setIsExpanded(false);
+    }
+  }, []);
+
   return (
     <div
-      className={`bg-blue-black-op-80 relative flex w-55 flex-col justify-between rounded-s-sm transition-all duration-300 ease-in-out ${!isExpanded && 'w-20!'}`}
+      className={`bg-blue-black-op-80 relative flex w-56 flex-col justify-between rounded-s-sm transition-all duration-300 ease-in-out ${!isExpanded && 'w-20!'}`}
     >
       <Logo isExpanded={isExpanded} onExpansionToggle={handleExpansionToggle} />
 
