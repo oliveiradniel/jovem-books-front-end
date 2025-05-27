@@ -159,7 +159,16 @@ export default function SessionForm<T>({
     };
 
     try {
+      if (isLoading) return;
+
       const data = validationSchema.parse(userData);
+
+      removeError('credentials');
+      removeError('email');
+      removeError('firstName');
+      removeError('lastName');
+      removeError('password');
+      removeError('username');
 
       await submitSession(data);
     } catch (error) {
