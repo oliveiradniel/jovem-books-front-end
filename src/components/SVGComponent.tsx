@@ -1,11 +1,23 @@
 interface SVGComponent {
   fill: string;
+  width: string;
+  height: string;
   children: React.ReactNode;
 }
 
-export default function SVGComponent({ fill, children }: SVGComponent) {
+export default function SVGComponent({
+  fill,
+  width,
+  height,
+  children,
+}: SVGComponent) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={80} height={80} fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      fill="none"
+    >
       <g
         fill={fill}
         clipPath="url(#a)"

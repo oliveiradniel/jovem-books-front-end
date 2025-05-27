@@ -27,6 +27,7 @@ export default function Card({
     >
       <Icon
         width={80}
+        height={80}
         fill={
           disabled
             ? '#adadad40'
