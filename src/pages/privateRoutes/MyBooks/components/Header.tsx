@@ -5,6 +5,7 @@ import { TBookFilter } from '../../../../@types/Book';
 import LargeOptionsMenu from '../components/LargeOptionsMenu';
 import Select from '../components/Select';
 import { ClipLoader } from 'react-spinners';
+import { MdFormatListBulleted } from 'react-icons/md';
 
 interface HeaderProps {
   selectedFilter: TBookFilter;
@@ -81,13 +82,21 @@ export default function Header({
         )}
       </div>
 
-      <span
-        className={`text-mate-gray flex items-center transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
+      <p
+        className={`text-mate-gray font-quicksand flex items-center transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
       >
-        {!isLoadingBooks &&
-          !hasError &&
-          `Total encontrado (${numberOfFilteredBooks})`}
-      </span>
+        {!isLoadingBooks && !hasError && (
+          <>
+            <span className="mr-1 hidden sm:inline-flex">Total</span>
+            <span className="mr-1 hidden md:inline-flex">encontrado</span>
+            <MdFormatListBulleted
+              title="Total encontrado"
+              className="mr-1 inline-flex sm:hidden"
+            />
+            <span>({numberOfFilteredBooks})</span>
+          </>
+        )}
+      </p>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { IBookAPI } from '../../../../../@types/Book';
 import Title from './rows/Title';
 import Authors from './rows/Authors';
 import LiteraryGenre from './rows/LiteraryGenre';
 import ReadingStatus from './rows/ReadingStatus';
+
+import { IBookAPI } from '../../../../../@types/Book';
 
 interface TableBodyProps {
   books: IBookAPI[];
