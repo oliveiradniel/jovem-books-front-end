@@ -15,7 +15,7 @@ export function useQueryListBooks() {
     booksList: data ?? [],
     isLoadingBooks: isLoading,
     isRefetchingBooks: isFetching,
-    isError,
+    hasError: isError,
     refetch,
   };
 }
