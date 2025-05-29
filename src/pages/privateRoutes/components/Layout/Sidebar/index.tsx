@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import Logo from './components/Logo.tsx';
 import Navigation from './components/Navigation.tsx';
 import Profile from './components/Profile.tsx';
 
 export default function Sidebar() {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   function handleExpansionToggle() {
     if (window.innerWidth < 640) {
@@ -19,8 +19,6 @@ export default function Sidebar() {
     function handleResize() {
       if (window.innerWidth <= 700 && isExpanded) {
         setIsExpanded(false);
-      } else if (window.innerWidth > 700 && !isExpanded) {
-        setIsExpanded(true);
       }
     }
 
@@ -31,7 +29,7 @@ export default function Sidebar() {
     };
   }, [isExpanded]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (window.innerWidth <= 700) {
       setIsExpanded(false);
     }
