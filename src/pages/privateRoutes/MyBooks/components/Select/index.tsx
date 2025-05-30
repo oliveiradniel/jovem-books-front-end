@@ -35,7 +35,7 @@ export default function Select({
   });
 
   return (
-    <div className="z-1 flex w-[140px]">
+    <div className="z-1 flex w-[140px] lg:hidden">
       <button
         id="select"
         type="button"

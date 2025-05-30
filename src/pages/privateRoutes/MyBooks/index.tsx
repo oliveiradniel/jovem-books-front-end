@@ -53,10 +53,7 @@ export default function MyBooks() {
         <>
           <Header
             selectedFilter={selectedFilter}
-            numberOfBooks={booksList.length}
             numberOfFilteredBooks={filteredBooksByStatus.length}
-            hasError={hasError}
-            isLoadingBooks={isLoadingBooks}
             isRefetchingBooks={isRefetchingBooks}
             onChangeFilter={setSelectedFilter}
           />
