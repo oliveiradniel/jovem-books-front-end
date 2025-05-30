@@ -21,9 +21,13 @@ export function useMutateUpdateReadStatus() {
         status,
       });
     },
-    onSuccess: () => {
+    onSuccess: (_, { bookId }) => {
       queryClient.invalidateQueries({
         queryKey: ['books'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['read', { bookId }],
       });
     },
     onError: (_, { status }) => {
