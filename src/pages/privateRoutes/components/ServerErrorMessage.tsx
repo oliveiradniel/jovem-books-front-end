@@ -20,7 +20,7 @@ export default function ServerErrorMessage({
       <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
         Houve um erro ao buscar os livros na Google Books.
       </p>
-      <ServerError className="mb-4 w-[30vw] lg:w-[20vw]" />
+      <ServerError className="mb-4 w-[30vw] min-w-[16rem] lg:w-[20vw]" />
 
       <button
         onClick={() => onTryAgain()}

@@ -4,20 +4,20 @@ import GoogleBooksIcon from '../../../../assets/icons/google-books.svg?react';
 export default function WelcomeMessageToGoogleBooks() {
   return (
     <div className="animate-fade-in flex min-h-full flex-1 flex-col items-center justify-center">
-      <div className="flex items-center">
+      <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-0">
         <h1 className="text-snow-white font-bebas-neue text-center text-6xl text-[clamp(0.8rem,4vw,3rem)]">
           Bem vindo a google books!
         </h1>
-        <GoogleBooksIcon className="hidden h-14 w-14 lg:inline-flex" />
+        <GoogleBooksIcon className="h-14 w-14" />
       </div>
 
-      <p className="text-snow-white font-quicksand mt-2 text-center text-[clamp(0.8rem,2vw,1rem)]">
+      <p className="text-snow-white font-quicksand mt-2 text-center text-[clamp(0.8rem,2vw,0.9rem)]">
         Aqui você pode facilitar seu cadastro utilizando essa integração para
         preencher os dados dos seus livros e iniciar sua leitura com mais
         praticidade.
       </p>
 
-      <GirlStudying className="mt-8 w-[30vw] lg:w-[20vw]" />
+      <GirlStudying className="mt-8 w-[30vw] min-w-[16rem] lg:w-[20vw]" />
     </div>
   );
 }

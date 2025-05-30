@@ -6,7 +6,7 @@ import TableBooks from './components/TableBooks';
 import Header from './components/Header';
 import LoadingMessage from '../components/LoadingMessage';
 import ServerErrorMessage from '../components/ServerErrorMessage';
-import EmptyBooks from './components/EmptyBooks';
+import EmptyBooksMessage from './components/EmptyBooksMessage';
 
 import { TBookFilter } from '../../../@types/Book';
 
@@ -47,7 +47,7 @@ export default function MyBooks() {
       {booksList.length === 0 &&
         !isLoadingBooks &&
         !isRefetchingBooks &&
-        !hasError && <EmptyBooks />}
+        !hasError && <EmptyBooksMessage />}
 
       {!isLoadingBooks && !hasError && booksList.length > 0 && (
         <>
