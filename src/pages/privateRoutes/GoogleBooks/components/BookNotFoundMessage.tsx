@@ -22,7 +22,7 @@ export default function BookNotFoundMessage({
         {notFoundBookText}{' '}
         <span className="text-sky-blue font-semibold">"{searchTerm}"</span>
       </p>
-      <BoyStudying className="mb-4 w-[30vw] min-w-[16rem] lg:w-[20vw]" />
+      <BoyStudying className="mb-4 w-[30vw] lg:w-[20vw]" />
     </div>
   );
 }
