@@ -4,7 +4,7 @@ import Card from './components/Card';
 
 export default function Dashboard() {
   return (
-    <div>
+    <div className="flex-1">
       <p className="font-roboto text-light-gray">
         Aqui você é capaz de adicionar
         <span className="text-sky-blue"> novos livros.</span>
