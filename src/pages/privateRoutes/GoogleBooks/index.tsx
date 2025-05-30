@@ -4,10 +4,10 @@ import { useDebounce } from '../../../app/hooks/useDebounce';
 
 import { useQueryGetGoogleBooks } from '../../../app/hooks/queries/googleBooks/useQueryGetGoogleBooks';
 
+import ServerErrorMessage from '../components/ServerErrorMessage';
 import Header from './components/Header';
 import BooksContainer from './components/BooksContainer';
-import LoadingMessage from './components/LoadingMessage';
-import ServerErrorMessage from './components/ServerErrorMessage';
+import LoadingMessage from '../components/LoadingMessage';
 import BookNotFoundMessage from './components/BookNotFoundMessage';
 import WelcomeMessageToGoogleBooks from './components/WelcomeMessageToGoogleBooks';
 
@@ -46,7 +46,9 @@ export default function GoogleBooks() {
         isLoadingBooks={isLoadingBooks}
       />
 
-      {isLoadingBooks && <LoadingMessage />}
+      {isLoadingBooks && (
+        <LoadingMessage message="Buscando livros na Google Books..." />
+      )}
 
       {hasError && !isLoadingBooks && (
         <ServerErrorMessage onTryAgain={tryAgain} />

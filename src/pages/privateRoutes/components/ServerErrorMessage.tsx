@@ -2,9 +2,9 @@ import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
 
 import { IoMdRefresh } from 'react-icons/io';
 
-import ServerError from '../../../../assets/images/server-error.svg?react';
+import ServerError from '../../../assets/images/server-error.svg?react';
 
-import { IGoogleBookAPI } from '../../../../@types/Book';
+import { IGoogleBookAPI } from '../../../@types/Book';
 
 interface ServerErrorMessageProps {
   onTryAgain: (
@@ -26,7 +26,9 @@ export default function ServerErrorMessage({
         onClick={() => onTryAgain()}
         className="bg-blood-red font-roboto hover:bg-blood-red/90 cursor-pointer rounded-md px-6 py-2 text-white transition-colors duration-300 ease-in-out"
       >
-        <span className="hidden sm:inline-flex">Tentar novamente</span>
+        <span className="hidden font-semibold sm:inline-flex">
+          Tentar novamente
+        </span>
         <IoMdRefresh className="sm:hidden" />
       </button>
     </div>

@@ -16,6 +16,6 @@ export function useQueryListBooks() {
     isLoadingBooks: isLoading,
     isRefetchingBooks: isFetching,
     hasError: isError,
-    refetch,
+    tryAgain: refetch,
   };
 }
