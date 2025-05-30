@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { useQueryListBooks } from '../../../app/hooks/queries/book/useQueryListBooks';
 
-import EmptyBooksList from '../../../assets/images/empty-books-list.svg?react';
-import ErrorInBooks from '../../../assets/images/error-in-books.svg?react';
+import EmptyBooks from '../../../assets/images/empty-books.svg?react';
+import ServerError from '../../../assets/images/server-error.svg?react';
 
 import { IoMdAdd, IoMdRefresh } from 'react-icons/io';
 
@@ -40,7 +40,7 @@ export default function MyBooks() {
 
   return (
     <div
-      className={`bg-blue-black/60 relative h-[580px] overflow-y-auto rounded-lg p-5 ${(isLoadingBooks || booksList.length === 0 || hasError) && 'flex items-center justify-center'}`}
+      className={`flex-1 overflow-y-auto rounded-lg p-5 ${(isLoadingBooks || booksList.length === 0 || hasError) && 'flex items-center justify-center'}`}
     >
       {(isLoadingBooks || (isRefetchingBooks && booksList.length === 0)) && (
         <div className="animate-fade-in flex flex-col items-center justify-center gap-4">
@@ -56,7 +56,7 @@ export default function MyBooks() {
           <p className="text-light-gray font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
             Houve um erro ao carregar seus livros.
           </p>
-          <ErrorInBooks className="mb-4 w-[30vw] lg:w-[20vw]" />
+          <ServerError className="mb-4 w-[30vw] lg:w-[20vw]" />
 
           <button
             onClick={() => refetch()}
@@ -77,7 +77,7 @@ export default function MyBooks() {
               Parece que você não tem nenhum livro cadastrado.
             </p>
 
-            <EmptyBooksList className="w-[30vw] lg:w-[20vw]" />
+            <EmptyBooks className="w-[30vw] lg:w-[20vw]" />
 
             <p className="text-light-gray font-quicksand mb-4 text-[clamp(0.8rem,2vw,1rem)]">
               Clique no botão abaixo para adicionar.

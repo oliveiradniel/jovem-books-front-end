@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import EmptyStatusFilter from '../../../../../assets/images/empty-status-filter.svg?react';
+import EmptyBooks from '../../../../../assets/images/empty-books.svg?react';
 
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
@@ -35,7 +35,7 @@ export default function TableBooks({
     <div className="relative h-full max-h-[460px]">
       {filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute flex h-full w-full flex-col items-center justify-center">
-          <EmptyStatusFilter className="mb-4 w-[30vw] lg:w-[20vw]" />
+          <EmptyBooks className="mb-4 w-[30vw] lg:w-[20vw]" />
           <p className="text-light-gray font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
             {message!}
           </p>

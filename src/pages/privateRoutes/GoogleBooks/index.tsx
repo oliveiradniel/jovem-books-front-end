@@ -7,7 +7,7 @@ import { useQueryGetGoogleBooks } from '../../../app/hooks/queries/googleBooks/u
 import GirlStudying from '../../../assets/images/girl-studying.svg?react';
 import BoyStudying from '../../../assets/images/boy-studying.svg?react';
 import GoogleBooksIcon from '../../../assets/icons/google-books.svg?react';
-import ErrorInBooks from '../../../assets/images/error-in-books.svg?react';
+import ServerError from '../../../assets/images/server-error.svg?react';
 
 import Header from './components/Header';
 import BooksContainer from './components/BooksContainer';
@@ -68,7 +68,7 @@ export default function GoogleBooks() {
           <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
             Houve um erro ao buscar os livros na Google Books.
           </p>
-          <ErrorInBooks className="mb-4 w-[30vw] lg:w-[20vw]" />
+          <ServerError className="mb-4 w-[30vw] lg:w-[20vw]" />
 
           <button
             onClick={() => tryAgain()}
