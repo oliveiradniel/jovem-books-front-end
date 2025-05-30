@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { TSelected } from './RadioButtons';
+import { TTypeOfSearch } from './RadioButtons';
 import { GoSearch } from 'react-icons/go';
 
 interface SearchInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  selected: TSelected;
+  selected: TTypeOfSearch;
   value: string;
 }
 

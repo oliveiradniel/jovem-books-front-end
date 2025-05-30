@@ -1,9 +1,9 @@
-export type TSelected = 'title' | 'author';
+export type TTypeOfSearch = 'title' | 'author';
 
 export interface RadioButtonsProps {
-  selected: TSelected;
+  selected: TTypeOfSearch;
   isLoadingBooks: boolean;
-  onSelected: (selected: TSelected) => void;
+  onSelected: (selected: TTypeOfSearch) => void;
 }
 
 export default function RadioButtons({

@@ -1,0 +1,23 @@
+import GirlStudying from '../../../../assets/images/girl-studying.svg?react';
+import GoogleBooksIcon from '../../../../assets/icons/google-books.svg?react';
+
+export default function WelcomeMessageToGoogleBooks() {
+  return (
+    <div className="animate-fade-in flex min-h-full flex-1 flex-col items-center justify-center">
+      <div className="flex items-center">
+        <h1 className="text-snow-white font-bebas-neue text-center text-6xl text-[clamp(0.8rem,4vw,3rem)]">
+          Bem vindo a google books!
+        </h1>
+        <GoogleBooksIcon className="hidden h-14 w-14 lg:inline-flex" />
+      </div>
+
+      <p className="text-snow-white font-quicksand mt-2 text-center text-[clamp(0.8rem,2vw,1rem)]">
+        Aqui você pode facilitar seu cadastro utilizando essa integração para
+        preencher os dados dos seus livros e iniciar sua leitura com mais
+        praticidade.
+      </p>
+
+      <GirlStudying className="mt-8 w-[30vw] lg:w-[20vw]" />
+    </div>
+  );
+}

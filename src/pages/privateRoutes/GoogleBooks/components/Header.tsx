@@ -1,12 +1,12 @@
 import SearchInput from './SearchInput';
-import RadioButtons, { TSelected } from './RadioButtons';
+import RadioButtons, { TTypeOfSearch } from './RadioButtons';
 
 interface HeaderProps {
   searchTerm: string;
-  selected: TSelected;
+  selected: TTypeOfSearch;
   isLoadingBooks: boolean;
   onSearchTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSelected: (selected: TSelected) => void;
+  onSelected: (selected: TTypeOfSearch) => void;
 }
 
 export default function Header({

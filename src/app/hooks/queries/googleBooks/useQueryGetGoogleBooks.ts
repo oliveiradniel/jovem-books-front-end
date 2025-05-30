@@ -4,11 +4,11 @@ import GoogleBooksService, {
   TGoogleBookSearchParams,
 } from '../../../services/GoogleBooksService';
 
-import { TSelected } from '../../../../pages/privateRoutes/GoogleBooks/components/RadioButtons';
+import { TTypeOfSearch } from '../../../../pages/privateRoutes/GoogleBooks/components/RadioButtons';
 
 interface UseQueryGetGoogleBooks {
   searchTerm: string;
-  selected: TSelected;
+  selected: TTypeOfSearch;
 }
 
 export function useQueryGetGoogleBooks({
