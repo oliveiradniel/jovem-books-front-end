@@ -1,9 +1,13 @@
-export default function Spinner() {
+interface SpinnerProps {
+  size?: string;
+}
+
+export default function Spinner({ size = '8' }: SpinnerProps) {
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className="fill-sky-blue dark:text-navy-blue h-8 w-8 animate-spin text-gray-200"
+        className={`fill-sky-blue dark:text-navy-blue h-${size} w-${size} animate-spin text-gray-200`}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

@@ -2,6 +2,7 @@ import { MdFormatListBulleted } from 'react-icons/md';
 
 import LargeOptionsMenu from '../components/LargeOptionsMenu';
 import Select from '../components/Select';
+import Spinner from '../../../../components/Spinner';
 
 import { TBookFilter } from '../../../../@types/Book';
 
@@ -20,7 +21,7 @@ export default function Header({
 }: HeaderProps) {
   return (
     <div className="flex h-[40px] justify-between">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         <LargeOptionsMenu
           selectedFilter={selectedFilter}
           disabled={isRefetchingBooks}
@@ -32,6 +33,8 @@ export default function Header({
           disabled={isRefetchingBooks}
           onChange={onChangeFilter}
         />
+
+        {isRefetchingBooks && <Spinner size="6" />}
       </div>
 
       <p

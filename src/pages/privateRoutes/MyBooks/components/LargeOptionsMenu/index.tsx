@@ -37,6 +37,13 @@ export default function LargeOptionsMenu({
       />
 
       <Button
+        label="Em pausa"
+        isSelected={selectedFilter === 'ON_HOLD'}
+        disabled={disabled}
+        onClick={() => onChange('ON_HOLD')}
+      />
+
+      <Button
         label="Concluídos"
         isSelected={selectedFilter === 'FINISHED'}
         disabled={disabled}

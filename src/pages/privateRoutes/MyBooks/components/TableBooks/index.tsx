@@ -24,6 +24,8 @@ export default function TableBooks({
         return 'Todos os livros cadastrados estão em leitura ou finalizados.';
       case 'READING':
         return 'Não há nenhum livro em leitura.';
+      case 'ON_HOLD':
+        return 'Não há nenhum livro em pausa.';
       case 'FINISHED':
         return 'Não há nenhum livro concluído.';
       default:
@@ -32,11 +34,11 @@ export default function TableBooks({
   }, [selectedFilter]);
 
   return (
-    <div className="relative h-full max-h-[460px]">
+    <div className="relative h-full">
       {filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute flex h-full w-full flex-col items-center justify-center">
-          <EmptyBooks className="mb-4 w-[30vw] lg:w-[20vw]" />
-          <p className="text-light-gray font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
+          <EmptyBooks className="mb-4 w-[30vw] min-w-[16rem] lg:w-[20vw]" />
+          <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
             {message!}
           </p>
         </div>

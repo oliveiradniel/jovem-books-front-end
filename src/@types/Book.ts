@@ -41,7 +41,12 @@ export interface IBookAPI extends Omit<BaseBook, 'authors'> {
   authors: string[];
 }
 
-export type TBookFilter = 'ALL' | 'NOT_READING' | 'READING' | 'FINISHED';
+export type TBookFilter =
+  | 'ALL'
+  | 'NOT_READING'
+  | 'READING'
+  | 'ON_HOLD'
+  | 'FINISHED';
 
 export type TCreateBook = z.infer<typeof CreateBookSchema>;
 

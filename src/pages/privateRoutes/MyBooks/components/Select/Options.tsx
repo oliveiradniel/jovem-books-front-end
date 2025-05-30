@@ -46,6 +46,12 @@ export default function Options({
       />
 
       <Button
+        label="Em pausa"
+        isSelected={selectedFilter === 'ON_HOLD'}
+        onClick={() => onSelect('ON_HOLD')}
+      />
+
+      <Button
         label="Concluídos"
         isSelected={selectedFilter === 'FINISHED'}
         onClick={() => onSelect('FINISHED')}

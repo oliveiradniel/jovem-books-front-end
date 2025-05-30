@@ -50,7 +50,7 @@ export default function MyBooks() {
         !hasError && <EmptyBooksMessage />}
 
       {!isLoadingBooks && !hasError && booksList.length > 0 && (
-        <>
+        <div className="h-full overflow-hidden">
           <Header
             selectedFilter={selectedFilter}
             numberOfFilteredBooks={filteredBooksByStatus.length}
@@ -65,7 +65,7 @@ export default function MyBooks() {
             selectedFilter={selectedFilter}
             isRefetching={isRefetchingBooks}
           />
-        </>
+        </div>
       )}
     </div>
   );
