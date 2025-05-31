@@ -56,6 +56,11 @@ export default function ProfileForm({
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
+  const hasErrorInUsername = getErrorMessageByFieldName(['username']);
+  const hasErrorInFirstName = getErrorMessageByFieldName(['firstName']);
+  const hasErrorInLastName = getErrorMessageByFieldName(['lastName']);
+  const hasErrorInEmail = getErrorMessageByFieldName(['email']);
+
   const { updateUser, isUpdatingUser } = useMutateUpdateUser({
     currentImagePath: user?.imagePath ?? null,
   });
@@ -312,9 +317,9 @@ export default function ProfileForm({
         </div>
       </div>
 
-      <FormGroup error={getErrorMessageByFieldName(['username'])}>
+      <FormGroup error={hasErrorInUsername}>
         <Input
-          error={getErrorMessageByFieldName(['username'])}
+          error={!!(hasErrorInUsername && hasErrorInUsername.length > 0)}
           label="Nome de usuário"
           type="text"
           placeholder={user?.username}
@@ -325,9 +330,9 @@ export default function ProfileForm({
         />
       </FormGroup>
 
-      <FormGroup error={getErrorMessageByFieldName(['firstName'])}>
+      <FormGroup error={hasErrorInFirstName}>
         <Input
-          error={getErrorMessageByFieldName(['firstName'])}
+          error={!!(hasErrorInFirstName && hasErrorInFirstName.length > 0)}
           label="Primeiro nome"
           type="text"
           placeholder={user?.firstName}
@@ -338,9 +343,9 @@ export default function ProfileForm({
         />
       </FormGroup>
 
-      <FormGroup error={getErrorMessageByFieldName(['lastName'])}>
+      <FormGroup error={hasErrorInLastName}>
         <Input
-          error={getErrorMessageByFieldName(['lastName'])}
+          error={!!(hasErrorInLastName && hasErrorInLastName.length > 0)}
           label="Sobrenome"
           type="text"
           placeholder={user?.lastName}
@@ -351,9 +356,9 @@ export default function ProfileForm({
         />
       </FormGroup>
 
-      <FormGroup error={getErrorMessageByFieldName(['email'])}>
+      <FormGroup error={hasErrorInEmail}>
         <Input
-          error={getErrorMessageByFieldName(['email'])}
+          error={!!(hasErrorInEmail && hasErrorInEmail.length > 0)}
           label="E-mail"
           type="text"
           placeholder={user?.email}
