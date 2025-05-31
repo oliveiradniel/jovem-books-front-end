@@ -20,7 +20,7 @@ import { GiRead } from 'react-icons/gi';
 
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 import FormGroup from '../../../../components/FormGroup';
-import Input from '../../../../components/BookForm/Input';
+import Input from './Input';
 
 import {
   TProfileErrorMessages,
@@ -252,12 +252,12 @@ export default function ProfileForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg px-5"
+      className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg"
     >
       <div className="bg-navy-blue/40 mb-4 flex w-full items-center gap-4 rounded-lg px-3 py-3">
         <div className="relative flex h-[90px] w-[90px] items-center justify-center">
           <input
-            id="profile-photo"
+            id="user-avatar"
             ref={inputRef}
             type="file"
             accept="image/*"
@@ -268,7 +268,7 @@ export default function ProfileForm({
             <button
               type="button"
               disabled={isUpdatingUser || isRefetchingUser}
-              onClick={() => document.getElementById('profile-photo')?.click()}
+              onClick={() => document.getElementById('user-avatar')?.click()}
               className={`text-sky-blue absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center text-[12px] transition-all duration-300 ease-in-out disabled:cursor-default disabled:opacity-40 ${isRefetchingUser ? 'text-sky-blue' : 'hover:text-sky-blue/80'}`}
             >
               Selecione a foto de perfil
@@ -306,13 +306,23 @@ export default function ProfileForm({
           <p
             className={`font-quicksand text-light-gray mt-2 text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
           >
-            Total de livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
+            <span className="hidden sm:inline-flex">
+              Total de livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
+            </span>
+            <span className="inline-flex sm:hidden">
+              Livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
+            </span>
           </p>
           <p
             className={`font-quicksand text-light-gray text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
           >
-            Total de livros lidos:{' '}
-            {isLoadingBooks ? '...' : totalOfBooksFinished}
+            <span className="hidden sm:inline-flex">
+              Total de livros lidos:{' '}
+              {isLoadingBooks ? '...' : totalOfBooksFinished}
+            </span>
+            <span className="inline-flex sm:hidden">
+              Livros lidos: {isLoadingBooks ? '...' : totalOfBooksFinished}
+            </span>
           </p>
         </div>
       </div>

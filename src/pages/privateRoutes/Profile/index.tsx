@@ -20,7 +20,7 @@ export default function Profile() {
         onClose={() => setIsDeleteModalVisible(false)}
       />
 
-      <div className="flex min-h-[580px] flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center">
         <ProfileForm
           key={user?.id}
           user={user as IUserAPIResponse}
@@ -31,7 +31,7 @@ export default function Profile() {
         />
 
         {!isBeingEdited && (
-          <div className="mt-4 flex w-[clamp(340px,64vw,500px)] flex-col items-stretch justify-center gap-1 px-5">
+          <div className="mt-4 flex w-[clamp(340px,64vw,500px)] flex-col items-stretch justify-center gap-1">
             <button
               type="button"
               disabled={isLoadingUser || isRefetchingUser}
