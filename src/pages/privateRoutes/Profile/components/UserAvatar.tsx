@@ -2,6 +2,8 @@ import { env } from '../../../../config/env';
 
 import { GiRead } from 'react-icons/gi';
 
+import addImageIcon from '../../../../assets/icons/add-image.png';
+
 import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface UserAvatarProps {
@@ -39,14 +41,18 @@ export default function UserAvatar({
         onChange={onImageChange}
         className="hidden"
       />
-      {isBeingEdited && (
+      {isBeingEdited && !selectedImage && (
         <button
           type="button"
           disabled={isUpdatingUser || isRefetchingUser}
           onClick={() => document.getElementById('user-avatar')?.click()}
-          className={`text-sky-blue absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center text-[12px] transition-all duration-300 ease-in-out disabled:cursor-default disabled:opacity-40 ${isRefetchingUser ? 'text-sky-blue' : 'hover:text-sky-blue/80'}`}
+          className={`text-sky-blue border-sky-blue/10 absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center rounded-full border text-[12px] transition-all duration-300 ease-in-out disabled:cursor-default disabled:opacity-40 ${isRefetchingUser ? 'text-sky-blue' : 'hover:opacity-78'}`}
         >
-          Selecione a foto de perfil
+          <img
+            src={addImageIcon}
+            alt="Ícone adicionar imagem"
+            className="h-11 w-11"
+          />
         </button>
       )}
 
@@ -56,7 +62,7 @@ export default function UserAvatar({
         <img
           src={src}
           alt="Foto de Perfil"
-          className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
+          className={`z-1 h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && !selectedImage && 'opacity-20'}`}
         />
       ) : (
         !isLoadingUser && (

@@ -13,17 +13,19 @@ import { handleUploadImageErrors } from '../../../../app/handleErrors/handleUplo
 
 import { ClipLoader } from 'react-spinners';
 
+import removeImageIcon from '../../../../assets/icons/remove-image.png';
+
 import FormGroup from '../../../../components/FormGroup';
 import Input from './Input';
+import InformationContainer from './InformationContainer';
+import UserAvatar from './UserAvatar';
+import UserInformation from './UserInformation';
 
 import {
   TProfileErrorMessages,
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
-import InformationContainer from './InformationContainer';
-import UserAvatar from './UserAvatar';
-import UserInformation from './UserInformation';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -339,7 +341,7 @@ export default function ProfileForm({
               type="button"
               disabled={isUpdatingUser || isRefetchingUser}
               onClick={handleEditCancellation}
-              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer items-center justify-center rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
               Cancelar
             </button>
@@ -351,9 +353,14 @@ export default function ProfileForm({
                 (selectedImage === null && imageName === null)
               }
               onClick={handleRemoveProfilePhoto}
-              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray w-full cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer justify-center rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
-              Remover foto
+              <span className="hidden sm:inline-flex">Remover foto</span>
+              <img
+                src={removeImageIcon}
+                alt="ícone remover imagem"
+                className="inline-flex h-6 w-6 sm:hidden"
+              />
             </button>
           </div>
         </div>
