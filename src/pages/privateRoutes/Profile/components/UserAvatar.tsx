@@ -30,7 +30,7 @@ export default function UserAvatar({
     : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   return (
-    <div className="bg-navy-blue/40 relative flex h-[100px] w-[100px] items-center justify-center rounded-full sm:h-[90px] sm:w-[90px]">
+    <div className="bg-navy-blue/40 relative flex h-[100px] w-[100px] items-center justify-center rounded-full sm:h-[90px] sm:w-[90px] sm:bg-transparent">
       <input
         id="user-avatar"
         ref={inputRef}

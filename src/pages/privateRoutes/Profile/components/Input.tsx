@@ -5,6 +5,7 @@ import SkeletonLoading from '../../../../components/SkeletonLoading';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  isBeingEdited: boolean;
   error?: boolean;
   isLoadingData?: boolean;
 }
@@ -12,6 +13,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export default function Input({
   label,
   disabled,
+  isBeingEdited,
   isLoadingData = false,
   error = false,
   ...props
@@ -23,9 +25,9 @@ export default function Input({
       <Label label={label} />
       <div className="flex w-full">
         <div
-          className={`relative flex h-8 w-full items-center rounded-lg border px-2 transition-colors duration-300 ease-in-out ${disabled && 'border-transparent'} ${
+          className={`relative flex h-8 w-full items-center rounded-lg border transition-colors duration-300 ease-in-out ${disabled && 'border-transparent'} ${
             isTheFieldFocused && 'border-sky-blue/40'
-          } ${error ? 'border-blood-red!' : 'border-navy-blue'}`}
+          } ${error ? 'border-blood-red!' : 'border-navy-blue'} ${isBeingEdited ? 'px-2' : 'px-0'}`}
         >
           {isLoadingData && <SkeletonLoading rounded="lg" />}
           <input

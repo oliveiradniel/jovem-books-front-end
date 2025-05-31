@@ -31,6 +31,8 @@ interface ProfileForm {
   isRefetchingUser: boolean;
   isBeingEdited: boolean;
   onEditCancellation: () => void;
+  onEdit: () => void;
+  onOpenUserDeleteModal: () => void;
 }
 
 export default function ProfileForm({
@@ -39,6 +41,8 @@ export default function ProfileForm({
   isRefetchingUser,
   isBeingEdited,
   onEditCancellation,
+  onEdit,
+  onOpenUserDeleteModal,
 }: ProfileForm) {
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
@@ -235,7 +239,7 @@ export default function ProfileForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg"
+      className="flex w-[clamp(200px,60vw,500px)] flex-col items-center justify-center gap-4 rounded-lg"
     >
       <InformationContainer>
         <UserAvatar
@@ -268,7 +272,8 @@ export default function ProfileForm({
           placeholder={user?.username}
           value={username}
           disabled={!isBeingEdited || isRefetchingUser}
-          isLoadingData={!user}
+          isBeingEdited={isBeingEdited}
+          isLoadingData={isLoadingUser}
           onChange={handleUsernameChange}
         />
       </FormGroup>
@@ -281,7 +286,8 @@ export default function ProfileForm({
           placeholder={user?.firstName}
           value={firstName}
           disabled={!isBeingEdited || isRefetchingUser}
-          isLoadingData={!user}
+          isBeingEdited={isBeingEdited}
+          isLoadingData={isLoadingUser}
           onChange={handleFirstNameChange}
         />
       </FormGroup>
@@ -294,7 +300,8 @@ export default function ProfileForm({
           placeholder={user?.lastName}
           value={lastName}
           disabled={!isBeingEdited || isRefetchingUser}
-          isLoadingData={!user}
+          isBeingEdited={isBeingEdited}
+          isLoadingData={isLoadingUser}
           onChange={handleLastNameChange}
         />
       </FormGroup>
@@ -307,7 +314,8 @@ export default function ProfileForm({
           placeholder={user?.email}
           value={email}
           disabled={!isBeingEdited || isRefetchingUser}
-          isLoadingData={!user}
+          isBeingEdited={isBeingEdited}
+          isLoadingData={isLoadingUser}
           onChange={handleEmailChange}
         />
       </FormGroup>
@@ -348,6 +356,28 @@ export default function ProfileForm({
               Remover foto
             </button>
           </div>
+        </div>
+      )}
+
+      {!isBeingEdited && (
+        <div className="flex w-full flex-col items-stretch justify-center gap-1">
+          <button
+            type="button"
+            disabled={isLoadingUser || isRefetchingUser}
+            onClick={onEdit}
+            className="bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+          >
+            Editar
+          </button>
+
+          <button
+            type="button"
+            disabled={isLoadingUser || isRefetchingUser}
+            onClick={onOpenUserDeleteModal}
+            className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+          >
+            Excluir usuário
+          </button>
         </div>
       )}
     </form>
