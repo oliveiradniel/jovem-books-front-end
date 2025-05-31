@@ -1,12 +1,8 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
-import { useQueryListBooks } from '../../../../app/hooks/queries/book/useQueryListBooks';
-
 import { useMutateUpdateUser } from '../../../../app/hooks/mutations/user/useMutateUpdateUser';
 
 import { useErrors } from '../../../../app/hooks/useErrors';
-
-import { env } from '../../../../config/env';
 
 import { sanitizeAndCapitalize } from '../../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../../utils/emitToast';
@@ -16,9 +12,7 @@ import { handleSignUpErrors } from '../../../../app/handleErrors/handleSignUpErr
 import { handleUploadImageErrors } from '../../../../app/handleErrors/handleUploadImageErrors';
 
 import { ClipLoader } from 'react-spinners';
-import { GiRead } from 'react-icons/gi';
 
-import SkeletonLoading from '../../../../components/SkeletonLoading';
 import FormGroup from '../../../../components/FormGroup';
 import Input from './Input';
 
@@ -27,6 +21,9 @@ import {
   TSessionFields,
 } from '../../../../@types/FormError';
 import { IUserAPIResponse } from '../../../../@types/User';
+import InformationContainer from './InformationContainer';
+import UserAvatar from './UserAvatar';
+import UserInformation from './UserInformation';
 
 interface ProfileForm {
   user: IUserAPIResponse | null;
@@ -43,16 +40,6 @@ export default function ProfileForm({
   isBeingEdited,
   onEditCancellation,
 }: ProfileForm) {
-  const { booksList, isLoadingBooks, isRefetchingBooks } = useQueryListBooks();
-
-  const totalBooks = booksList.length;
-  let totalOfBooksFinished = 0;
-  booksList.forEach((book) => {
-    if (book.read?.status === 'FINISHED') {
-      totalOfBooksFinished += 1;
-    }
-  });
-
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
@@ -77,10 +64,6 @@ export default function ProfileForm({
     user?.imagePath ?? null
   );
   const [removeImage, setRemoveImage] = useState(false);
-
-  const src = selectedImage
-    ? URL.createObjectURL(selectedImage)
-    : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   const isFormValid = errors.length === 0;
 
@@ -254,78 +237,28 @@ export default function ProfileForm({
       onSubmit={handleSubmit}
       className="flex w-[clamp(340px,64vw,500px)] flex-col items-center justify-center gap-4 rounded-lg"
     >
-      <div className="bg-navy-blue/40 mb-4 flex w-full items-center gap-4 rounded-lg px-3 py-3">
-        <div className="relative flex h-[90px] w-[90px] items-center justify-center">
-          <input
-            id="user-avatar"
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-          {isBeingEdited && (
-            <button
-              type="button"
-              disabled={isUpdatingUser || isRefetchingUser}
-              onClick={() => document.getElementById('user-avatar')?.click()}
-              className={`text-sky-blue absolute z-1 flex h-full w-full cursor-pointer flex-col items-center justify-center text-[12px] transition-all duration-300 ease-in-out disabled:cursor-default disabled:opacity-40 ${isRefetchingUser ? 'text-sky-blue' : 'hover:text-sky-blue/80'}`}
-            >
-              Selecione a foto de perfil
-            </button>
-          )}
+      <InformationContainer>
+        <UserAvatar
+          selectedImage={selectedImage}
+          imageName={imageName}
+          inputRef={inputRef}
+          isBeingEdited={isBeingEdited}
+          isUpdatingUser={isUpdatingUser}
+          isRefetchingUser={isRefetchingUser}
+          isLoadingUser={isLoadingUser}
+          onImageChange={handleImageChange}
+        />
 
-          {isLoadingUser && <SkeletonLoading rounded="full" />}
+        <div className="bg-navy-blue-2 hidden h-full w-[0.1px] sm:inline-flex" />
 
-          {(imageName !== null || selectedImage !== null) && !isLoadingUser ? (
-            <img
-              src={src}
-              alt="Foto de Perfil"
-              className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'}`}
-            />
-          ) : (
-            !isLoadingUser && (
-              <GiRead
-                size={70}
-                className={`text-sky-blue/60 transition-opacity duration-300 ease-in-out ${isBeingEdited && 'opacity-20'} ${isRefetchingUser && !isBeingEdited && 'opacity-40'}`}
-              />
-            )
-          )}
-        </div>
-
-        <div className="bg-navy-blue-2 flex h-full w-[0.1px]" />
-
-        <div className="flex-1">
-          <p
-            className={`font-quicksand text-sky-blue text-end text-[14px] font-semibold transition-opacity duration-300 ease-in-out ${!isUpdatingUser && !isLoadingUser && isRefetchingUser && 'opacity-40'}`}
-          >
-            {!isLoadingUser
-              ? `${user?.firstName} ${user?.lastName}`
-              : 'Carregando...'}
-          </p>
-          <p
-            className={`font-quicksand text-light-gray mt-2 text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
-          >
-            <span className="hidden sm:inline-flex">
-              Total de livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
-            </span>
-            <span className="inline-flex sm:hidden">
-              Livros cadastrados: {isLoadingBooks ? '...' : totalBooks}
-            </span>
-          </p>
-          <p
-            className={`font-quicksand text-light-gray text-end text-[12px] transition-opacity duration-300 ease-in-out ${!isLoadingBooks && isRefetchingBooks && 'opacity-40'}`}
-          >
-            <span className="hidden sm:inline-flex">
-              Total de livros lidos:{' '}
-              {isLoadingBooks ? '...' : totalOfBooksFinished}
-            </span>
-            <span className="inline-flex sm:hidden">
-              Livros lidos: {isLoadingBooks ? '...' : totalOfBooksFinished}
-            </span>
-          </p>
-        </div>
-      </div>
+        <UserInformation
+          firstName={user?.firstName ?? null}
+          lastName={user?.lastName ?? null}
+          isUpdatingUser={isUpdatingUser}
+          isRefetchingUser={isRefetchingUser}
+          isLoadingUser={isLoadingUser}
+        />
+      </InformationContainer>
 
       <FormGroup error={hasErrorInUsername}>
         <Input
