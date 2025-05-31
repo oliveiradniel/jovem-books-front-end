@@ -19,7 +19,7 @@ export default function Input({
   const [isTheFieldFocused, setIsTheFieldFocused] = useState(false);
 
   return (
-    <div className="flex w-full items-center justify-between gap-2">
+    <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row">
       <Label label={label} />
       <div className="flex w-full">
         <div
@@ -34,7 +34,7 @@ export default function Input({
             onFocus={() => setIsTheFieldFocused(true)}
             onBlur={() => setIsTheFieldFocused(false)}
             {...props}
-            className={`font-quicksand placeholder:text-light-gray w-full text-end transition-all duration-300 ease-in-out outline-none placeholder:text-sm disabled:font-bold ${error ? 'text-blood-red' : 'text-sky-blue/80'}`}
+            className={`font-quicksand placeholder:text-light-gray w-full text-start transition-all duration-300 ease-in-out outline-none placeholder:text-sm disabled:font-bold sm:text-end ${error ? 'text-blood-red' : 'text-sky-blue/80'}`}
           />
         </div>
       </div>
