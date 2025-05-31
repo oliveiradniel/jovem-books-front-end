@@ -40,6 +40,10 @@ export default function NewBook() {
         authors: book.authors,
       });
 
+      if (authors === null) {
+        authors = '';
+      }
+
       let literaryGenre = book.literaryGenre?.map(
         (literaryGenre) => literaryGenre.toUpperCase() as string
       );
@@ -48,14 +52,15 @@ export default function NewBook() {
         LITERARY_GENRE_OPTIONS.includes(item)
       );
 
-      if (authors === null) {
-        authors = '';
-      }
       if (!literaryGenre) {
         literaryGenre = [];
       }
 
-      bookFormRef.current?.setFieldValues({ ...book, authors, literaryGenre });
+      bookFormRef.current?.setFieldValues({
+        ...book,
+        authors,
+        literaryGenre,
+      });
     }
   }, [book]);
 

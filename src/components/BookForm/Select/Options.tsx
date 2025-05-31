@@ -41,7 +41,7 @@ export default function Options({
     <div
       id="options"
       ref={animatedElementRef}
-      className={`font-roboto bg-navy-blue animate-move-in-bottom-d300-y30 mt-1 flex w-full flex-wrap justify-between gap-2 rounded-lg p-1 ${!isVisible && 'animate-return-to-top-d200-y50'}`}
+      className={`font-roboto bg-navy-blue animate-move-in-bottom-d300-y30 mt-1 flex w-full flex-wrap gap-2 rounded-lg p-1 ${!isVisible && 'animate-return-to-top-d200-y50'}`}
     >
       {LITERARY_GENRE_OPTIONS.map((option, index) => {
         const isSelected = selectedOptions.includes(option);

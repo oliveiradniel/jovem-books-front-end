@@ -20,7 +20,6 @@ import Input from './Input';
 import Button from './Button';
 import Select from './Select';
 import Label from './Label';
-import NumberInput from './NumberInput';
 
 import { IBook } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
@@ -46,6 +45,10 @@ function BookFormInner<T>(
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TBookFields, TBookErrorMessages>();
 
+  const hasErrorInTitle = getErrorMessageByFieldName(['title']);
+  const hasErrorInAuthors = getErrorMessageByFieldName(['authors']);
+  const hasErrorInNumberOfPages = getErrorMessageByFieldName(['numberOfPages']);
+
   const { submitBook, isLoading, hasError } = useMutateSubmitBook({
     type,
     onSubmit,
@@ -62,26 +65,26 @@ function BookFormInner<T>(
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
   const [literaryGenre, setLiteraryGenre] = useState([] as string[]);
-  const [numberOfPages, setNumberOfPages] = useState<number | string | null>(
-    null
-  );
+  const [numberOfPages, setNumberOfPages] = useState<string>('');
 
   const buttonLabel = type === 'create' ? 'Criar' : 'Salvar alterações';
 
   useImperativeHandle(ref, () => ({
     setFieldValues(book) {
+      const parsedNumberOfPages = book.numberOfPages ?? '';
+
       setTitle(book.title);
       setAuthors(book.authors);
       setSinopse(book.sinopse ?? '');
       setLiteraryGenre(book.literaryGenre);
-      setNumberOfPages(book.numberOfPages);
+      setNumberOfPages(String(parsedNumberOfPages));
     },
     resetFields() {
       setTitle('');
       setAuthors('');
       setSinopse('');
       setLiteraryGenre([]);
-      setNumberOfPages(null);
+      setNumberOfPages('');
     },
   }));
 
@@ -89,8 +92,7 @@ function BookFormInner<T>(
     title?.length > 0 &&
     authors?.length > 0 &&
     literaryGenre?.length > 0 &&
-    Number(numberOfPages) > 0 &&
-    String(numberOfPages)?.length > 0 &&
+    String(numberOfPages).length > 0 &&
     errors.length === 0;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -137,6 +139,7 @@ function BookFormInner<T>(
 
   function handleLiteraryGenreChange(value: string) {
     const hasSixLiteraryGenre = literaryGenre.length === 6;
+
     if (literaryGenre.includes(value)) {
       const newLiteraryGenre = literaryGenre.filter(
         (literaryGenreValue) => literaryGenreValue !== value
@@ -178,13 +181,22 @@ function BookFormInner<T>(
     setNumberOfPages(value);
   }
 
-  function handlePageIncrement() {
-    setNumberOfPages((prevState) => Number(prevState) + 1);
+  function handleNumberOfPagesIncrement() {
+    setNumberOfPages((prevState) => {
+      const asNumber = Number(prevState) + 1;
+      const newValue = String(asNumber);
+
+      return newValue;
+    });
   }
 
-  function handlePageDecrement() {
-    if (Number(numberOfPages) === 0) return;
-    setNumberOfPages((prevState) => Number(prevState) - 1);
+  function handleNumberOfPagesDecrement() {
+    setNumberOfPages((prevState) => {
+      const asNumber = Number(prevState) - 1;
+      const newValue = String(asNumber);
+
+      return newValue;
+    });
   }
 
   async function handleDeleteBook() {
@@ -226,13 +238,13 @@ function BookFormInner<T>(
       />
 
       <form className="mt-10 flex flex-col gap-4 overflow-y-auto">
-        <FormGroup error={getErrorMessageByFieldName(['title'])}>
+        <FormGroup error={hasErrorInTitle}>
           <Input
             label="Título"
-            error={getErrorMessageByFieldName(['title'])}
+            error={!!(hasErrorInTitle && hasErrorInTitle.length > 0)}
             name="title"
             placeholder="Dom Quixote"
-            value={title}
+            value={title || ''}
             onChange={handleTitleChange}
           />
         </FormGroup>
@@ -243,15 +255,15 @@ function BookFormInner<T>(
         >
           <Input
             label="Autor(es)"
-            error={getErrorMessageByFieldName(['authors'])}
+            error={!!(hasErrorInAuthors && hasErrorInAuthors.length > 0)}
             name="authors"
             placeholder="Miguel de Cervantes"
-            value={authors}
+            value={authors || ''}
             onChange={handleAuthorsChange}
           />
         </FormGroup>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Label label="Sinopse" />
           <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
             <textarea
@@ -277,13 +289,19 @@ function BookFormInner<T>(
 
         {type === 'create' && (
           <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
-            <NumberInput
-              error={getErrorMessageByFieldName(['numberOfPages'])}
-              value={numberOfPages ?? ''}
+            <Input
+              label="Número de Páginas"
+              error={
+                !!(
+                  hasErrorInNumberOfPages && hasErrorInNumberOfPages.length > 0
+                )
+              }
+              name="numerOfPages"
               placeholder="332"
+              value={numberOfPages || ''}
               onChange={handleNumberOfPagesChange}
-              onIncrement={handlePageIncrement}
-              onDecrement={handlePageDecrement}
+              onIncrement={handleNumberOfPagesIncrement}
+              onDecrement={handleNumberOfPagesDecrement}
             />
           </FormGroup>
         )}
