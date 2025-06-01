@@ -14,8 +14,8 @@ export default function SessionTemplate({
   isSubmitting,
 }: SessionTemplate) {
   return (
-    <div className="to-royal-blue h-screen w-screen bg-linear-to-r from-black p-5">
-      <div className="bg-navy-blue-op-40 flex h-full w-full justify-between gap-20 rounded-2xl p-5">
+    <div className="to-sky-blue h-screen w-screen bg-linear-to-r from-black p-5">
+      <div className="bg-navy-blue/20 flex h-full w-full justify-between gap-20 rounded-2xl p-5">
         <div className="relative max-w-md flex-1">
           <Navigation isDisabled={isSubmitting} />
 

@@ -9,7 +9,7 @@ function Range({ isVisible }: { isVisible: boolean }) {
     return null;
   }
 
-  return <div className="bg-royal-purple animate-fade-in h-0.5" />;
+  return <div className="bg-sky-blue animate-fade-in h-0.5" />;
 }
 
 export default function Navigation({ isDisabled }: NavigationProps) {

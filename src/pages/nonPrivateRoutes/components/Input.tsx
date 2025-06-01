@@ -32,13 +32,13 @@ export default function Input({
 
   return (
     <div
-      className={`bg-midnight-blue-op-40 border-midnight-blue-op-40 flex items-center gap-3 rounded-lg border px-4 py-2 transition-all duration-300 ease-in-out ${isLoading && 'bg-transparent'} ${
-        isTheFieldFocused && 'border-royal-purple'
+      className={`bg-navy-blue/60 border-navy-blue/60 flex items-center gap-3 rounded-lg border px-4 py-2 transition-all duration-300 ease-in-out ${isLoading && 'bg-transparent'} ${
+        isTheFieldFocused && 'border-sky-blue'
       } ${error && error.length > 0 && 'border-blood-red!'}`}
     >
       <Icon
         className={`text-light-gray-op-40 h-5 w-5 transition duration-300 ease-in-out ${
-          (isTheFieldFocused || theFieldIsEmpty) && 'text-royal-purple'
+          (isTheFieldFocused || theFieldIsEmpty) && 'text-sky-blue'
         } ${error && error.length > 0 && 'text-blood-red!'}`}
       />
 
@@ -64,13 +64,13 @@ export default function Input({
           {!isThePasswordVisible ? (
             <FaEye
               className={`text-light-gray-op-40 transition duration-300 ease-in-out ${
-                (isTheFieldFocused || theFieldIsEmpty) && 'text-royal-purple'
+                (isTheFieldFocused || theFieldIsEmpty) && 'text-sky-blue'
               } ${error && error.length > 0 && 'text-blood-red!'}`}
             />
           ) : (
             <FaEyeSlash
               className={`text-light-gray-op-40 transition duration-300 ease-in-out ${
-                (isTheFieldFocused || theFieldIsEmpty) && 'text-royal-purple'
+                (isTheFieldFocused || theFieldIsEmpty) && 'text-sky-blue'
               } ${error && error.length > 0 && 'text-blood-red!'}`}
             />
           )}

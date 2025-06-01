@@ -15,7 +15,7 @@ export default function Button({
   return (
     <button
       type="submit"
-      className={`bg-dark-violet text-snow-white font-roboto disabled:bg-snow-white-op-70 ${isAbsolute && 'absolute bottom-0'} flex h-12 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet cursor-default!' : 'hover:bg-dark-violet/80 hover:cursor-pointer'}`}
+      className={`bg-sky-blue/50 text-snow-white font-roboto disabled:bg-snow-white-op-70 ${isAbsolute && 'absolute bottom-0'} flex h-12 w-full items-center justify-center rounded-lg transition-colors duration-300 ease-in-out disabled:cursor-default ${isSubmitting ? 'hover:bg-dark-violet cursor-default!' : 'hover:bg-sky-blue/40 hover:cursor-pointer'}`}
       {...props}
     >
       {isSubmitting ? (
