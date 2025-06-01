@@ -4,7 +4,7 @@ import GoogleBooksIcon from '../../../../assets/icons/google-books.svg?react';
 export default function WelcomeMessageToGoogleBooks() {
   return (
     <div className="animate-fade-in flex min-h-full flex-1 flex-col items-center justify-center">
-      <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-0">
+      <div className="flex items-center">
         <h1 className="text-snow-white font-bebas-neue text-center text-[clamp(1.6rem,4vw,3rem)]">
           Bem vindo a google books!
         </h1>

@@ -93,7 +93,6 @@ export default function SectionToEditBookCover({
           inputRef.current.value = '';
         }
       } catch (error) {
-        console.log(error);
         const uploadMessageError = handleUploadImageErrors(error);
 
         if (uploadMessageError) {

@@ -37,7 +37,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`bg-blue-black-op-80 relative flex w-56 flex-col justify-between rounded-s-sm transition-all duration-300 ease-in-out ${!isExpanded && 'w-20!'}`}
+      className={`bg-blue-black-op-80 relative hidden w-56 flex-col justify-between rounded-s-sm transition-all duration-300 ease-in-out sm:flex ${!isExpanded && 'w-20!'}`}
     >
       <Logo isExpanded={isExpanded} onExpansionToggle={handleExpansionToggle} />
 

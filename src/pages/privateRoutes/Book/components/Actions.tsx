@@ -22,7 +22,7 @@ export default function Actions({
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="text-snow-white hover:text-snow-white-op-70 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+          className="text-snow-white hover:text-snow-white-op-70 transition-colors duration-300 ease-in-out hover:cursor-pointer"
         >
           <GoArrowLeft size={20} />
         </button>
@@ -37,7 +37,7 @@ export default function Actions({
         onClick={(e) => {
           if (isLoadingBook || isRefetchingBook) e.preventDefault();
         }}
-        className={`font-roboto flex h-10 w-[140px] items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out ${isLoadingBook || isRefetchingBook ? 'border-navy-blue text-light-gray/40 cursor-default hover:bg-transparent' : 'border-sky-blue text-sky-blue hover:bg-dark-violet/60 hover:cursor-pointer'}`}
+        className={`font-roboto flex items-center justify-center gap-2 text-sm transition-all duration-300 ease-in-out ${isLoadingBook || isRefetchingBook ? 'text-light-gray/40 cursor-default' : 'text-sky-blue cursor-pointer hover:opacity-90'}`}
       >
         <CiEdit size={18} />
         Editar livro

@@ -8,7 +8,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="to-sky-blue min-h-screen w-screen bg-linear-to-r from-[#020202]">
+    <div className="to-royal-blue min-h-screen w-screen bg-linear-to-r from-[#020202]">
       <div className="h-full p-12">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

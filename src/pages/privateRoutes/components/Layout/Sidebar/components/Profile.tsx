@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useQueryClient } from '@tanstack/react-query';
-
 import { useAuth } from '../../../../../../app/hooks/useAuth.ts';
 
 import useAnimatedUnmount from '../../../../../../app/hooks/useAnimatedUnmount.ts';
@@ -25,8 +23,6 @@ interface ProfileProps {
 
 export default function Profile({ isExpanded }: ProfileProps) {
   const { pathname } = useLocation();
-
-  const queryClient = useQueryClient();
 
   const [hoverOnProfile, setHoverOnProfile] = useState(false);
 
@@ -56,12 +52,6 @@ export default function Profile({ isExpanded }: ProfileProps) {
     setIsOptionsVisible((prevState) => !prevState);
   }
 
-  function handleSignOut() {
-    signOut();
-
-    queryClient.clear();
-  }
-
   return (
     <>
       {shouldRenderOptions && (
@@ -82,7 +72,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
             <div className="bg-blue-black/70 h-[0.1px] w-full" />
 
             <button
-              onClick={handleSignOut}
+              onClick={signOut}
               className="text-mate-gray hover:bg-blue-black/70 flex items-center gap-2 rounded-lg px-5 py-2 transition-colors duration-300 ease-in-out hover:cursor-pointer"
             >
               <TbLogout2 className="text-lg" />

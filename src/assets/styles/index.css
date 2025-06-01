@@ -122,6 +122,18 @@
     }
   }
 
+  --animate-move-in-bottom-30: move-in-bottom-300 0.3s ease-in-out forwards;
+  @keyframes move-in-bottom-300 {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+
   --animate-move-in-bottom-d300-y30: move-in-bottom-d300-y30 0.3s ease-in-out
     forwards;
   @keyframes move-in-bottom-d300-y30 {
@@ -180,6 +192,18 @@
     100% {
       opacity: 0;
       transform: translateY(-100px);
+    }
+  }
+
+  --animate-return-to-top-30: return-to-top-300 0.3s ease-in-out forwards;
+  @keyframes return-to-top-300 {
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-30px);
     }
   }
 

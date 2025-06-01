@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useQueryGetUser } from '../hooks/queries/user/useQueryGetUser';
 
@@ -9,6 +10,8 @@ import { env } from '../../config/env';
 import { emitToast } from '../../utils/emitToast';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(env.ACCESS_TOKEN_KEY);
 
@@ -28,8 +31,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(() => {
     localStorage.removeItem(env.ACCESS_TOKEN_KEY);
 
+    queryClient.clear();
+
     setSignedIn(false);
-  }, []);
+  }, [queryClient]);
 
   useEffect(() => {
     if (isError) {

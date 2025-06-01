@@ -44,7 +44,7 @@ export default function TableBooks({
         </div>
       )}
 
-      <table className={`w-full`}>
+      <table className={`z-1 w-full`}>
         <TableHeader />
 
         {filteredBooks.length > 0 && (

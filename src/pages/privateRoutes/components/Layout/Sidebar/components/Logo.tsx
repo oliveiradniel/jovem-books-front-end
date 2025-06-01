@@ -30,7 +30,7 @@ export default function Logo({ isExpanded, onExpansionToggle }: LogoProps) {
         onClick={onExpansionToggle}
         className="hover:cursor-pointer"
       >
-        <IoIosMenu className="text-snow-white hover:text-snow-white-op-70 text-2xl transition-colors duration-300 ease-in-out" />
+        <IoIosMenu className="text-snow-white hover:text-snow-white/80 text-2xl transition-colors duration-300 ease-in-out" />
       </button>
     </div>
   );
