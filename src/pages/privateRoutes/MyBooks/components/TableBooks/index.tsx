@@ -37,7 +37,7 @@ export default function TableBooks({
     <div className="relative h-full">
       {filteredBooks.length === 0 && (
         <div className="animate-fade-in absolute flex h-full w-full flex-col items-center justify-center">
-          <EmptyBooks className="mb-4 w-[30vw] min-w-[16rem] lg:w-[20vw]" />
+          <EmptyBooks className="mb-4 w-[30vw] lg:w-[20vw]" />
           <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
             {message!}
           </p>
