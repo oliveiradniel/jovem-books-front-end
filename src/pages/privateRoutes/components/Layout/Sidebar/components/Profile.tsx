@@ -68,7 +68,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
         <div
           id="options"
           ref={animatedOptionsRef}
-          className={`animate-move-in-top-300 absolute bottom-14 left-0 w-[220px] p-1 ${!isOptionsVisible && 'animate-return-to-bottom-200'} ${!isExpanded && 'w-[220px]!'}`}
+          className={`animate-move-in-top-300 absolute bottom-14 left-0 z-2 w-[220px] p-1 ${!isOptionsVisible && 'animate-return-to-bottom-200'} ${!isExpanded && 'w-[220px]!'}`}
         >
           <div className="bg-navy-blue flex h-full flex-col gap-1 rounded-lg p-1">
             <Link
@@ -98,7 +98,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
         onClick={handleVisibilityOfProfileOptionsToggle}
         onMouseOver={() => setHoverOnProfile(true)}
         onMouseOut={() => setHoverOnProfile(false)}
-        className={`hover:bg-navy-blue bottom-0 m-1 flex justify-between rounded-sm px-5 py-2 transition-all duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'} ${isRefetchingUser && 'opacity-60'}`}
+        className={`hover:bg-navy-blue bottom-0 z-2 m-1 flex justify-between rounded-sm px-5 py-2 transition-all duration-300 ease-in-out hover:cursor-pointer ${!isExpanded && 'justify-center gap-2'} ${isRefetchingUser && 'opacity-60'}`}
       >
         <div className="flex items-center gap-2">
           <div className="relative flex h-8 w-8 items-center justify-center">
