@@ -8,7 +8,7 @@ interface BooksContainerProps {
 
 export default function BooksContainer({ books }: BooksContainerProps) {
   return (
-    <div className="flex max-h-[40rem] min-h-0 flex-1 flex-wrap justify-center gap-4 overflow-y-auto p-5 sm:justify-start">
+    <div className="flex max-h-[40rem] flex-1 flex-wrap gap-3 overflow-y-auto sm:gap-4 sm:p-5">
       {books.map((book, index) => (
         <Card key={index} book={book} />
       ))}
