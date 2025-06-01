@@ -168,9 +168,7 @@ export default function ReadingInformation({
               <p className="flex gap-2">
                 {read ? (
                   <>
-                    <span>
-                      Leitura {isNotFinished ? 'iniciada' : 'concluída'} em:
-                    </span>
+                    <span>{isNotFinished ? 'Iniciada' : 'Concluída'} em:</span>
                     <span className="text-sky-blue font-semibold">
                       {dateToBeDisplayed}
                     </span>

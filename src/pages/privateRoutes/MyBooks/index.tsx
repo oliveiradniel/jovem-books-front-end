@@ -34,7 +34,7 @@ export default function MyBooks() {
 
   return (
     <div
-      className={`flex-1 overflow-y-auto rounded-lg p-5 ${(isLoadingBooks || booksList.length === 0 || hasError) && 'flex items-center justify-center'}`}
+      className={`flex-1 overflow-y-auto rounded-lg py-5 ${(isLoadingBooks || booksList.length === 0 || hasError) && 'flex items-center justify-center'}`}
     >
       {(isLoadingBooks || (isRefetchingBooks && booksList.length === 0)) && (
         <LoadingMessage message="Carregando seus livros..." />
