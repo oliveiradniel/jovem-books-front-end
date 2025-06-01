@@ -62,7 +62,7 @@ export default function UserAvatar({
         <img
           src={src}
           alt="Foto de Perfil"
-          className={`z-1 h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && !selectedImage && 'opacity-20'}`}
+          className={`h-[90px] w-[90px] rounded-full object-cover transition-opacity duration-300 ease-in-out ${isBeingEdited && !selectedImage && 'opacity-20'}`}
         />
       ) : (
         !isLoadingUser && (
