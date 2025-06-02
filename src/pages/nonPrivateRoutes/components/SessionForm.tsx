@@ -150,6 +150,8 @@ export default function SessionForm<T>({
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (isLoading) return;
+
     const userData = {
       username,
       firstName,
@@ -159,8 +161,6 @@ export default function SessionForm<T>({
     };
 
     try {
-      if (isLoading) return;
-
       const data = validationSchema.parse(userData);
 
       removeError('credentials');
