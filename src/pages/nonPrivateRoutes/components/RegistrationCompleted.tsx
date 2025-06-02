@@ -49,41 +49,43 @@ export default function RegistrationCompleted({
 
   return reactDOM.createPortal(
     <div
-      className={`animate-move-in-bottom-700 font-quicksand to-royal-blue absolute top-0 flex h-screen w-screen flex-col items-center gap-20 bg-linear-to-r from-black ${!isVisible && 'animate-return-to-top-700'}`}
+      className={`animate-move-in-bottom-700 font-quicksand absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/60 backdrop-blur-[4px] ${!isVisible && 'animate-return-to-top-700'}`}
     >
-      <button
-        type="button"
-        onClick={handleClose}
-        className="mt-20 flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
-      >
-        <FaArrowLeftLong className="text-snow-white" />
-        <p className="text-snow-white font-roboto">Voltar</p>
-      </button>
+      <div className="to-sky-blue flex h-[80%] w-[90%] flex-col items-center justify-center gap-8 rounded-sm bg-linear-to-r from-black sm:w-[80%]">
+        <button
+          type="button"
+          onClick={handleClose}
+          className="mb-8 flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
+        >
+          <FaArrowLeftLong className="text-snow-white" />
+          <p className="text-snow-white font-roboto">Voltar</p>
+        </button>
 
-      <h1
-        className={`text-snow-white animate-move-in-bottom-300 text-4xl font-medium ${!isVisible && 'animate-return-to-top-300'}`}
-      >
-        Cadastro concluído!
-      </h1>
+        <h1
+          className={`text-snow-white animate-move-in-bottom-300 text-[20px] font-medium sm:text-2xl lg:text-4xl ${!isVisible && 'animate-return-to-top-300'}`}
+        >
+          Cadastro concluído!
+        </h1>
 
-      <p
-        className={`font-quicksand text-light-gray animate-move-in-bottom-700 mx-5 max-w-xl text-center text-xl ${!isVisible && 'animate-return-to-top-700'}`}
-      >
-        <span className="text-sky-blue font-medium">{fullName}</span>, bem vindo
-        ao <span className="text-snow-white">Jovem Books</span>. Entre agora
-        usando as credenciais usadas no cadastro.
-      </p>
+        <p
+          className={`font-quicksand text-snow-white animate-move-in-bottom-700 sm:text-md max-w-xl text-center lg:text-xl ${!isVisible && 'animate-return-to-top-700'}`}
+        >
+          <span className="text-sky-blue font-medium">{fullName}</span>, bem
+          vindo ao <span className="font-bold">Jovem Books</span>. Entre agora
+          usando as credenciais usadas no cadastro.
+        </p>
 
-      <div
-        ref={animatedElementRef}
-        className={`animate-move-in-top-700 flex max-w-xl min-w-md ${!isVisible && 'animate-return-to-bottom-700'}`}
-      >
-        <SessionForm
-          type="registrationCompleted"
-          validationSchema={SignInSchema}
-          onSubmit={handleSubmit}
-          handleErrors={handleSignInErrors}
-        />
+        <div
+          ref={animatedElementRef}
+          className={`animate-move-in-top-700 mt-4 flex w-full max-w-xl px-5 ${!isVisible && 'animate-return-to-bottom-700'}`}
+        >
+          <SessionForm
+            type="registrationCompleted"
+            validationSchema={SignInSchema}
+            onSubmit={handleSubmit}
+            handleErrors={handleSignInErrors}
+          />
+        </div>
       </div>
     </div>,
     container

@@ -171,6 +171,12 @@ export default function SessionForm<T>({
       removeError('username');
 
       await submitSession(data);
+
+      setEmail('');
+      setFirstName('');
+      setLastName('');
+      setPassword('');
+      setUsername('');
     } catch (error) {
       const result = handleErrors(error);
       if (result) {
