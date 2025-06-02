@@ -50,15 +50,13 @@ export default function MyBooks() {
         !hasError && <EmptyBooksMessage />}
 
       {!isLoadingBooks && !hasError && booksList.length > 0 && (
-        <div className="h-full overflow-hidden">
+        <div className="h-full space-y-4 overflow-hidden">
           <Header
             selectedFilter={selectedFilter}
             numberOfFilteredBooks={filteredBooksByStatus.length}
             isRefetchingBooks={isRefetchingBooks}
             onChangeFilter={setSelectedFilter}
           />
-
-          <div className="bg-navy-blue my-4 h-[0.1px] w-full" />
 
           <TableBooks
             filteredBooks={filteredBooksByStatus}

@@ -18,7 +18,7 @@ export default function BookCover({
   const src = `${env.VITE_AWS_BUCKET_URL}/${imagePath}`;
 
   return (
-    <div className="hidden h-[340px] max-w-[240px] min-w-[240px] items-center justify-center lg:flex">
+    <div className="hidden h-[340px] max-w-[240px] min-w-[240px] items-center justify-center sm:flex">
       {imagePath ? (
         <img
           src={src}

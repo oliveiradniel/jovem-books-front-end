@@ -14,7 +14,7 @@ export default function LargeOptionsMenu({
   onChange,
 }: LargeOptionsMenuProps) {
   return (
-    <div className="hidden gap-4 lg:flex">
+    <div className="hidden gap-2 lg:flex">
       <Button
         label="Todos os livros"
         isSelected={selectedFilter === 'ALL'}

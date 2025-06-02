@@ -15,7 +15,7 @@ export default function Authors({
       const isSecondLast = index === authors.length - 2;
 
       return (
-        <span key={index} className="text-sky-blue/70">
+        <span key={index} className="text-sky-blue/70 break-words">
           {author}
 
           {isSecondLast && !isLast && (

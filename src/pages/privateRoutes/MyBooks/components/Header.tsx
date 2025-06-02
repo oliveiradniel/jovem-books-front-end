@@ -21,7 +21,7 @@ export default function Header({
 }: HeaderProps) {
   return (
     <div className="flex h-[40px] justify-between">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center">
         <LargeOptionsMenu
           selectedFilter={selectedFilter}
           disabled={isRefetchingBooks}

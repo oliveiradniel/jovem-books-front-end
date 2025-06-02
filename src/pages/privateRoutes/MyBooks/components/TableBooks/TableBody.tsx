@@ -30,7 +30,7 @@ export default function Body({ books, isRefetching }: TableBodyProps) {
           tabIndex={0}
           key={book.id}
           onClick={() => handleClickOnBookData(String(book.id))}
-          className={`border-navy-blue max-h-[40rem] border-b transition-colors duration-400 ease-in-out ${isRefetching ? 'cursor-default' : 'hover:bg-navy-blue/40 cursor-pointer'}`}
+          className={`border-navy-blue border-b transition-colors duration-300 ease-in-out ${isRefetching ? 'cursor-default' : 'hover:bg-navy-blue/40 cursor-pointer'}`}
         >
           <Title title={book.title} />
           <Authors authors={book.authors} />
