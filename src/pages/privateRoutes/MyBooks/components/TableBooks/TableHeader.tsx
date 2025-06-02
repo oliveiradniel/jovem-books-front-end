@@ -1,12 +1,16 @@
-export default function TableHeader() {
+import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+export default function Header() {
   return (
-    <thead>
-      <tr className="bg-navy-blue text-mate-gray font-quicksand">
-        <th className="rounded-tl-lg rounded-bl-lg px-2 py-2">Título</th>
-        <th className="hidden px-2 py-2 md:table-cell">Autores(as)</th>
-        <th className="hidden px-2 py-2 lg:table-cell">Gênero Literário</th>
-        <th className="rounded-tr-lg rounded-br-lg px-2 py-2">Status</th>
-      </tr>
-    </thead>
+    <TableHeader>
+      <TableRow className="bg-navy-blue text-snow-white font-roboto border-none">
+        <TableHead className="w-1/4">Título</TableHead>
+        <TableHead className="hidden w-1/4 sm:table-cell">Autor(es)</TableHead>
+        <TableHead className="hidden w-1/4 md:table-cell">
+          Gênero Literário
+        </TableHead>
+        <TableHead className="w-1/4 text-center">Status</TableHead>
+      </TableRow>
+    </TableHeader>
   );
 }

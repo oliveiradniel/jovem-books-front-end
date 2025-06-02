@@ -7,7 +7,7 @@ export default function Button({ label, isSelected, ...props }: ButtonProps) {
   return (
     <button
       type="button"
-      className={`disabled:text-light-gray/80 font-quicksand flex items-center gap-1 p-2 text-sm transition-opacity duration-300 ease-in-out disabled:cursor-default ${isSelected ? 'text-sky-blue cursor-default!' : !props.disabled && `text-light-gray cursor-pointer hover:opacity-70`}`}
+      className={`disabled:text-light-gray/90 font-quicksand flex items-center gap-1 p-2 text-sm transition-opacity duration-300 ease-in-out disabled:cursor-default ${isSelected ? 'text-sky-blue cursor-default!' : !props.disabled && `text-light-gray cursor-pointer hover:opacity-80`}`}
       {...props}
     >
       {label}

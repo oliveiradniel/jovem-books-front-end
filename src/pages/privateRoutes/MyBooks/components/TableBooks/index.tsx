@@ -6,6 +6,7 @@ import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
 import { IBookAPI, TBookFilter } from '../../../../../@types/Book';
+import { Table } from '@/components/ui/table';
 
 interface TabelBooksProps {
   filteredBooks: IBookAPI[];
@@ -44,13 +45,17 @@ export default function TableBooks({
         </div>
       )}
 
-      <table className={`z-1 w-full`}>
+      <Table className="table-fixed">
         <TableHeader />
+      </Table>
 
-        {filteredBooks.length > 0 && (
-          <TableBody books={filteredBooks} isRefetching={isRefetching} />
-        )}
-      </table>
+      <div className="max-h-[40rem] overflow-y-auto">
+        <Table>
+          {filteredBooks.length > 0 && (
+            <TableBody books={filteredBooks} isRefetching={isRefetching} />
+          )}
+        </Table>
+      </div>
     </div>
   );
 }
