@@ -15,6 +15,8 @@ import { GoArrowLeft } from 'react-icons/go';
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
 import { TUpdateBook } from '../../../@types/Book';
+import { IPreSignedURL, TMimeType } from '@/@types/S3';
+import S3Service from '@/app/services/S3Service';
 
 export default function EditBook() {
   const { id } = useParams();
@@ -25,7 +27,22 @@ export default function EditBook() {
   const bookFormRef = useRef<BookFormHandle>(null);
 
   async function handleSubmit(book: TUpdateBook) {
-    await BooksService.updateBook(book);
+    let data: IPreSignedURL | null = null;
+
+    const { file } = book;
+
+    if (file !== null) {
+      data = await BooksService.getPreSignedURL({
+        mimeType: file.type as TMimeType,
+        fileSize: file.size,
+      });
+    }
+
+    await BooksService.updateBook({ ...book, imagePath: data?.key });
+
+    if (data !== null && file !== null) {
+      await S3Service.uploadImageS3({ preSignedURL: data.url, file });
+    }
 
     emitToast({ type: 'success', message: 'Livro atualizado com sucesso.' });
   }

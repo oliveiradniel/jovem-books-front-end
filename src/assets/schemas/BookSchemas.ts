@@ -18,13 +18,13 @@ const BaseBookSchema = z.object({
     .optional()
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<string | null>,
-  numberOfPages: z.number({ message: 'Number of pages must be a number' }),
+
   literaryGenre: z
     .array(z.string({ message: 'Literary genre must be a string' }), {
       message: 'Literary genre required',
     })
     .min(1, 'The literary genre array needs at least one literary genre'),
-  imagePath: z
+  file: z
     .union([
       z
         .instanceof(File, { message: 'Enter a valid file' })
@@ -41,13 +41,21 @@ const BaseBookSchema = z.object({
     .optional()
     .default(null)
     .transform((val) => val ?? null) as z.ZodType<File | null>,
+  imagePath: z
+    .any()
+    .transform((value) => {
+      if (typeof value === 'string' || value === null) return value;
+      return null;
+    })
+    .nullable(),
 });
 
 export const CreateBookSchema = BaseBookSchema.omit({
   id: true,
-  imagePath: true,
+}).extend({
+  numberOfPages: z.number({ message: 'Number of pages must be a number' }),
 });
 
-export const UpdateBookSchema = BaseBookSchema.omit({
-  numberOfPages: true,
+export const UpdateBookSchema = BaseBookSchema.extend({
+  removeImage: z.boolean({ message: 'removeImage must be a boolean' }),
 });

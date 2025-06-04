@@ -269,6 +269,7 @@ function BookFormInner<T>(
       numberOfPages: Number(numberOfPages),
       literaryGenre,
       file: selectedImage,
+      removeImage,
     };
 
     try {
