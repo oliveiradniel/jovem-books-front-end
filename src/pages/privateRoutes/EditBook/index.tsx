@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
@@ -13,19 +13,16 @@ import { formatAuthors } from '../../../utils/formatAuthors';
 import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
-import SectionToEditBookCover from './components/SectionToEditBookCover';
 
-import { IBook, TUpdateBook } from '../../../@types/Book';
+import { TUpdateBook } from '../../../@types/Book';
 
 export default function EditBook() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { bookData, isError, isLoadingBook } = useQueryGetBookById(id!);
+  const { book, isLoadingBook, isError } = useQueryGetBookById(id!);
 
   const bookFormRef = useRef<BookFormHandle>(null);
-
-  const [book, setBook] = useState<IBook | null>(null);
 
   async function handleSubmit(book: TUpdateBook) {
     await BooksService.updateBook(book);
@@ -34,12 +31,11 @@ export default function EditBook() {
   }
 
   useEffect(() => {
-    if (bookData) {
-      const authors = formatAuthors({ authors: bookData.authors });
+    if (book) {
+      const authors = formatAuthors({ authors: book.authors });
 
-      const formattedBook = { ...bookData, authors };
+      const formattedBook = { ...book, authors };
 
-      setBook(formattedBook);
       bookFormRef.current?.setFieldValues(formattedBook);
     }
 
@@ -51,25 +47,25 @@ export default function EditBook() {
 
       navigate('/my-books');
     }
-  }, [bookData, isError, navigate]);
+  }, [book, isError, navigate]);
+
+  useEffect(() => {
+    if (isLoadingBook) {
+      bookFormRef.current?.setIsLoading(true);
+    } else {
+      bookFormRef.current?.setIsLoading(false);
+    }
+  }, [isLoadingBook]);
 
   return (
     <div className="animate-fade-in h-full overflow-y-auto">
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="text-snow-white hover:text-snow-white-op-70 mb-10 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+        className="text-snow-white hover:text-snow-white-op-70 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
       >
         <GoArrowLeft size={20} />
       </button>
-
-      <SectionToEditBookCover
-        imagePath={book?.imagePath ?? null}
-        isLoadingBook={isLoadingBook}
-        isUpdatingBook={false}
-      />
-
-      <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
 
       <BookForm
         ref={bookFormRef}

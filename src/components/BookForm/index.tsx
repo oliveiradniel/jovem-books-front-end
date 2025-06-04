@@ -8,6 +8,10 @@ import { useErrors } from '../../app/hooks/useErrors';
 
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
 
+import { env } from '@/config/env';
+
+import { emitToast } from '@/utils/emitToast';
+
 import { ZodSchema } from 'zod';
 import { handleBookErrors } from '../../app/handleErrors/handleBookErrors';
 
@@ -20,24 +24,26 @@ import Input from './Input';
 import Button from './Button';
 import Select from './Select';
 import Label from './Label';
+import BookCover from './BookCover';
 
 import { IBook } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
+import SkeletonLoading from '../SkeletonLoading';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
+  setIsLoading: (loading: boolean) => void;
   resetFields: () => void;
 }
 
 interface BookFormProps<T> {
   type: 'create' | 'update';
   validationSchema: ZodSchema<T>;
-  isLoadingBook?: boolean;
   onSubmit: (book: T) => Promise<void>;
 }
 
 function BookFormInner<T>(
-  { type, validationSchema, isLoadingBook = false, onSubmit }: BookFormProps<T>,
+  { type, validationSchema, onSubmit }: BookFormProps<T>,
   ref: React.Ref<BookFormHandle>
 ) {
   const { id } = useParams();
@@ -45,27 +51,39 @@ function BookFormInner<T>(
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TBookFields, TBookErrorMessages>();
 
-  const hasErrorInTitle = getErrorMessageByFieldName(['title']);
-  const hasErrorInAuthors = getErrorMessageByFieldName(['authors']);
-  const hasErrorInNumberOfPages = getErrorMessageByFieldName(['numberOfPages']);
+  const [title, setTitle] = useState('');
 
-  const { submitBook, isLoading, hasError } = useMutateSubmitBook({
+  const { submitBook, isSubmitting, hasError } = useMutateSubmitBook({
     type,
     onSubmit,
   });
-
-  const [title, setTitle] = useState('');
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   const { deleteBook, isDeleting } = useMutateDeleteBook({
     title,
     onCloseModal: () => setIsDeleteModalVisible(false),
   });
 
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
   const [authors, setAuthors] = useState('');
   const [sinopse, setSinopse] = useState('');
   const [literaryGenre, setLiteraryGenre] = useState([] as string[]);
   const [numberOfPages, setNumberOfPages] = useState<string>('');
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
+
+  const [isLoadingBook, setIsLoadingBook] = useState(false);
+
+  const [removeImage, setRemoveImage] = useState(false);
+
+  const hasErrorInTitle = getErrorMessageByFieldName(['title']);
+  const hasErrorInAuthors = getErrorMessageByFieldName(['authors']);
+  const hasErrorInNumberOfPages = getErrorMessageByFieldName(['numberOfPages']);
+
+  const src = selectedImage
+    ? URL.createObjectURL(selectedImage)
+    : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   const buttonLabel = type === 'create' ? 'Criar' : 'Salvar alterações';
 
@@ -78,6 +96,10 @@ function BookFormInner<T>(
       setSinopse(book.sinopse ?? '');
       setLiteraryGenre(book.literaryGenre);
       setNumberOfPages(String(parsedNumberOfPages));
+      setImageName(book.imagePath || null);
+    },
+    setIsLoading(loading: boolean) {
+      setIsLoadingBook(loading);
     },
     resetFields() {
       setTitle('');
@@ -93,7 +115,25 @@ function BookFormInner<T>(
     authors?.length > 0 &&
     literaryGenre?.length > 0 &&
     String(numberOfPages).length > 0 &&
-    errors.length === 0;
+    errors.length === 0 &&
+    !isLoadingBook;
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+    const validTypes = ['image/jpeg', 'image/png'];
+
+    if (!validTypes.includes(file.type)) {
+      emitToast({
+        type: 'error',
+        message: 'Apenas arquivos de imagens JPEG ou PNG são aceitos.',
+      });
+      return;
+    }
+
+    setSelectedImage(file);
+  }
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
     let { value } = event.target;
@@ -199,6 +239,21 @@ function BookFormInner<T>(
     });
   }
 
+  function handleRemoveImageFromScreen() {
+    if (imageName && selectedImage === null && !removeImage) {
+      setRemoveImage(true);
+      return;
+    }
+
+    if (imageName && selectedImage === null && removeImage) {
+      setRemoveImage(false);
+      return;
+    }
+
+    setRemoveImage(false);
+    setSelectedImage(null);
+  }
+
   async function handleDeleteBook() {
     deleteBook({ id: id! });
   }
@@ -213,6 +268,7 @@ function BookFormInner<T>(
       sinopse: sinopse,
       numberOfPages: Number(numberOfPages),
       literaryGenre,
+      file: selectedImage,
     };
 
     try {
@@ -238,6 +294,19 @@ function BookFormInner<T>(
       />
 
       <form className="mt-10 flex flex-col gap-4 overflow-y-auto">
+        <BookCover
+          imageName={imageName}
+          selectedImage={selectedImage}
+          src={src}
+          isUpdating={isSubmitting}
+          isLoadingBook={isLoadingBook}
+          removeImage={removeImage}
+          onImageChange={handleImageChange}
+          onRemoveImageFromScreen={handleRemoveImageFromScreen}
+        />
+
+        <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
+
         <FormGroup error={hasErrorInTitle}>
           <Input
             label="Título"
@@ -245,6 +314,7 @@ function BookFormInner<T>(
             name="title"
             placeholder="Dom Quixote"
             value={title || ''}
+            isLoadingData={isLoadingBook}
             onChange={handleTitleChange}
           />
         </FormGroup>
@@ -259,6 +329,7 @@ function BookFormInner<T>(
             name="authors"
             placeholder="Miguel de Cervantes"
             value={authors || ''}
+            isLoadingData={isLoadingBook}
             onChange={handleAuthorsChange}
           />
         </FormGroup>
@@ -266,13 +337,17 @@ function BookFormInner<T>(
         <div className="flex flex-col gap-2 sm:flex-row">
           <Label label="Sinopse" />
           <div className="relative h-[150px] max-h-[150px] min-h-[100px] w-full">
-            <textarea
-              name="sinopse"
-              placeholder="A história gira em torno de Alonso Quixano, um fidalgo pobre que enlouquece após ler muitos romances de cavalaria. Ele decide tornar-se um cavaleiro andante sob o nome de Dom Quixote..."
-              value={sinopse ?? ''}
-              onChange={handleSinopseChange}
-              className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
-            />
+            {isLoadingBook ? (
+              <SkeletonLoading rounded="sm" />
+            ) : (
+              <textarea
+                name="sinopse"
+                placeholder="A história gira em torno de Alonso Quixano, um fidalgo pobre que enlouquece após ler muitos romances de cavalaria. Ele decide tornar-se um cavaleiro andante sob o nome de Dom Quixote..."
+                value={sinopse ?? ''}
+                onChange={handleSinopseChange}
+                className="text-sky-blue/80 focus:border-sky-blue/40 border-navy-blue font-quicksand placeholder:text-light-gray h-[150px] max-h-[150px] min-h-[100px] w-full rounded-lg border px-2 pt-1 transition-colors duration-300 ease-in-out outline-none placeholder:text-sm"
+              />
+            )}
           </div>
         </div>
 
@@ -281,7 +356,8 @@ function BookFormInner<T>(
             <Label label="Gênero Literário" />
             <Select
               selectedOptions={literaryGenre}
-              disabled={isLoading || isLoadingBook}
+              disabled={isSubmitting || isLoadingBook}
+              isLoadingBook={isLoadingBook}
               onChange={handleLiteraryGenreChange}
             />
           </div>
@@ -310,13 +386,13 @@ function BookFormInner<T>(
           <Button
             buttonLabel={hasError ? 'Tentar novamente' : buttonLabel}
             disabled={!isFormValid}
-            isLoading={isLoading}
+            isLoading={isSubmitting}
             onClick={handleSubmit}
           />
           {type === 'update' && (
             <DeleteButton
               buttonLabel={<FiTrash2 />}
-              disabled={isLoading || isLoadingBook}
+              disabled={isSubmitting || isLoadingBook}
               onClick={() => setIsDeleteModalVisible(true)}
             />
           )}

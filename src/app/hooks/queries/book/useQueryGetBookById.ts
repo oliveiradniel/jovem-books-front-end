@@ -14,7 +14,7 @@ export function useQueryGetBookById(id: string) {
   });
 
   return {
-    bookData: data,
+    book: data,
     isLoadingBook: isLoading,
     isRefetchingBook: isFetching,
     isError,

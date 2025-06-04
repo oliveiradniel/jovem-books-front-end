@@ -34,7 +34,7 @@ export function useMutateSubmitBook<T>({
 
   return {
     submitBook: mutateAsync,
-    isLoading: isPending,
+    isSubmitting: isPending,
     hasError: isError,
   };
 }

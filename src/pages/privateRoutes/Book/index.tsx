@@ -19,7 +19,7 @@ export default function Book() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { bookData, isLoadingBook, isRefetchingBook, isError } =
+  const { book, isLoadingBook, isRefetchingBook, isError } =
     useQueryGetBookById(id!);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function Book() {
 
       navigate('/my-books');
     }
-  }, [bookData, isError, navigate]);
+  }, [book, isError, navigate]);
 
   return (
     <>
@@ -44,25 +44,25 @@ export default function Book() {
         <div className="mt-8 flex justify-between gap-4">
           <div className="w-full lg:max-w-[900px]">
             <Title
-              title={bookData?.title as string}
+              title={book?.title as string}
               isLoadingBook={isLoadingBook}
               isRefetchingBook={isRefetchingBook}
             />
 
             <Authors
-              authors={bookData?.authors as string[]}
+              authors={book?.authors as string[]}
               isLoadingBook={isLoadingBook}
               isRefetchingBook={isRefetchingBook}
             />
 
             <Sinopse
-              text={bookData?.sinopse ?? null}
+              text={book?.sinopse ?? null}
               isLoadingBook={isLoadingBook}
               isRefetchingBook={isRefetchingBook}
             />
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {bookData?.literaryGenre?.map((literaryGenre, index) => (
+              {book?.literaryGenre?.map((literaryGenre, index) => (
                 <p
                   key={index}
                   className={`text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase transition-opacity duration-300 ease-in-out ${isRefetchingBook && 'opacity-70'}`}
@@ -74,15 +74,15 @@ export default function Book() {
           </div>
 
           <BookCover
-            imagePath={bookData?.imagePath ?? null}
+            imagePath={book?.imagePath ?? null}
             isLoadingBook={isLoadingBook}
             isRefetchingBook={isRefetchingBook}
           />
         </div>
 
         <ReadingInformation
-          bookTitle={bookData?.title as string}
-          numberOfPages={bookData?.numberOfPages as number}
+          bookTitle={book?.title as string}
+          numberOfPages={book?.numberOfPages as number}
         />
       </div>
     </>

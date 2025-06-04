@@ -34,15 +34,18 @@ export default function Input({
             isTheFieldFocused && 'border-sky-blue/40'
           } ${error ? 'border-blood-red!' : 'border-navy-blue'}`}
         >
-          {isLoadingData && <SkeletonLoading rounded="lg" />}
-          <input
-            type="text"
-            disabled={disabled}
-            onFocus={() => setIsTheFieldFocused(true)}
-            onBlur={() => setIsTheFieldFocused(false)}
-            {...props}
-            className={`font-quicksand placeholder:text-light-gray w-full transition-all duration-300 ease-in-out outline-none placeholder:text-sm disabled:font-bold ${error ? 'text-blood-red' : 'text-sky-blue/80'}`}
-          />
+          {isLoadingData ? (
+            <SkeletonLoading rounded="lg" />
+          ) : (
+            <input
+              type="text"
+              disabled={disabled}
+              onFocus={() => setIsTheFieldFocused(true)}
+              onBlur={() => setIsTheFieldFocused(false)}
+              {...props}
+              className={`font-quicksand placeholder:text-light-gray w-full transition-all duration-300 ease-in-out outline-none placeholder:text-sm disabled:font-bold ${error ? 'text-blood-red' : 'text-sky-blue/80'}`}
+            />
+          )}
         </div>
 
         {label === 'Número de Páginas' && (
