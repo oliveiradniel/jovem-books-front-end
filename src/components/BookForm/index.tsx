@@ -25,10 +25,10 @@ import Button from './Button';
 import Select from './Select';
 import Label from './Label';
 import BookCover from './BookCover';
+import SkeletonLoading from '../SkeletonLoading';
 
 import { IBook } from '../../@types/Book';
 import { TBookErrorMessages, TBookFields } from '../../@types/FormError';
-import SkeletonLoading from '../SkeletonLoading';
 
 export interface BookFormHandle {
   setFieldValues: (book: IBook) => void;
@@ -107,6 +107,7 @@ function BookFormInner<T>(
       setSinopse('');
       setLiteraryGenre([]);
       setNumberOfPages('');
+      setImageName('');
     },
   }));
 
@@ -280,7 +281,13 @@ function BookFormInner<T>(
       const result = handleBookErrors(error);
       if (result) {
         setError(result);
+        return;
       }
+
+      emitToast({
+        type: 'error',
+        message: `Houve um erro ao ${type === 'create' ? 'criar' : 'atualizar'} seu livro.`,
+      });
     }
   }
 
@@ -298,7 +305,7 @@ function BookFormInner<T>(
         <BookCover
           imageName={imageName}
           selectedImage={selectedImage}
-          src={src}
+          src={src!}
           isUpdating={isSubmitting}
           isLoadingBook={isLoadingBook}
           removeImage={removeImage}

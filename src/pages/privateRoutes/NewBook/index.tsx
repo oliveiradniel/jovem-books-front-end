@@ -13,8 +13,10 @@ import { GoArrowLeft } from 'react-icons/go';
 
 import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
-import { IBookAPI, TCreateBook } from '../../../@types/Book';
 import { LITERARY_GENRE_OPTIONS } from '../../../constants/books';
+
+import { IBookAPI, TCreateBook } from '../../../@types/Book';
+import { IPreSignedURL, TMimeType } from '@/@types/S3';
 
 export default function NewBook() {
   const navigate = useNavigate();
@@ -27,9 +29,27 @@ export default function NewBook() {
   const bookFormRef = useRef<BookFormHandle>(null);
 
   async function handleSubmit(book: TCreateBook) {
-    await BooksService.createBook(book);
+    let data: IPreSignedURL | null = null;
 
-    bookFormRef.current?.resetFields();
+    const { file } = book;
+
+    if (file !== null) {
+      data = await BooksService.getPreSignedURL({
+        mimeType: file.type as TMimeType,
+        fileSize: file.size,
+      });
+    }
+
+    console.log({ data });
+    console.log({ book });
+
+    // await BooksService.createBook({ ...book, imagePath: data?.key });
+
+    // if (data !== null && file !== null) {
+    //   await S3Service.uploadImageS3({ preSignedURL: data.url, file });
+    // }
+
+    // bookFormRef.current?.resetFields();
 
     emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
   }
