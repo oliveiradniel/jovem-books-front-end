@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import BooksService from '../../../app/services/BooksService';
+import S3Service from '@/app/services/S3Service';
 
 import { CreateBookSchema } from '../../../assets/schemas/BookSchemas';
 
@@ -25,6 +26,7 @@ export default function NewBook() {
     () => (location.state?.book as IBookAPI) || {},
     [location.state?.book]
   );
+  const cameFromGoogleBooks = location.state.cameFromGoogleBooks as boolean;
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
@@ -33,23 +35,26 @@ export default function NewBook() {
 
     const { file } = book;
 
-    if (file !== null) {
-      data = await BooksService.getPreSignedURL({
-        mimeType: file.type as TMimeType,
-        fileSize: file.size,
-      });
+    if (!cameFromGoogleBooks) {
+      if (file !== null) {
+        data = await BooksService.getPreSignedURL({
+          mimeType: file.type as TMimeType,
+          fileSize: file.size,
+        });
+      }
     }
 
-    console.log({ data });
-    console.log({ book });
+    const imagePath = cameFromGoogleBooks ? book.imagePath : data?.key;
 
-    // await BooksService.createBook({ ...book, imagePath: data?.key });
+    await BooksService.createBook({ ...book, imagePath });
 
-    // if (data !== null && file !== null) {
-    //   await S3Service.uploadImageS3({ preSignedURL: data.url, file });
-    // }
+    if (!cameFromGoogleBooks) {
+      if (data !== null && file !== null) {
+        await S3Service.uploadImageS3({ preSignedURL: data.url, file });
+      }
+    }
 
-    // bookFormRef.current?.resetFields();
+    bookFormRef.current?.resetFields();
 
     emitToast({ type: 'success', message: 'Livro criado com sucesso.' });
   }

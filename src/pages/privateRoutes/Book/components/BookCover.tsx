@@ -15,13 +15,16 @@ export default function BookCover({
   isLoadingBook,
   isRefetchingBook,
 }: BookCoverProps) {
-  const src = `${env.VITE_AWS_BUCKET_URL}/${imagePath}`;
+  const isTheImageFromGoogleBooks = imagePath?.includes('books.google');
+  const src = isTheImageFromGoogleBooks
+    ? imagePath
+    : `${env.VITE_AWS_BUCKET_URL}/${imagePath}`;
 
   return (
     <div className="hidden h-[340px] max-w-[240px] min-w-[240px] items-center justify-center sm:flex">
       {imagePath ? (
         <img
-          src={src}
+          src={src!}
           alt="Capa do Livro"
           className={`animate-fade-in h-full w-full object-contain transition-opacity duration-300 ease-in-out ${
             isRefetchingBook && 'opacity-40'

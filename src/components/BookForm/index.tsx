@@ -83,14 +83,15 @@ function BookFormInner<T>(
 
   const src = selectedImage
     ? URL.createObjectURL(selectedImage)
-    : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
+    : imageName?.includes('books.google')
+      ? imageName
+      : `${env.VITE_AWS_BUCKET_URL}/${imageName}`;
 
   const buttonLabel = type === 'create' ? 'Criar' : 'Salvar alterações';
 
   useImperativeHandle(ref, () => ({
     setFieldValues(book) {
       const parsedNumberOfPages = book.numberOfPages ?? '';
-
       setTitle(book.title);
       setAuthors(book.authors);
       setSinopse(book.sinopse ?? '');
@@ -274,7 +275,10 @@ function BookFormInner<T>(
     };
 
     try {
-      const data = validationSchema.parse(bookData);
+      const data = validationSchema.parse({
+        ...bookData,
+        imagePath: imageName,
+      });
 
       await submitBook(data);
     } catch (error) {

@@ -27,13 +27,8 @@ class BooksService {
     return data;
   }
 
-  async createBook(book: TCreateBook): Promise<IBookAPI> {
-    const { data: createdBook } = await httpClient.post<IBookAPI>(
-      '/books',
-      book
-    );
-
-    return createdBook;
+  async createBook(book: TCreateBook): Promise<void> {
+    await httpClient.post<IBookAPI>('/books', book);
   }
 
   async updateBook({ id, ...book }: TUpdateBook): Promise<IBookAPI> {
