@@ -49,7 +49,7 @@ export default function TableBooks({
         <TableHeader />
       </Table>
 
-      <div className="max-h-[38rem] overflow-y-auto">
+      <div className="max-h-[calc(100vh-260px)] overflow-y-auto">
         <Table>
           {filteredBooks.length > 0 && (
             <TableBody books={filteredBooks} isRefetching={isRefetching} />
