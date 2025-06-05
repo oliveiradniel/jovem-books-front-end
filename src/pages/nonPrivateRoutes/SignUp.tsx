@@ -17,11 +17,17 @@ export default function SignUp() {
   const [isTheRegistrationComplete, setIsTheRegistrationComplete] =
     useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function handleSubmit(data: TSignUp) {
+    setIsSubmitting(true);
+
     await AuthService.signUp(data);
 
     setFullName(`${data.firstName} ${data.lastName}`);
     setIsTheRegistrationComplete(true);
+
+    setIsSubmitting(false);
   }
 
   return (
@@ -37,7 +43,7 @@ export default function SignUp() {
       <SessionTemplate
         title="Criar uma conta"
         highlightText="Está pronto para terminar um livro hoje e iniciar outro? Entre já e atualize os dados sobre seus livros."
-        isSubmitting={false}
+        isSubmitting={isSubmitting}
       >
         <SessionForm
           type="signUp"
