@@ -1,9 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useAuth } from '@/app/hooks/useAuth';
+
 import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
 
+import { AxiosError } from 'axios';
+
 import BooksService from '../../../app/services/BooksService';
+import S3Service from '@/app/services/S3Service';
 
 import { UpdateBookSchema } from '../../../assets/schemas/BookSchemas';
 
@@ -16,13 +21,14 @@ import BookForm, { BookFormHandle } from '../../../components/BookForm';
 
 import { TUpdateBook } from '../../../@types/Book';
 import { IPreSignedURL, TMimeType } from '@/@types/S3';
-import S3Service from '@/app/services/S3Service';
 
 export default function EditBook() {
+  const { signOut } = useAuth();
+
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { book, isLoadingBook, isError } = useQueryGetBookById(id!);
+  const { book, isLoadingBook, bookError, hasError } = useQueryGetBookById(id!);
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
@@ -55,16 +61,7 @@ export default function EditBook() {
 
       bookFormRef.current?.setFieldValues(formattedBook);
     }
-
-    if (isError) {
-      emitToast({
-        type: 'success',
-        message: `Não foi possível encontrar o livro`,
-      });
-
-      navigate('/my-books');
-    }
-  }, [book, isError, navigate]);
+  }, [book, hasError, navigate]);
 
   useEffect(() => {
     if (isLoadingBook) {
@@ -73,6 +70,34 @@ export default function EditBook() {
       bookFormRef.current?.setIsLoading(false);
     }
   }, [isLoadingBook]);
+
+  useEffect(() => {
+    if (bookError) {
+      if (bookError instanceof AxiosError) {
+        const errorMessage = bookError.response?.data.message as string;
+
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
+
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
+
+          return;
+        }
+      }
+    }
+
+    if (hasError) {
+      emitToast({
+        type: 'error',
+        message: 'Não foi possível encontrar o livro.',
+      });
+
+      navigate('/my-books');
+    }
+  }, [book, bookError, hasError, navigate, signOut]);
 
   return (
     <div className="animate-fade-in h-full overflow-y-auto">

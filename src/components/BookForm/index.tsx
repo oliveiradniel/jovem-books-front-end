@@ -1,10 +1,14 @@
 import { ChangeEvent, forwardRef, useImperativeHandle, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useAuth } from '@/app/hooks/useAuth';
+
 import { useMutateSubmitBook } from '../../app/hooks/mutations/book/useMutateSubmitBook';
 import { useMutateDeleteBook } from '../../app/hooks/mutations/book/useMutateDeleteBook';
 
 import { useErrors } from '../../app/hooks/useErrors';
+
+import { AxiosError } from 'axios';
 
 import AuthorsMapper from '../../app/services/mappers/AuthorsMapper';
 
@@ -46,6 +50,8 @@ function BookFormInner<T>(
   { type, validationSchema, onSubmit }: BookFormProps<T>,
   ref: React.Ref<BookFormHandle>
 ) {
+  const { signOut } = useAuth();
+
   const { id } = useParams();
 
   const { errors, setError, removeError, getErrorMessageByFieldName } =
@@ -286,6 +292,23 @@ function BookFormInner<T>(
       if (result) {
         setError(result);
         return;
+      }
+
+      if (error) {
+        if (error instanceof AxiosError) {
+          const errorMessage = error.response?.data.message as string;
+
+          if (errorMessage && errorMessage.includes('Invalid access token')) {
+            signOut();
+
+            emitToast({
+              type: 'error',
+              message: 'Suas credenciais expiraram! Faça login novamente.',
+            });
+
+            return;
+          }
+        }
       }
 
       emitToast({

@@ -7,7 +7,7 @@ interface UseQueryGetReadByBookId {
 }
 
 export function useQueryGetReadByBookId({ bookId }: UseQueryGetReadByBookId) {
-  const { data, isLoading } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ['read', { bookId }],
     queryFn: async () => {
       return await ReadsService.getReadByBookId({
@@ -18,6 +18,7 @@ export function useQueryGetReadByBookId({ bookId }: UseQueryGetReadByBookId) {
 
   return {
     readData: data ?? null,
+    readError: error,
     isLoadingRead: isLoading,
   };
 }

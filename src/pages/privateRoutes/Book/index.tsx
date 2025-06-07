@@ -3,6 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
 
+import { useAuth } from '@/app/hooks/useAuth';
+
+import { AxiosError } from 'axios';
+
 import { emitToast } from '../../../utils/emitToast';
 
 import Actions from './components/Actions';
@@ -16,14 +20,33 @@ import { LiteraryGenreKey } from '../../../@types/Book';
 import { LITERARY_GENRE_LABELS } from '../../../constants/books';
 
 export default function Book() {
+  const { signOut } = useAuth();
+
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { book, isLoadingBook, isRefetchingBook, isError } =
+  const { book, isLoadingBook, isRefetchingBook, bookError, hasError } =
     useQueryGetBookById(id!);
 
   useEffect(() => {
-    if (isError) {
+    if (bookError) {
+      if (bookError instanceof AxiosError) {
+        const errorMessage = bookError.response?.data.message as string;
+
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
+
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
+
+          return;
+        }
+      }
+    }
+
+    if (hasError) {
       emitToast({
         type: 'error',
         message: 'Não foi possível encontrar o livro.',
@@ -31,7 +54,7 @@ export default function Book() {
 
       navigate('/my-books');
     }
-  }, [book, isError, navigate]);
+  }, [book, bookError, hasError, navigate, signOut]);
 
   return (
     <>

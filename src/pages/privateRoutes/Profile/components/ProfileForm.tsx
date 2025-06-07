@@ -1,8 +1,12 @@
 import { ChangeEvent, useRef, useState } from 'react';
 
+import { useAuth } from '@/app/hooks/useAuth';
+
 import { useMutateUpdateUser } from '../../../../app/hooks/mutations/user/useMutateUpdateUser';
 
 import { useErrors } from '../../../../app/hooks/useErrors';
+
+import { AxiosError } from 'axios';
 
 import { sanitizeAndCapitalize } from '../../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../../utils/emitToast';
@@ -46,6 +50,8 @@ export default function ProfileForm({
   onEdit,
   onOpenUserDeleteModal,
 }: ProfileForm) {
+  const { signOut } = useAuth();
+
   const { errors, setError, removeError, getErrorMessageByFieldName } =
     useErrors<TSessionFields, TProfileErrorMessages>();
 
@@ -229,6 +235,21 @@ export default function ProfileForm({
         });
 
         return;
+      }
+
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data.message as string;
+
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
+
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
+
+          return;
+        }
       }
 
       emitToast({

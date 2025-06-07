@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useAuth } from '@/app/hooks/useAuth';
 
 import { useDebounce } from '../../../app/hooks/useDebounce';
 
 import { useQueryGetGoogleBooks } from '../../../app/hooks/queries/googleBooks/useQueryGetGoogleBooks';
+
+import { AxiosError } from 'axios';
+
+import { emitToast } from '@/utils/emitToast';
 
 import ServerErrorMessage from '../components/ServerErrorMessage';
 import Header from './components/Header';
@@ -14,13 +20,15 @@ import WelcomeMessageToGoogleBooks from './components/WelcomeMessageToGoogleBook
 import { TTypeOfSearch } from './components/RadioButtons';
 
 export default function GoogleBooks() {
+  const { signOut } = useAuth();
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const [selected, setSelected] = useState<TTypeOfSearch>('title');
 
-  const { booksList, isLoadingBooks, hasError, tryAgain } =
+  const { booksList, isLoadingBooks, googleBookError, hasError, tryAgain } =
     useQueryGetGoogleBooks({
       searchTerm: debouncedSearchTerm,
       selected,
@@ -35,6 +43,23 @@ export default function GoogleBooks() {
 
     setSearchTerm(value);
   }
+
+  useEffect(() => {
+    if (googleBookError) {
+      if (googleBookError instanceof AxiosError) {
+        const errorMessage = googleBookError.response?.data.message as string;
+
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
+
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
+        }
+      }
+    }
+  }, [signOut, googleBookError]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col space-y-6 overflow-hidden">

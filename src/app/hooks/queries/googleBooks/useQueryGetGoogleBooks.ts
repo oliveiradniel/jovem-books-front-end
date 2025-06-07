@@ -15,7 +15,7 @@ export function useQueryGetGoogleBooks({
   searchTerm,
   selected,
 }: UseQueryGetGoogleBooks) {
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, error, isError, refetch } = useQuery({
     enabled: searchTerm.length > 0,
     queryKey: ['google-books', selected, searchTerm],
     queryFn: async () => {
@@ -37,6 +37,7 @@ export function useQueryGetGoogleBooks({
   return {
     booksList: data ?? [],
     isLoadingBooks: isLoading,
+    googleBookError: error,
     hasError: isError,
     tryAgain: refetch,
   };

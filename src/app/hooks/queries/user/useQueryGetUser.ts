@@ -7,7 +7,7 @@ interface UseQueryGetUserProps {
 }
 
 export function useQueryGetUser({ enabled }: UseQueryGetUserProps) {
-  const { data, isError, isLoading, isFetching, refetch } = useQuery({
+  const { data, error, isError, isLoading, isFetching, refetch } = useQuery({
     enabled,
     staleTime: Infinity,
     queryKey: ['user'],
@@ -20,6 +20,7 @@ export function useQueryGetUser({ enabled }: UseQueryGetUserProps) {
     user: data ?? null,
     isLoadingUser: isLoading,
     isRefetchingUser: isFetching,
+    userError: error,
     isError,
     refetch,
   };

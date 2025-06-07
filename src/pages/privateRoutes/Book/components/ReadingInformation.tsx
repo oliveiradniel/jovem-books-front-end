@@ -3,12 +3,17 @@ import { useParams } from 'react-router-dom';
 
 import { useQueryGetReadByBookId } from '../../../../app/hooks/queries/read/useQueryGetReadByBookId';
 
+import { useAuth } from '@/app/hooks/useAuth';
+
+import { AxiosError } from 'axios';
+
 import { useMutateStartRead } from '../../../../app/hooks/mutations/read/useMutateStartReading';
 import { useMutateUpdateCurrentPage } from '../../../../app/hooks/mutations/read/useMutateUpdateCurrentPage';
 import { useMutateUpdateReadStatus } from '../../../../app/hooks/mutations/read/useMutateUpdateReadStatus';
 
 import { formatDate } from '../../../../utils/formatDate';
 import { getDaysBetween } from '../../../../utils/getDaysBetween';
+import { emitToast } from '@/utils/emitToast';
 
 import { CiEdit } from 'react-icons/ci';
 
@@ -31,9 +36,11 @@ export default function ReadingInformation({
   bookTitle,
   numberOfPages,
 }: ReadingInformationProps) {
+  const { signOut } = useAuth();
+
   const { id } = useParams();
 
-  const { readData, isLoadingRead } = useQueryGetReadByBookId({
+  const { readData, readError, isLoadingRead } = useQueryGetReadByBookId({
     bookId: id!,
   });
 
@@ -111,6 +118,23 @@ export default function ReadingInformation({
       setRead(readData);
     }
   }, [readData]);
+
+  useEffect(() => {
+    if (readError) {
+      if (readError instanceof AxiosError) {
+        const errorMessage = readError.response?.data.message as string;
+
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
+
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
+        }
+      }
+    }
+  }, [signOut, readError]);
 
   return (
     <>
