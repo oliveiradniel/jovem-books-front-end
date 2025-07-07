@@ -26,7 +26,7 @@ export default function NewBook() {
     () => (location.state?.book as IBookAPI) || {},
     [location.state?.book]
   );
-  const cameFromGoogleBooks = location.state.cameFromGoogleBooks as boolean;
+  const cameFromGoogleBooks = location.state?.cameFromGoogleBooks ?? false;
 
   const bookFormRef = useRef<BookFormHandle>(null);
 
