@@ -14,7 +14,7 @@ export default function Layout() {
     pathname === '/profile';
 
   return (
-    <div className="flex min-h-screen w-screen bg-linear-to-r bg-[url(/wallpaper-dashboard.jpg)] bg-no-repeat p-5">
+    <div className="flex h-screen max-h-screen w-screen bg-linear-to-r bg-[url(/wallpaper-dashboard.jpg)] bg-no-repeat p-5">
       <Sidebar />
 
       <div className="bg-navy-blue/40 relative flex min-h-full flex-1 flex-col overflow-hidden rounded-s-sm rounded-e-sm px-5 sm:rounded-s-none sm:p-5">
