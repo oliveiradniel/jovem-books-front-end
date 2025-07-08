@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { useAuth } from '@/app/hooks/useAuth';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 import { useQueryListBooks } from '../../../app/hooks/queries/book/useQueryListBooks';
 
@@ -16,6 +17,8 @@ import { TBookFilter } from '../../../@types/Book';
 import { AxiosError } from 'axios';
 
 export default function MyBooks() {
+  useSetDocumentTitle({ title: 'Meus Livros' });
+
   const { signOut } = useAuth();
 
   const {

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/app/hooks/useAuth';
-
 import { useDebounce } from '../../../app/hooks/useDebounce';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 import { useQueryGetGoogleBooks } from '../../../app/hooks/queries/googleBooks/useQueryGetGoogleBooks';
 
@@ -20,6 +20,8 @@ import WelcomeMessageToGoogleBooks from './components/WelcomeMessageToGoogleBook
 import { TTypeOfSearch } from './components/RadioButtons';
 
 export default function GoogleBooks() {
+  useSetDocumentTitle({ title: 'Google Books' });
+
   const { signOut } = useAuth();
 
   const [searchTerm, setSearchTerm] = useState('');

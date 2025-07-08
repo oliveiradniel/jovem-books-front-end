@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAuth } from '@/app/hooks/useAuth';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 import { useQueryGetBookById } from '../../../app/hooks/queries/book/useQueryGetBookById';
 
@@ -23,6 +24,8 @@ import { TUpdateBook } from '../../../@types/Book';
 import { IPreSignedURL, TMimeType } from '@/@types/S3';
 
 export default function EditBook() {
+  useSetDocumentTitle({ title: 'Editar Livro' });
+
   const { signOut } = useAuth();
 
   const { id } = useParams();

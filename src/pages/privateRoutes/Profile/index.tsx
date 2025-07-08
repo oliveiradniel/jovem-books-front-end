@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useAuth } from '../../../app/hooks/useAuth';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 import { IUserAPIResponse } from '../../../@types/User';
 
@@ -8,6 +9,8 @@ import ProfileForm from './components/ProfileForm';
 import DeleteUserModal from '../../../components/Modals/DeleteUserModal';
 
 export default function Profile() {
+  useSetDocumentTitle({ title: 'Perfil ' });
+
   const { user, isLoadingUser, isRefetchingUser } = useAuth();
 
   const [isBeingEdited, setIsBeingEdited] = useState(false);

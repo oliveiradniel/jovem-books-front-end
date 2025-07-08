@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
+
 import BooksService from '../../../app/services/BooksService';
 import S3Service from '@/app/services/S3Service';
 
@@ -20,6 +22,8 @@ import { IBookAPI, TCreateBook } from '../../../@types/Book';
 import { IPreSignedURL, TMimeType } from '@/@types/S3';
 
 export default function NewBook() {
+  useSetDocumentTitle({ title: 'Novo Livro' });
+
   const navigate = useNavigate();
   const location = useLocation();
   const book = useMemo(

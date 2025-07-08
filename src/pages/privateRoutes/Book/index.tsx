@@ -18,6 +18,7 @@ import ReadingInformation from './components/ReadingInformation';
 
 import { LiteraryGenreKey } from '../../../@types/Book';
 import { LITERARY_GENRE_LABELS } from '../../../constants/books';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 export default function Book() {
   const { signOut } = useAuth();
@@ -27,6 +28,8 @@ export default function Book() {
 
   const { book, isLoadingBook, isRefetchingBook, bookError, hasError } =
     useQueryGetBookById(id!);
+
+  useSetDocumentTitle({ title: book?.title ?? 'Carregando...' });
 
   useEffect(() => {
     if (bookError) {

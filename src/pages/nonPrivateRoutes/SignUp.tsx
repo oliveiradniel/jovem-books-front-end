@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
+
 import AuthService from '../../app/services/AuthService';
 
 import { SignUpSchema } from '../../assets/schemas/UserSchema';
@@ -12,6 +14,8 @@ import { TSignUp } from '../../@types/User';
 import SessionTemplate from './components/SessionTemplate';
 
 export default function SignUp() {
+  useSetDocumentTitle({ title: 'Criar conta' });
+
   const [fullName, setFullName] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { useAuth } from '../../app/hooks/useAuth';
+import { useSetDocumentTitle } from '@/app/hooks/useSetDocumentTitle';
 
 import AuthService from '../../app/services/AuthService';
 
@@ -13,6 +14,8 @@ import SessionForm from './components/SessionForm';
 import { TSignIn } from '../../@types/User';
 
 export default function SignIn() {
+  useSetDocumentTitle({ title: 'Entrar' });
+
   const { signIn } = useAuth();
 
   const controllerRef = useRef<AbortController | null>(null);
