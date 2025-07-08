@@ -36,7 +36,7 @@ export default function Home() {
           </button>
 
           <button
-            onClick={() => navigate('/sign-up')}
+            onClick={() => navigate('/sign-in')}
             className="font-roboto flex w-full cursor-pointer items-center justify-center gap-4 rounded-sm py-3 font-medium text-white transition-all duration-300 ease-in-out hover:scale-102 hover:text-white sm:max-w-[140px]"
           >
             Entrar
