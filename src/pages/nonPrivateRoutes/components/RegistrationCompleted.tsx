@@ -49,9 +49,9 @@ export default function RegistrationCompleted({
 
   return reactDOM.createPortal(
     <div
-      className={`animate-move-in-bottom-700 font-quicksand absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/60 backdrop-blur-[4px] ${!isVisible && 'animate-return-to-top-700'}`}
+      className={`animate-move-in-bottom-700 font-quicksand absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/60 ${!isVisible && 'animate-return-to-top-700'}`}
     >
-      <div className="to-sky-blue flex h-[80%] w-[90%] flex-col items-center justify-center gap-8 rounded-sm bg-linear-to-r from-black sm:w-[80%]">
+      <div className="bg-blue-black/10 flex h-[80%] w-[90%] flex-col items-center justify-center gap-8 rounded-2xl border border-white/10 backdrop-blur-md sm:w-[80%]">
         <button
           type="button"
           onClick={handleClose}

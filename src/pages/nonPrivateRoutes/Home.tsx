@@ -9,13 +9,13 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-blue-black h-screen p-12">
+    <div className="bg-blue-black h-screen p-6 sm:p-12">
       <div className="flex h-12 items-center gap-4">
         <Logo className="h-10 w-10" />
         <p className="font-bebas-neue text-xl text-white">JOVEM BOOKS</p>
       </div>
 
-      <div className="mt-16 flex h-[calc(100vh-208px)] flex-col justify-between">
+      <div className="mt-16 flex h-[calc(100vh-184px)] flex-col justify-between sm:h-[calc(100vh-208px)]">
         <div>
           <h1 className="text-snow-white font-quicksand text-4xl font-semibold md:text-5xl lg:max-w-[700px] lg:text-6xl">
             Controle o progresso da sua leitura

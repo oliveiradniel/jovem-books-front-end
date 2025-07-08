@@ -1,9 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-interface NavigationProps {
-  isDisabled: boolean;
-}
-
 function Range({ isVisible }: { isVisible: boolean }) {
   if (!isVisible) {
     return null;
@@ -12,7 +8,7 @@ function Range({ isVisible }: { isVisible: boolean }) {
   return <div className="bg-sky-blue animate-fade-in h-0.5" />;
 }
 
-export default function Navigation({ isDisabled }: NavigationProps) {
+export default function Navigation() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -25,7 +21,7 @@ export default function Navigation({ isDisabled }: NavigationProps) {
         <li>
           <button
             type="button"
-            disabled={isDisabled || isSignInPage}
+            disabled={isSignInPage}
             onClick={() => navigate('/sign-in')}
             className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignInPage ? 'text-snow-white disabled:hover:text-snow-white hover:text-snow-white' : 'text-mate-gray hover:text-snow-white-op-70'} `}
           >
@@ -37,7 +33,7 @@ export default function Navigation({ isDisabled }: NavigationProps) {
         <li>
           <button
             type="button"
-            disabled={isDisabled || isSignUpPage}
+            disabled={isSignUpPage}
             onClick={() => navigate('/sign-up')}
             className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignUpPage ? 'text-snow-white disabled:hover:text-snow-white hover:text-snow-white' : 'text-mate-gray hover:text-snow-white-op-70'} `}
           >

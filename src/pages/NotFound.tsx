@@ -16,9 +16,7 @@ export default function NotFound({ isPrivate }: NotFoundProps) {
     : navigationNotPrivate;
 
   return (
-    <div
-      className={`to-royal-blue flex h-screen flex-col items-center justify-center bg-gradient-to-r from-black`}
-    >
+    <div className="bg-blue-black flex h-screen flex-col items-center justify-center">
       <h1 className="font-bebas-neue text-snow-white text-4xl">JOVEM BOOKS</h1>
 
       <div className="bg-sky-blue/10 my-6 h-[0.1px] w-[50%]" />
@@ -28,7 +26,7 @@ export default function NotFound({ isPrivate }: NotFoundProps) {
         <span className="text-light-gray"> - {pathname}</span>
       </div>
 
-      <p className="text-sky-blue/60 font-roboto mt-10 text-2xl font-semibold">
+      <p className="text-sky-blue font-roboto mt-10 text-2xl font-semibold">
         Oops!
       </p>
       <span className="text-light-gray font-quicksand mb-10">
@@ -39,12 +37,12 @@ export default function NotFound({ isPrivate }: NotFoundProps) {
         <p className="text-snow-white font-quicksand mt-6 text-center">
           Talvez você esteja procurando por
         </p>
-        <ul className="text-sky-blue text-mt-2 flex justify-center">
+        <ul className="text-mt-2 flex justify-center">
           {navigationOptions.map((option, index) => (
             <li key={index}>
               <button
                 onClick={() => navigate(option.path, { replace: true })}
-                className="hover:text-sky-blue/70 font-roboto transition-colors duration-300 ease-in-out hover:cursor-pointer"
+                className="text-sky-blue hover:text-sky-blue/80 font-roboto transition-colors duration-300 ease-in-out hover:cursor-pointer"
               >
                 {option.label}
               </button>

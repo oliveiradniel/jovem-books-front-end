@@ -1,6 +1,6 @@
 const navigationNotPrivate = [
   { label: 'Iniciar sessão', path: '/sign-in' },
-  { label: 'Criar conta', path: 'sign-up' },
+  { label: 'Criar conta', path: '/sign-up' },
 ];
 
 const navigationPrivate = [
