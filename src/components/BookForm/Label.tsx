@@ -8,7 +8,7 @@ export default function Label({ label }: LabelProps) {
   return (
     <label
       htmlFor="sinopse"
-      className={`text-snow-white font-quicksand w-[100%] sm:${smallLabels.includes(label) ? 'min-w-22' : 'w-[260px]'}`}
+      className={`font-quicksand w-[100%] text-white sm:${smallLabels.includes(label) ? 'min-w-22' : 'w-[260px]'}`}
     >
       {label}
     </label>

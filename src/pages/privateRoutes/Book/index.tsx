@@ -88,7 +88,7 @@ export default function Book() {
               {book?.literaryGenre?.map((literaryGenre, index) => (
                 <p
                   key={index}
-                  className={`text-snow-white/80 bg-navy-blue rounded-lg px-2 py-1 text-[14px] uppercase transition-opacity duration-300 ease-in-out ${isRefetchingBook && 'opacity-70'}`}
+                  className={`bg-navy-blue rounded-lg px-2 py-1 text-[14px] text-white/80 uppercase transition-opacity duration-300 ease-in-out ${isRefetchingBook && 'opacity-70'}`}
                 >
                   {LITERARY_GENRE_LABELS[literaryGenre as LiteraryGenreKey]}
                 </p>

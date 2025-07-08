@@ -69,18 +69,18 @@ export default function RegistrationCompleted({
           onClick={handleClose}
           className="mb-8 flex items-center gap-2 transition-opacity duration-300 ease-in-out hover:cursor-pointer hover:opacity-60"
         >
-          <FaArrowLeftLong className="text-snow-white" />
-          <p className="text-snow-white font-roboto">Voltar</p>
+          <FaArrowLeftLong className="text-white" />
+          <p className="font-roboto text-white">Voltar</p>
         </button>
 
         <h1
-          className={`text-snow-white animate-move-in-bottom-300 text-xl font-medium sm:text-2xl lg:text-4xl ${!isVisible && 'animate-return-to-top-300'}`}
+          className={`animate-move-in-bottom-300 text-xl font-medium text-white sm:text-2xl lg:text-4xl ${!isVisible && 'animate-return-to-top-300'}`}
         >
           Cadastro concluído!
         </h1>
 
         <p
-          className={`font-quicksand text-snow-white animate-move-in-bottom-700 sm:text-md max-w-xl px-5 text-center lg:text-xl ${!isVisible && 'animate-return-to-top-700'}`}
+          className={`font-quicksand animate-move-in-bottom-700 sm:text-md max-w-xl px-5 text-center text-white lg:text-xl ${!isVisible && 'animate-return-to-top-700'}`}
         >
           <span className="text-sky-blue font-medium">{fullName}</span>, bem
           vindo ao <span className="font-bold">Jovem Books</span>. Entre agora

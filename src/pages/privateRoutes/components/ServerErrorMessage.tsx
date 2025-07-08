@@ -17,7 +17,7 @@ export default function ServerErrorMessage({
 }: ServerErrorMessageProps) {
   return (
     <div className="animate-fade-in flex min-h-full flex-1 flex-col items-center justify-center">
-      <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
+      <p className="font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)] text-white">
         Houve um erro ao buscar os livros na Google Books.
       </p>
       <ServerError className="mb-4 w-[30vw] lg:w-[20vw]" />

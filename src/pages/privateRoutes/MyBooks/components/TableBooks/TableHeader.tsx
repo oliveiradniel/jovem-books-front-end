@@ -4,16 +4,14 @@ export default function Header() {
   return (
     <TableHeader>
       <TableRow className="bg-navy-blue hover:bg-navy-blue font-roboto border-none">
-        <TableHead className="text-snow-white w-1/4">Título</TableHead>
-        <TableHead className="text-snow-white hidden w-1/4 sm:table-cell">
+        <TableHead className="w-1/4 text-white">Título</TableHead>
+        <TableHead className="hidden w-1/4 text-white sm:table-cell">
           Autor(es)
         </TableHead>
-        <TableHead className="text-snow-white hidden w-1/4 md:table-cell">
+        <TableHead className="hidden w-1/4 text-white md:table-cell">
           Gênero Literário
         </TableHead>
-        <TableHead className="text-snow-white w-1/4 text-center">
-          Status
-        </TableHead>
+        <TableHead className="w-1/4 text-center text-white">Status</TableHead>
       </TableRow>
     </TableHeader>
   );

@@ -19,7 +19,7 @@ export default function SessionTemplate({
         <div className="relative max-w-md flex-1">
           <Navigation disabled={isSubmitting} />
 
-          <h1 className="text-snow-white font-quicksand mt-20 mb-8 text-4xl">
+          <h1 className="font-quicksand mt-20 mb-8 text-4xl text-white">
             {title}
           </h1>
 

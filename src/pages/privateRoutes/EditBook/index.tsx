@@ -104,7 +104,7 @@ export default function EditBook() {
       <button
         type="button"
         onClick={() => navigate(-1)}
-        className="text-snow-white hover:text-snow-white-op-70 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+        className="h-10 text-white transition-colors duration-300 ease-in-out hover:cursor-pointer hover:text-white/70"
       >
         <GoArrowLeft size={20} />
       </button>

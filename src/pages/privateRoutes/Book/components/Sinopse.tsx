@@ -18,7 +18,7 @@ export default function Sinopse({
       {!isLoadingBook &&
         (text ? (
           <p
-            className={`text-snow-white-op-70 font-quicksand break-all ${!isLoadingBook && isRefetchingBook && 'opacity-60'}`}
+            className={`font-quicksand break-all text-white/70 ${!isLoadingBook && isRefetchingBook && 'opacity-60'}`}
           >
             {text}
           </p>

@@ -30,7 +30,7 @@ export default function SearchInput({
       />
 
       <GoSearch
-        className={`${isFocused || value.length > 0 ? 'text-sky-blue/60' : 'text-snow-white/40'}`}
+        className={`${isFocused || value.length > 0 ? 'text-sky-blue/60' : 'text-white/40'}`}
       />
     </div>
   );

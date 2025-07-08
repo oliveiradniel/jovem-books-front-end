@@ -9,13 +9,13 @@ export default function EmptyBooksMessage() {
 
   return (
     <div className="animate-fade-in flex flex-col items-center justify-center">
-      <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
+      <p className="font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)] text-white">
         Parece que você não tem nenhum livro cadastrado.
       </p>
 
       <EmptyBooks className="w-[30vw] lg:w-[20vw]" />
 
-      <p className="text-snow-white font-quicksand mb-4 text-center text-[clamp(0.8rem,1.6vw,0.9rem)]">
+      <p className="font-quicksand mb-4 text-center text-[clamp(0.8rem,1.6vw,0.9rem)] text-white">
         Clique no botão abaixo para adicionar.
       </p>
 

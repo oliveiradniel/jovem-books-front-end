@@ -103,7 +103,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
             ) : (
               !isLoadingUser && (
                 <FaCircleUser
-                  className={`text-mate-gray h-7 w-7 transition-all duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${isRefetchingUser && 'opacity-40'}`}
+                  className={`text-mate-gray h-7 w-7 transition-all duration-300 ease-in-out ${hoverOnProfile && 'text-white!'} ${isRefetchingUser && 'opacity-40'}`}
                 />
               )
             )}
@@ -112,7 +112,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
           {shouldRenderUsername && (
             <h1
               ref={animatedUsernameRef}
-              className={`animate-fade-in-500 font-quicksand text-snow-white-op-70 whitespace-nowrap transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
+              className={`animate-fade-in-500 font-quicksand whitespace-nowrap text-white/70 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
             >
               {isLoadingUser && 'Carregando...'}
               {user && truncateString(username, 10)}
@@ -122,7 +122,7 @@ export default function Profile({ isExpanded }: ProfileProps) {
 
         {shouldRenderUsername && (
           <div
-            className={`animate-fade-in-500 text-snow-white-op-70 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-snow-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
+            className={`animate-fade-in-500 text-white/70 transition-colors duration-300 ease-in-out ${hoverOnProfile && 'text-white!'} ${!isExpanded && 'animate-fade-out-100'}`}
           >
             <IoMdArrowDropup />
             <IoMdArrowDropdown />

@@ -27,7 +27,7 @@ export default function Navigation({ disabled }: NavigationProps) {
             type="button"
             disabled={isSignInPage || disabled}
             onClick={() => navigate('/sign-in')}
-            className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignInPage ? 'text-snow-white disabled:hover:text-snow-white hover:text-snow-white' : 'text-mate-gray hover:text-snow-white-op-70'} `}
+            className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignInPage ? 'text-white hover:text-white disabled:hover:text-white' : 'text-mate-gray hover:text-white/70'} `}
           >
             Entrar
           </button>
@@ -39,7 +39,7 @@ export default function Navigation({ disabled }: NavigationProps) {
             type="button"
             disabled={isSignUpPage}
             onClick={() => navigate('/sign-up')}
-            className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignUpPage ? 'text-snow-white disabled:hover:text-snow-white hover:text-snow-white' : 'text-mate-gray hover:text-snow-white-op-70'} `}
+            className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignUpPage ? 'text-white hover:text-white disabled:hover:text-white' : 'text-mate-gray hover:text-white/70'} `}
           >
             Criar conta
           </button>

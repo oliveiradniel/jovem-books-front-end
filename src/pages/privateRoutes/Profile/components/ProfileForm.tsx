@@ -348,7 +348,7 @@ export default function ProfileForm({
           <button
             type="submit"
             disabled={isUpdatingUser || isRefetchingUser || !isFormValid}
-            className={`bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default ${(isUpdatingUser || isRefetchingUser) && 'bg-sky-blue!'}`}
+            className={`bg-sky-blue font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold text-white transition-colors duration-300 ease-in-out disabled:cursor-default ${(isUpdatingUser || isRefetchingUser) && 'bg-sky-blue!'}`}
           >
             {isUpdatingUser || isRefetchingUser ? (
               <ClipLoader size={16} color="#ffffff" />
@@ -362,7 +362,7 @@ export default function ProfileForm({
               type="button"
               disabled={isUpdatingUser || isRefetchingUser}
               onClick={handleEditCancellation}
-              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer items-center justify-center rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+              className="bg-blood-red font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer items-center justify-center rounded-lg px-6 py-2 font-semibold text-white transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
               Cancelar
             </button>
@@ -374,7 +374,7 @@ export default function ProfileForm({
                 (selectedImage === null && imageName === null)
               }
               onClick={handleRemoveProfilePhoto}
-              className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer justify-center rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+              className="bg-blood-red font-roboto hover:bg-blood-red/90 disabled:bg-light-gray flex w-full cursor-pointer justify-center rounded-lg px-6 py-2 font-semibold text-white transition-colors duration-300 ease-in-out disabled:cursor-default"
             >
               <span className="hidden sm:inline-flex">Remover foto</span>
               <img
@@ -393,7 +393,7 @@ export default function ProfileForm({
             type="button"
             disabled={isLoadingUser || isRefetchingUser}
             onClick={onEdit}
-            className="bg-sky-blue text-snow-white font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+            className="bg-sky-blue font-roboto hover:bg-sky-blue/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold text-white transition-colors duration-300 ease-in-out disabled:cursor-default"
           >
             Editar
           </button>
@@ -402,7 +402,7 @@ export default function ProfileForm({
             type="button"
             disabled={isLoadingUser || isRefetchingUser}
             onClick={onOpenUserDeleteModal}
-            className="bg-blood-red text-snow-white font-roboto hover:bg-blood-red/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold transition-colors duration-300 ease-in-out disabled:cursor-default"
+            className="bg-blood-red font-roboto hover:bg-blood-red/90 disabled:bg-light-gray cursor-pointer rounded-lg px-6 py-2 font-semibold text-white transition-colors duration-300 ease-in-out disabled:cursor-default"
           >
             Excluir usuário
           </button>

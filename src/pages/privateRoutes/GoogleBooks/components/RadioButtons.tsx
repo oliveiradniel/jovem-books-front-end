@@ -17,7 +17,7 @@ export default function RadioButtons({
         type="button"
         disabled={selected === 'title' || isLoadingBooks}
         onClick={() => onSelected('title')}
-        className={`font-roboto disabled:bg-sky-blue/60 disabled:text-snow-white border-blue-black/80 bg-blue-black/80 text-snow-white/60 hover:bg-sky-blue/10 w-20 rounded-l-lg border text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default ${isLoadingBooks && 'bg-blue-black/80! border-navy-blue'}`}
+        className={`font-roboto disabled:bg-sky-blue/60 border-blue-black/80 bg-blue-black/80 hover:bg-sky-blue/10 w-20 rounded-l-lg border text-sm text-white/60 transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default disabled:text-white ${isLoadingBooks && 'bg-blue-black/80! border-navy-blue'}`}
       >
         Título
       </button>
@@ -25,7 +25,7 @@ export default function RadioButtons({
         type="button"
         disabled={selected === 'author' || isLoadingBooks}
         onClick={() => onSelected('author')}
-        className={`font-roboto disabled:bg-sky-blue/60 disabled:text-snow-white border-blue-black/80 bg-blue-black/80 text-snow-white/60 hover:bg-sky-blue/10 w-20 rounded-r-lg border text-sm transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default ${isLoadingBooks && 'bg-blue-black/80! border-navy-blue'}`}
+        className={`font-roboto disabled:bg-sky-blue/60 border-blue-black/80 bg-blue-black/80 hover:bg-sky-blue/10 w-20 rounded-r-lg border text-sm text-white/60 transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default disabled:text-white ${isLoadingBooks && 'bg-blue-black/80! border-navy-blue'}`}
       >
         Autor
       </button>

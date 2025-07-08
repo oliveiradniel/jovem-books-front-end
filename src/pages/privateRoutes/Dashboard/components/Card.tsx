@@ -42,7 +42,7 @@ export default function Card({
         className={`absolute bottom-0 flex w-full flex-col items-center rounded-b-lg py-2 ${isTheMouseOverTheButton ? 'bg-sky-blue/60' : 'bg-sky-blue/40'} ${disabled && 'bg-light-gray/40!'}`}
       >
         <span
-          className={`font-roboto font-semibold transition-colors duration-300 ease-in-out ${isTheMouseOverTheButton ? 'text-snow-white' : 'text-sky-blue'} ${disabled && 'text-light-gray! line-through'}`}
+          className={`font-roboto font-semibold transition-colors duration-300 ease-in-out ${isTheMouseOverTheButton ? 'text-white' : 'text-sky-blue'} ${disabled && 'text-light-gray! line-through'}`}
         >
           {buttonLabel}
         </span>

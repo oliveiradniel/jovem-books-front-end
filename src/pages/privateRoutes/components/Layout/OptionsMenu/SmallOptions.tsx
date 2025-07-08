@@ -50,7 +50,7 @@ export default function SmallOptions() {
             {menuItems.map((item) => (
               <button
                 onClick={() => navigate(item.url)}
-                className={`flex min-w-[140px] items-center gap-2 rounded-sm px-2 py-1 transition-colors duration-300 ease-in-out ${item.url === pathname ? 'text-sky-blue' : 'text-snow-white hover:bg-blue-black/70 cursor-pointer'}`}
+                className={`flex min-w-[140px] items-center gap-2 rounded-sm px-2 py-1 transition-colors duration-300 ease-in-out ${item.url === pathname ? 'text-sky-blue' : 'hover:bg-blue-black/70 cursor-pointer text-white'}`}
               >
                 {item.icon}
                 <span className="font-roboto">{item.label}</span>
@@ -61,7 +61,7 @@ export default function SmallOptions() {
 
             <button
               onClick={() => navigate('/profile')}
-              className={`flex min-w-[140px] items-center gap-2 rounded-sm px-2 py-1 transition-colors duration-300 ease-in-out ${'/profile' === pathname ? 'text-sky-blue' : 'text-snow-white hover:bg-blue-black/70 cursor-pointer'}`}
+              className={`flex min-w-[140px] items-center gap-2 rounded-sm px-2 py-1 transition-colors duration-300 ease-in-out ${'/profile' === pathname ? 'text-sky-blue' : 'hover:bg-blue-black/70 cursor-pointer text-white'}`}
             >
               <PiGearSixFill className="text-xl" />
               <span className="font-roboto">Perfil</span>
@@ -69,7 +69,7 @@ export default function SmallOptions() {
 
             <button
               onClick={signOut}
-              className={`text-snow-white hover:bg-blue-black/70 flex min-w-[140px] cursor-pointer items-center gap-2 rounded-sm px-2 py-1 transition-colors duration-300 ease-in-out`}
+              className={`hover:bg-blue-black/70 flex min-w-[140px] cursor-pointer items-center gap-2 rounded-sm px-2 py-1 text-white transition-colors duration-300 ease-in-out`}
             >
               <TbLogout2 className="text-lg" />
               <span className="font-roboto">Sair</span>
@@ -83,7 +83,7 @@ export default function SmallOptions() {
         onClick={handleVisibilityOptionsToggle}
         className="fixed z-2 cursor-pointer"
       >
-        <IoIosMenu className="text-snow-white hover:text-snow-white/80 text-2xl transition-colors duration-300 ease-in-out" />
+        <IoIosMenu className="text-2xl text-white transition-colors duration-300 ease-in-out hover:text-white/80" />
       </button>
     </div>
   );

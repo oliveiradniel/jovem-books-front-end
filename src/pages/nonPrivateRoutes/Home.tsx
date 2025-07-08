@@ -17,7 +17,7 @@ export default function Home() {
 
       <div className="mt-16 flex h-[calc(100vh-184px)] flex-col justify-between sm:h-[calc(100vh-208px)]">
         <div>
-          <h1 className="text-snow-white font-quicksand text-4xl font-semibold md:text-5xl lg:max-w-[700px] lg:text-6xl">
+          <h1 className="font-quicksand text-4xl font-semibold text-white md:text-5xl lg:max-w-[700px] lg:text-6xl">
             Controle o progresso da sua leitura
           </h1>
 

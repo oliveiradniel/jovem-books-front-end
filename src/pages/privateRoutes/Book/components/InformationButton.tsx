@@ -39,7 +39,7 @@ export default function InformationButton({
         isUpdatingReadStatus
       }
       onClick={() => onChangeBookStatus('READING')}
-      className={`hover:bg-navy-blue-op-80 border-navy-blue text-snow-white font-roboto bg-navy-blue disabled:bg-navy-blue-op-40 disabled:border-navy-blue-op-80 hover:border-navy-blue-op-80 flex h-10 w-full items-center justify-center rounded-lg border px-3 py-2 text-sm font-normal transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default sm:w-[140px] ${isFinished && isNotLoading && 'border-sky-blue!'}`}
+      className={`hover:bg-navy-blue/80 border-navy-blue font-roboto bg-navy-blue disabled:bg-navy-blue disabled:border-navy-blue/80 hover:border-navy-blue/80 flex h-10 w-full items-center justify-center rounded-lg border px-3 py-2 text-sm font-normal text-white transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default sm:w-[140px] ${isFinished && isNotLoading && 'border-sky-blue!'}`}
     >
       {isLoadingRead && (
         <p className="animate-fade-in flex items-center justify-center gap-2">

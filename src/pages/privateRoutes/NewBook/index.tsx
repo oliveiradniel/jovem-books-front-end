@@ -95,12 +95,12 @@ export default function NewBook() {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="text-snow-white hover:text-snow-white-op-70 h-10 transition-colors duration-300 ease-in-out hover:cursor-pointer"
+          className="h-10 text-white transition-colors duration-300 ease-in-out hover:cursor-pointer hover:text-white/70"
         >
           <GoArrowLeft size={20} />
         </button>
 
-        <h1 className="font-quicksand text-snow-white text-2xl">Novo livro</h1>
+        <h1 className="font-quicksand text-2xl text-white">Novo livro</h1>
       </div>
 
       <BookForm

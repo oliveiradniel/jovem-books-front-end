@@ -48,10 +48,10 @@ export default function ModalBase({
       className={`animate-fade-in fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black/60 p-4 backdrop-blur-[1px] ${!isVisible && 'animate-fade-out-100'}`}
     >
       <div
-        className={`bg-blue-black-op-80 animate-scale-in-300 flex flex-col gap-2 rounded-lg p-5 ${!isVisible && 'animate-scale-out-100'} ${danger && 'border-blood-red border'}`}
+        className={`bg-blue-black/80 animate-scale-in-300 flex flex-col gap-2 rounded-lg p-5 ${!isVisible && 'animate-scale-out-100'} ${danger && 'border-blood-red border'}`}
       >
         {title && (
-          <p className="font-quicksand text-snow-white max-w-[500px] text-sm">
+          <p className="font-quicksand max-w-[500px] text-sm text-white">
             {title}
           </p>
         )}

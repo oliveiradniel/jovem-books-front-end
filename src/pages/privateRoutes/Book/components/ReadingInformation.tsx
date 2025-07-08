@@ -184,7 +184,7 @@ export default function ReadingInformation({
           )}
         </div>
 
-        <div className="bg-navy-blue text-snow-white-op-70 font-quicksand relative mt-3 flex min-h-[54px] justify-between rounded-lg px-4 py-2 text-sm sm:mt-5">
+        <div className="bg-navy-blue font-quicksand relative mt-3 flex min-h-[54px] justify-between rounded-lg px-4 py-2 text-sm text-white/70 sm:mt-5">
           {isLoadingRead ? (
             <SkeletonLoading rounded="lg" />
           ) : (

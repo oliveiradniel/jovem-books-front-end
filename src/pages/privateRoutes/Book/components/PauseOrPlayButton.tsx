@@ -16,7 +16,7 @@ export default function PauseOrPlayButton({
     <button
       type="button"
       {...props}
-      className={`animate-fade-in-500 hover:bg-navy-blue/85 border-navy-blue text-snow-white font-roboto bg-navy-blue hover:border-navy-blue/80 disabled:bg-navy-blue/40 flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default sm:w-[140px]`}
+      className={`animate-fade-in-500 hover:bg-navy-blue/85 border-navy-blue font-roboto bg-navy-blue hover:border-navy-blue/80 disabled:bg-navy-blue/40 flex h-10 w-full items-center justify-center rounded-lg border-2 px-3 py-2 text-sm font-semibold text-white transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:cursor-default sm:w-[140px]`}
     >
       <p className="flex items-center justify-center gap-2">
         {status === 'READING' && <IoPauseOutline size={20} />}

@@ -35,7 +35,7 @@ export default function Card({ book }: CardProps) {
         className="animate-fade-in absolute top-0 left-0 hidden h-full w-full items-center justify-center group-hover:flex"
       >
         <div className="relative z-2 flex h-full w-full items-center justify-center bg-black/60 backdrop-blur-[2px]">
-          <MdLibraryAdd className="text-snow-white" size={60} />
+          <MdLibraryAdd className="text-white" size={60} />
         </div>
         {book.imagePath && (
           <img
@@ -46,7 +46,7 @@ export default function Card({ book }: CardProps) {
         )}
       </div>
 
-      <p className="text-snow-white/70 font-quicksand flex min-h-6 items-center text-center text-sm md:text-[16px] xl:text-[18px]">
+      <p className="font-quicksand flex min-h-6 items-center text-center text-sm text-white/70 md:text-[16px] xl:text-[18px]">
         {truncateString(book.title, 20)}
       </p>
 
@@ -60,7 +60,7 @@ export default function Card({ book }: CardProps) {
         </div>
       ) : (
         <div className="flex items-center justify-center">
-          <FaBookBookmark size={60} className="text-snow-white/60" />
+          <FaBookBookmark size={60} className="text-white/60" />
         </div>
       )}
 

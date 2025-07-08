@@ -17,12 +17,12 @@ export default function NotFound({ isPrivate }: NotFoundProps) {
 
   return (
     <div className="bg-blue-black flex h-screen flex-col items-center justify-center">
-      <h1 className="font-bebas-neue text-snow-white text-4xl">JOVEM BOOKS</h1>
+      <h1 className="font-bebas-neue text-4xl text-white">JOVEM BOOKS</h1>
 
       <div className="bg-sky-blue/10 my-6 h-[0.1px] w-[50%]" />
 
       <div className="flex items-center gap-2">
-        <TbError404 className="text-snow-white text-4xl" />
+        <TbError404 className="text-4xl text-white" />
         <span className="text-light-gray"> - {pathname}</span>
       </div>
 
@@ -34,7 +34,7 @@ export default function NotFound({ isPrivate }: NotFoundProps) {
       </span>
 
       <div className="flex flex-col gap-4">
-        <p className="text-snow-white font-quicksand mt-6 text-center">
+        <p className="font-quicksand mt-6 text-center text-white">
           Talvez você esteja procurando por
         </p>
         <ul className="text-mt-2 flex justify-center">

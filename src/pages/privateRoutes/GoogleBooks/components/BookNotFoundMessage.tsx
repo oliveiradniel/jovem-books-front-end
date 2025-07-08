@@ -18,7 +18,7 @@ export default function BookNotFoundMessage({
 
   return (
     <div className="animate-fade-in flex min-h-full flex-1 flex-col items-center justify-center gap-4">
-      <p className="text-snow-white font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)]">
+      <p className="font-quicksand text-center text-[clamp(0.8rem,2vw,1rem)] text-white">
         {notFoundBookText}{' '}
         <span className="text-sky-blue font-semibold">"{searchTerm}"</span>
       </p>

@@ -20,7 +20,7 @@ export default function Logo({ isExpanded, onExpansionToggle }: LogoProps) {
       {shouldRenderTitle && (
         <h1
           ref={animatedTitleRef}
-          className={`animate-fade-in-500 text-snow-white font-bebas-neue gap-2 text-3xl whitespace-nowrap ${!isExpanded && 'animate-fade-out-100 justify-center'}`}
+          className={`animate-fade-in-500 font-bebas-neue gap-2 text-3xl whitespace-nowrap text-white ${!isExpanded && 'animate-fade-out-100 justify-center'}`}
         >
           JOVEM BOOKS
         </h1>
@@ -30,7 +30,7 @@ export default function Logo({ isExpanded, onExpansionToggle }: LogoProps) {
         onClick={onExpansionToggle}
         className="hover:cursor-pointer"
       >
-        <IoIosMenu className="text-snow-white hover:text-snow-white/80 text-2xl transition-colors duration-300 ease-in-out" />
+        <IoIosMenu className="text-2xl text-white transition-colors duration-300 ease-in-out hover:text-white/80" />
       </button>
     </div>
   );

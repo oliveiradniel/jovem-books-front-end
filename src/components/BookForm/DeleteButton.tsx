@@ -14,7 +14,7 @@ export default function DeleteButton({
       type="button"
       disabled={disabled}
       onClick={onClick}
-      className={`text-snow-white bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
+      className={`bg-blood-red hover:bg-blood-red/70 disabled:bg-light-gray/70 flex h-10 w-12 items-center justify-center rounded-lg text-white transition-colors duration-300 ease-in-out hover:cursor-pointer disabled:hover:cursor-default`}
     >
       {buttonLabel}
     </button>

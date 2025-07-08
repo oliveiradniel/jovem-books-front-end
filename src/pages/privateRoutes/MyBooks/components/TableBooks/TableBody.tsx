@@ -23,7 +23,7 @@ export default function Body({ books, isRefetching }: TableBodyProps) {
   }
 
   return (
-    <TableBody className="font-quicksand text-snow-white max-h-[40rem]">
+    <TableBody className="font-quicksand max-h-[40rem] text-white">
       {books.map((book) => (
         <TableRow
           role="button"
