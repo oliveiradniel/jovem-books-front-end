@@ -62,13 +62,13 @@ export default function RegistrationCompleted({
         </button>
 
         <h1
-          className={`text-snow-white animate-move-in-bottom-300 text-[20px] font-medium sm:text-2xl lg:text-4xl ${!isVisible && 'animate-return-to-top-300'}`}
+          className={`text-snow-white animate-move-in-bottom-300 text-xl font-medium sm:text-2xl lg:text-4xl ${!isVisible && 'animate-return-to-top-300'}`}
         >
           Cadastro concluído!
         </h1>
 
         <p
-          className={`font-quicksand text-snow-white animate-move-in-bottom-700 sm:text-md max-w-xl text-center lg:text-xl ${!isVisible && 'animate-return-to-top-700'}`}
+          className={`font-quicksand text-snow-white animate-move-in-bottom-700 sm:text-md max-w-xl px-5 text-center lg:text-xl ${!isVisible && 'animate-return-to-top-700'}`}
         >
           <span className="text-sky-blue font-medium">{fullName}</span>, bem
           vindo ao <span className="font-bold">Jovem Books</span>. Entre agora

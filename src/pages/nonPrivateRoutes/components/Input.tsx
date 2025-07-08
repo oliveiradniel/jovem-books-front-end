@@ -48,7 +48,7 @@ export default function Input({
         onFocus={() => setIsTheFieldFocused(true)}
         onBlur={() => setIsTheFieldFocused(false)}
         {...props}
-        className={`placeholder:text-light-gray-op-70 text-snow-white w-full placeholder:before:content-['*'] focus:outline-none ${error && error.length > 0 && 'text-blood-red!'}`}
+        className={`placeholder:text-light-gray-op-70 text-snow-white w-full focus:outline-none ${error && error.length > 0 && 'text-blood-red!'}`}
       />
 
       {isAPasswordInput && (
