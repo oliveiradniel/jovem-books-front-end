@@ -9,35 +9,35 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <div className="to-sky-blue min-h-screen w-screen bg-linear-to-r from-black">
-      <div className="h-full p-12">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo className="h-10 w-10" />
-            <p className="font-bebas-neue text-xl text-white">JOVEM BOOKS</p>
-          </div>
+    <div className="bg-blue-black h-screen p-12">
+      <div className="flex h-12 items-center gap-4">
+        <Logo className="h-10 w-10" />
+        <p className="font-bebas-neue text-xl text-white">JOVEM BOOKS</p>
+      </div>
+
+      <div className="mt-16 flex h-[calc(100vh-208px)] flex-col justify-between">
+        <div>
+          <h1 className="text-snow-white font-quicksand text-4xl font-semibold md:text-5xl lg:max-w-[700px] lg:text-6xl">
+            Controle o progresso da sua leitura
+          </h1>
+
+          <p className="font-roboto mt-8 text-xl text-white/80 md:text-2xl">
+            Tenha um relatório completo sobre os livros que já leu.
+          </p>
         </div>
 
-        <h1 className="text-snow-white font-quicksand mt-[10.5rem] text-[2rem] sm:text-[2.5rem] md:text-[3rem]">
-          Controle o progresso da sua leitura
-        </h1>
-
-        <p className="text-light-gray/80 font-roboto mt-32 mb-10 text-base">
-          Tenha um relatório completo sobre os livros que já leu.
-        </p>
-
-        <div className="flex flex-col space-y-2 sm:flex-row sm:gap-2 sm:space-y-0">
+        <div className="mt-16 flex flex-col justify-end gap-4 sm:flex-row">
           <button
             onClick={() => navigate('/sign-up')}
-            className="font-roboto flex w-[240px] cursor-pointer items-center justify-center gap-4 rounded-sm border border-transparent bg-white py-2 font-medium text-black transition-all duration-300 ease-in-out hover:scale-102 hover:border-transparent hover:border-white hover:bg-transparent hover:text-white"
+            className="font-roboto flex w-full cursor-pointer items-center justify-center gap-4 rounded-sm bg-white py-3 font-medium text-black transition-all duration-300 ease-in-out hover:scale-102 sm:max-w-[240px]"
           >
             Criar uma conta
             <FaArrowRightLong />
           </button>
 
           <button
-            onClick={() => navigate('/sign-in')}
-            className="font-roboto border-snow-white hover:bg-snow-white flex w-[240px] cursor-pointer items-center justify-center gap-4 rounded-sm border py-2 font-medium text-white transition-all duration-300 ease-in-out hover:scale-102 hover:border-transparent hover:text-black hover:opacity-80"
+            onClick={() => navigate('/sign-up')}
+            className="font-roboto flex w-full cursor-pointer items-center justify-center gap-4 rounded-sm py-3 font-medium text-white transition-all duration-300 ease-in-out hover:scale-102 hover:text-white sm:max-w-[140px]"
           >
             Entrar
             <FiLogIn />
