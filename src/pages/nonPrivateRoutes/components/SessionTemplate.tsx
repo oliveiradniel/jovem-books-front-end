@@ -4,18 +4,20 @@ interface SessionTemplate {
   title: string;
   children: React.ReactNode;
   highlightText: string;
+  isSubmitting?: boolean;
 }
 
 export default function SessionTemplate({
   title,
   children,
   highlightText,
+  isSubmitting = false,
 }: SessionTemplate) {
   return (
     <div className="bg-blue-black h-screen w-screen p-5">
       <div className="bg-navy-blue/20 flex h-full w-full justify-between gap-20 rounded-2xl p-5">
         <div className="relative max-w-md flex-1">
-          <Navigation />
+          <Navigation disabled={isSubmitting} />
 
           <h1 className="text-snow-white font-quicksand mt-20 mb-8 text-4xl">
             {title}

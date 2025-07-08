@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import reactDOM from 'react-dom';
 
 import { useAuth } from '../../../app/hooks/useAuth.ts';
@@ -26,6 +27,8 @@ export default function RegistrationCompleted({
   fullName,
   onClose,
 }: RegistrationCompletedProps) {
+  const controllerRef = useRef<AbortController | null>(null);
+
   const { signIn } = useAuth();
 
   const { shouldRender, animatedElementRef } =
@@ -39,10 +42,19 @@ export default function RegistrationCompleted({
 
   function handleClose() {
     onClose();
+
+    if (controllerRef.current) {
+      controllerRef.current.abort();
+    }
   }
 
   async function handleSubmit(credentials: TSignIn) {
-    const { accessToken } = await AuthService.signIn(credentials);
+    controllerRef.current = new AbortController();
+
+    const { accessToken } = await AuthService.signIn({
+      credentials,
+      signal: controllerRef.current?.signal as AbortSignal,
+    });
 
     signIn(accessToken);
   }
@@ -51,7 +63,7 @@ export default function RegistrationCompleted({
     <div
       className={`animate-move-in-bottom-700 font-quicksand absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/60 ${!isVisible && 'animate-return-to-top-700'}`}
     >
-      <div className="bg-blue-black/10 flex h-[80%] w-[90%] flex-col items-center justify-center gap-8 rounded-2xl border border-white/10 backdrop-blur-md sm:w-[80%]">
+      <div className="bg-blue-black/30 flex h-[80%] w-[90%] flex-col items-center justify-center gap-8 rounded-2xl border border-white/10 backdrop-blur-[8px] sm:w-[80%]">
         <button
           type="button"
           onClick={handleClose}

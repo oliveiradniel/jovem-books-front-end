@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { useAuth } from '../../app/hooks/useAuth';
 
 import AuthService from '../../app/services/AuthService';
@@ -13,11 +15,24 @@ import { TSignIn } from '../../@types/User';
 export default function SignIn() {
   const { signIn } = useAuth();
 
+  const controllerRef = useRef<AbortController | null>(null);
+
   async function handleSubmit(credentials: TSignIn) {
-    const { accessToken } = await AuthService.signIn(credentials);
+    const { accessToken } = await AuthService.signIn({
+      credentials,
+      signal: controllerRef.current?.signal as AbortSignal,
+    });
 
     signIn(accessToken);
   }
+
+  useEffect(() => {
+    controllerRef.current = new AbortController();
+
+    return () => {
+      controllerRef.current?.abort();
+    };
+  }, []);
 
   return (
     <SessionTemplate

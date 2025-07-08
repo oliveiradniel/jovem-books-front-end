@@ -8,16 +8,22 @@ interface SignUpProps {
   password: string;
 }
 
-interface SignInProps {
+interface SignInCredentials {
   username: string;
   password: string;
 }
 
+interface SignInProps {
+  credentials: SignInCredentials;
+  signal: AbortSignal;
+}
+
 class AuthService {
-  async signIn(credentials: SignInProps) {
+  async signIn({ credentials, signal }: SignInProps) {
     const { data } = await httpClient.post<{ accessToken: string }>(
       '/sign-in',
-      credentials
+      credentials,
+      { signal }
     );
 
     return data;

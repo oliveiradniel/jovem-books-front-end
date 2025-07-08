@@ -4,6 +4,8 @@ import { useErrors } from '../../../app/hooks/useErrors';
 
 import { ZodSchema } from 'zod';
 
+import { CanceledError } from 'axios';
+
 import { sanitizeAndCapitalize } from '../../../utils/sanitizeAndCapitalize';
 import { emitToast } from '../../../utils/emitToast';
 
@@ -178,6 +180,15 @@ export default function SessionForm<T>({
       setPassword('');
       setUsername('');
     } catch (error) {
+      if (error instanceof CanceledError) {
+        emitToast({
+          type: 'error',
+          message: 'Requisição cancelada.',
+        });
+
+        return;
+      }
+
       const result = handleErrors(error);
       if (result) {
         setError(result);
@@ -280,7 +291,7 @@ export default function SessionForm<T>({
       <Button
         label={hasError ? 'Tentar novamente' : buttonLabel}
         isAbsolute={type !== 'registrationCompleted'}
-        isSubmitting={isLoading}
+        isLoading={isLoading}
         disabled={!isFormValid}
       />
     </form>

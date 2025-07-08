@@ -8,7 +8,11 @@ function Range({ isVisible }: { isVisible: boolean }) {
   return <div className="bg-sky-blue animate-fade-in h-0.5" />;
 }
 
-export default function Navigation() {
+interface NavigationProps {
+  disabled: boolean;
+}
+
+export default function Navigation({ disabled }: NavigationProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -21,7 +25,7 @@ export default function Navigation() {
         <li>
           <button
             type="button"
-            disabled={isSignInPage}
+            disabled={isSignInPage || disabled}
             onClick={() => navigate('/sign-in')}
             className={`font-roboto disabled:hover:text-mate-gray cursor-pointer transition-colors duration-300 ease-in-out disabled:cursor-default ${isSignInPage ? 'text-snow-white disabled:hover:text-snow-white hover:text-snow-white' : 'text-mate-gray hover:text-snow-white-op-70'} `}
           >
