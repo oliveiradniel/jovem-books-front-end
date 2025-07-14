@@ -23,7 +23,7 @@ export default function Profile() {
         onClose={() => setIsDeleteModalVisible(false)}
       />
 
-      <div className="flex flex-1 flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto">
         <ProfileForm
           key={user?.id}
           user={user as IUserAPIResponse}
