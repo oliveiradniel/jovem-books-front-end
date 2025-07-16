@@ -35,7 +35,8 @@ export type TBookErrorMessages =
   | 'O título do livro é obrigatório!'
   | 'O livro deve conter ao menos um autor(a)!'
   | 'O livro deve conter ao menos um gênero literário!'
-  | 'O número de páginas é obrigatório!';
+  | 'O número de páginas é obrigatório!'
+  | 'O número de páginas deve ser maior que 0!';
 
 export type TBookFields =
   | 'title'

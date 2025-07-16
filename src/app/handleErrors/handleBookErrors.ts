@@ -45,6 +45,12 @@ export function handleBookErrors(
 
       return { field: 'title', message };
     }
+
+    if (errorMessage === 'Number of pages must be greater than 0') {
+      const message = 'O número de páginas deve ser maior que 0!';
+
+      return { field: 'numberOfPages', message };
+    }
   }
 
   return null;

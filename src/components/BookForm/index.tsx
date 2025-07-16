@@ -117,12 +117,11 @@ function BookFormInner<T>(
       setImageName('');
     },
   }));
-
   const isFormValid =
     title?.length > 0 &&
     authors?.length > 0 &&
     literaryGenre?.length > 0 &&
-    String(numberOfPages).length > 0 &&
+    Number(numberOfPages) > 0 &&
     errors.length === 0 &&
     !isLoadingBook;
 
@@ -294,20 +293,18 @@ function BookFormInner<T>(
         return;
       }
 
-      if (error) {
-        if (error instanceof AxiosError) {
-          const errorMessage = error.response?.data.message as string;
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data.message as string;
 
-          if (errorMessage && errorMessage.includes('Invalid access token')) {
-            signOut();
+        if (errorMessage && errorMessage.includes('Invalid access token')) {
+          signOut();
 
-            emitToast({
-              type: 'error',
-              message: 'Suas credenciais expiraram! Faça login novamente.',
-            });
+          emitToast({
+            type: 'error',
+            message: 'Suas credenciais expiraram! Faça login novamente.',
+          });
 
-            return;
-          }
+          return;
         }
       }
 
@@ -342,9 +339,11 @@ function BookFormInner<T>(
 
         <div className="bg-navy-blue my-8 h-[0.4px] w-full" />
 
+        <i className="text-light-gray">Os campos com * são obrigatórios.</i>
+
         <FormGroup error={hasErrorInTitle}>
           <Input
-            label="Título"
+            label="* Título"
             error={!!(hasErrorInTitle && hasErrorInTitle.length > 0)}
             name="title"
             placeholder="Dom Quixote"
@@ -359,7 +358,7 @@ function BookFormInner<T>(
           warningText="Separe os autores(as) por vírgula."
         >
           <Input
-            label="Autor(es)"
+            label="* Autor(es)"
             error={!!(hasErrorInAuthors && hasErrorInAuthors.length > 0)}
             name="authors"
             placeholder="Miguel de Cervantes"
@@ -388,7 +387,7 @@ function BookFormInner<T>(
 
         <FormGroup error={getErrorMessageByFieldName(['literaryGenre'])}>
           <div className="flex flex-col gap-2">
-            <Label label="Gênero Literário" />
+            <Label label="* Gênero Literário" />
             <Select
               selectedOptions={literaryGenre}
               disabled={isSubmitting || isLoadingBook}
@@ -401,7 +400,7 @@ function BookFormInner<T>(
         {type === 'create' && (
           <FormGroup error={getErrorMessageByFieldName(['numberOfPages'])}>
             <Input
-              label="Número de Páginas"
+              label="* Número de Páginas"
               error={
                 !!(
                   hasErrorInNumberOfPages && hasErrorInNumberOfPages.length > 0
