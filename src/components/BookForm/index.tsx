@@ -16,7 +16,7 @@ import { env } from '@/config/env';
 
 import { emitToast } from '@/utils/emitToast';
 
-import { ZodSchema } from 'zod';
+import { ZodError, ZodSchema } from 'zod';
 import { handleBookErrors } from '../../app/handleErrors/handleBookErrors';
 
 import { FiTrash2 } from 'react-icons/fi';
@@ -115,8 +115,10 @@ function BookFormInner<T>(
       setLiteraryGenre([]);
       setNumberOfPages('');
       setImageName('');
+      setSelectedImage(null);
     },
   }));
+
   const isFormValid =
     title?.length > 0 &&
     authors?.length > 0 &&
@@ -139,7 +141,18 @@ function BookFormInner<T>(
       return;
     }
 
+    const fiveMB = 5 * 1024 * 1024;
+    if (file.size > fiveMB) {
+      emitToast({
+        type: 'error',
+        message: 'A capa do livro não pode ser maior que 5MB.',
+      });
+
+      return;
+    }
+
     setSelectedImage(file);
+    setRemoveImage(false);
   }
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -291,6 +304,17 @@ function BookFormInner<T>(
       if (result) {
         setError(result);
         return;
+      }
+
+      if (error instanceof ZodError) {
+        if (error.message.includes('File must be a maximum of 5MB')) {
+          emitToast({
+            type: 'error',
+            message: 'A capa do livro não pode ser maior que 5MB.',
+          });
+
+          return;
+        }
       }
 
       if (error instanceof AxiosError) {

@@ -57,7 +57,9 @@ export default function BookCover({
 
         <div className="flex gap-2">
           <ButtonChooseImage
-            buttonLabel={imageName ? 'Alterar capa' : 'Adicionar capa'}
+            buttonLabel={
+              imageName && !removeImage ? 'Alterar capa' : 'Adicionar capa'
+            }
             disabled={isUpdating || isLoadingBook || selectedImage !== null}
             onClick={() => inputRef.current?.click()}
           >
